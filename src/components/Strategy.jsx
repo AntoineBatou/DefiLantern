@@ -27,7 +27,7 @@ function CustomTooltip({ active, payload, apyData }) {
 
 
 export default function Strategy({ apyData, averageApy, historicalApy }) {
-  const { t } = useLang()
+  const { t, lang } = useLang()
   const { profileProtocols, profile, profileWeights } = useRiskProfile()
   const pillColors = PROFILE_PILL_COLORS[profile]
 
@@ -44,46 +44,36 @@ export default function Strategy({ apyData, averageApy, historicalApy }) {
     }
   })
 
-  // Tiers de risque : filtrés selon le profil (on n'affiche que les tiers présents)
-  const allTiers = [
+  // Tiers de risque : dérivés dynamiquement depuis profileProtocols
+  const tierDefs = [
     {
-      tier: '1/6',
-      labelKey: 'strategy.tier1',
-      descKey: 'strategy.tier1Desc',
+      risk: 1, tier: '1/6',
+      labelKey: 'strategy.tier1', descKey: 'strategy.tier1Desc',
       color: 'bg-green-50 border-green-200',
-      badgeColor: 'bg-green-500',
-      textColor: 'text-green-700',
-      protocols: ['Aave v3', 'Morpho (×2)', 'sUSDS'],
-      maxRisk: 1,
+      badgeColor: 'bg-green-500', textColor: 'text-green-700',
     },
     {
-      tier: '2/6',
-      labelKey: 'strategy.tier2',
-      descKey: 'strategy.tier2Desc',
+      risk: 2, tier: '2/6',
+      labelKey: 'strategy.tier2', descKey: 'strategy.tier2Desc',
       color: 'bg-amber-50 border-amber-200',
-      badgeColor: 'bg-amber-400',
-      textColor: 'text-amber-700',
-      protocols: ['USDY', 'scrvUSD', 'sBOLD', 'cUSDO'],
-      maxRisk: 2,
+      badgeColor: 'bg-amber-400', textColor: 'text-amber-700',
     },
     {
-      tier: '3/6',
-      labelKey: 'strategy.tier3',
-      descKey: 'strategy.tier3Desc',
+      risk: 3, tier: '3/6',
+      labelKey: 'strategy.tier3', descKey: 'strategy.tier3Desc',
       color: 'bg-orange-50 border-orange-200',
-      badgeColor: 'bg-orange-500',
-      textColor: 'text-orange-700',
-      protocols: ['Resolv', 'syrupUSDC', 'reUSD', 'sUSDe'],
-      maxRisk: 3,
+      badgeColor: 'bg-orange-500', textColor: 'text-orange-700',
     },
   ]
 
-  // Afficher seulement les tiers inclus dans le profil actif
-  const visibleTiers = allTiers.filter((tier) => {
-    if (profile === 'prudent') return tier.maxRisk <= 1
-    if (profile === 'balanced') return tier.maxRisk <= 2
-    return true
-  })
+  const visibleTiers = tierDefs
+    .map((tierDef) => ({
+      ...tierDef,
+      protocols: profileProtocols
+        .filter((p) => p.risk === tierDef.risk)
+        .map((p) => p.name),
+    }))
+    .filter((tier) => tier.protocols.length > 0)
 
   return (
     <section id="strategy" className="section bg-white">
@@ -93,7 +83,20 @@ export default function Strategy({ apyData, averageApy, historicalApy }) {
         <div className="text-center mb-16">
           <h2 className="text-3xl font-bold text-navy mb-4">{t('strategy.title')}</h2>
           <p className="text-navy/60 max-w-xl mx-auto">
-            {t('strategy.subtitle')}
+            {{
+              prudent: {
+                fr: 'Préservation du capital en priorité — rendement optimisé sur les protocoles DeFi les plus éprouvés.',
+                en: 'Capital preservation first — yield optimised across the most battle-tested DeFi protocols.',
+              },
+              balanced: {
+                fr: "L'équilibre entre sécurité et performance — exposition diversifiée sur l'ensemble du spectre DeFi.",
+                en: 'Balancing safety and performance — diversified exposure across the full DeFi spectrum.',
+              },
+              dynamic: {
+                fr: 'Rendement maximisé — stratégies avancées pour investisseurs avertis, avec une gestion rigoureuse du risque.',
+                en: 'Maximised yield — advanced strategies for experienced investors, with rigorous risk management.',
+              },
+            }[profile]?.[lang] ?? t('strategy.subtitle')}
           </p>
           {/* Indicateur du profil actif */}
           <div className="flex items-center justify-center gap-2 mt-4">

@@ -254,6 +254,21 @@ export default function Learn({ navigateTo }) {
             <p className="text-navy/60 max-w-2xl mx-auto">{t('learn.diversifySubtitle')}</p>
           </div>
 
+          {/* Encart "vault de vaults" */}
+          <div className="mb-8 bg-amber-50 border border-amber-200 rounded-2xl p-5 flex gap-4 items-start max-w-2xl mx-auto">
+            <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center text-xl">🏛️</div>
+            <div>
+              <p className="text-sm font-semibold text-navy mb-1">
+                {lang === 'fr' ? 'Un vault de vaults' : 'A vault of vaults'}
+              </p>
+              <p className="text-sm text-navy/70 leading-relaxed">
+                {lang === 'fr'
+                  ? "Certaines de nos stratégies sont elles-mêmes des vaults (Morpho, Aave Umbrella, mStable…). DeFi Lantern agit donc comme un meta-vault : il sélectionne et combine les vaults les plus adaptés à chaque profil de risque, vous évitant d'avoir à les identifier et les gérer vous-même."
+                  : 'Several of our strategies are themselves vaults (Morpho, Aave Umbrella, mStable…). DeFi Lantern acts as a meta-vault: it selects and combines the most suitable vaults for each risk profile, saving you from having to identify and manage them yourself.'}
+              </p>
+            </div>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
             {/* Vaults concurrents */}

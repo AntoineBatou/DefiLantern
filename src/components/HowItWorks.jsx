@@ -8,7 +8,7 @@ import { useRiskProfile } from '../context/RiskProfileContext'
 
 export default function HowItWorks() {
   const { t, lang } = useLang()
-  const { profileConfig } = useRiskProfile()
+  const { profileConfig, profileProtocols } = useRiskProfile()
   const shareToken = profileConfig.shareToken
 
   // Les 3 étapes avec leurs icônes SVG
@@ -31,7 +31,9 @@ export default function HowItWorks() {
       number: '02',
       emoji: '⚡',
       titleKey: 'howItWorks.step2Title',
-      descKey: 'howItWorks.step2Desc',
+      desc: lang === 'fr'
+        ? `Le protocole répartit automatiquement vos fonds sur ${profileProtocols.length} protocoles DeFi sélectionnés selon leur rendement, sécurité et liquidité.`
+        : `The protocol automatically distributes your funds across ${profileProtocols.length} selected DeFi protocols based on yield, security, and liquidity.`,
       // Icône SVG — représente l'optimisation/réseau
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -108,7 +110,7 @@ export default function HowItWorks() {
 
                 {/* Description */}
                 <p className="text-navy/60 text-sm leading-relaxed">
-                  {t(step.descKey)}
+                  {step.desc ?? t(step.descKey)}
                 </p>
 
                 {/* Flèche vers la droite entre les cartes (sauf la dernière) */}

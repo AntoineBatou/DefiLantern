@@ -219,7 +219,7 @@ export const RETAINED_PROTOCOLS = [
     },
     descFr: 'Des bons du Trésor américain tokenisés. Votre argent est investi dans la dette souveraine la plus sûre au monde, via Ondo Finance.',
     descEn: 'Tokenized US Treasury bills. Your money is invested in the world\'s safest sovereign debt, through Ondo Finance.',
-    risk: 2,
+    risk: 1,
     link: 'https://ondo.finance',
   },
   {
@@ -273,7 +273,7 @@ export const RETAINED_PROTOCOLS = [
     },
     descFr: 'Stratégie delta-neutre sur ETH : position longue spot compensée par une position courte en perp. Exposition nulle au prix de l\'ETH, rendement issu des taux de financement.',
     descEn: 'ETH delta-neutral strategy: spot long position offset by a perp short. Zero ETH price exposure, yield from funding rates.',
-    risk: 3,
+    risk: 2,
     link: 'https://resolv.xyz',
   },
   {
@@ -291,7 +291,7 @@ export const RETAINED_PROTOCOLS = [
     },
     descFr: '100% bons du Trésor américains. Le seul produit T-bills pur natif sur Ethereum, avec prix vérifié par Chainlink.',
     descEn: '100% US Treasury bills. The only pure T-bill product native on Ethereum, with Chainlink-verified pricing.',
-    risk: 2,
+    risk: 1,
     link: 'https://openeden.com',
   },
   {
@@ -309,7 +309,7 @@ export const RETAINED_PROTOCOLS = [
     },
     descFr: 'Prêts on-chain à des institutions crypto vérifiées. Rendement plus élevé en échange d\'un risque de crédit mesuré — les emprunteurs sont sélectionnés et suivis par Maple.',
     descEn: 'On-chain loans to vetted crypto institutions. Higher yield in exchange for measured credit risk — borrowers are selected and monitored by Maple.',
-    risk: 3,
+    risk: 2,
     link: 'https://maple.finance',
   },
   {
@@ -327,7 +327,7 @@ export const RETAINED_PROTOCOLS = [
     },
     descFr: 'Stratégie delta-neutre sur ETH via positions couvertes : longue spot ETH + courte en perpétuel. Rendement issu des taux de financement et du staking ETH. Cooldown de retrait : 7 jours.',
     descEn: 'ETH delta-neutral strategy via hedged positions: ETH spot long + perpetual short. Yield from funding rates and ETH staking. Withdrawal cooldown: 7 days.',
-    risk: 3,
+    risk: 2,
     link: 'https://ethena.fi',
   },
   {
@@ -344,7 +344,7 @@ export const RETAINED_PROTOCOLS = [
     },
     descFr: 'Protocole de réassurance on-chain, version prudente. La majeure partie du capital est protégée ; seule une faible part est exposée aux risques de réassurance, absorbés en priorité par reUSDe.',
     descEn: 'On-chain reinsurance protocol, conservative version. Most capital is protected; only a small portion is exposed to reinsurance risk, absorbed first by reUSDe.',
-    risk: 3,
+    risk: 2,
     link: 'https://re.xyz',
   },
   // ── Tier 3 — Nouveaux protocoles Dynamic ────────────────────────────────────
