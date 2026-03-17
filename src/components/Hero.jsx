@@ -6,7 +6,7 @@ import { useLang } from '../context/LangContext'
 import { useRiskProfile } from '../context/RiskProfileContext'
 import { PROFILE_PILL_COLORS } from '../data/profiles'
 
-export default function Hero({ averageApy, loading, hasLiveData, onSimulateClick }) {
+export default function Hero({ averageApy, loading, hasLiveData, onSimulateClick, historicalApy, historicalCoverage }) {
   const { t } = useLang()
   const { profile, profileConfig, profileProtocols } = useRiskProfile()
   const pillColors = PROFILE_PILL_COLORS[profile]
@@ -90,23 +90,22 @@ export default function Hero({ averageApy, loading, hasLiveData, onSimulateClick
               <div className="text-sm text-navy/50 font-medium mt-1">{t('hero.protocols')}</div>
             </div>
 
-            {/* Stat 2 : APY estimé du profil */}
+            {/* Stat 2 : Performance historique 12 mois du profil */}
             <div className="bg-white rounded-2xl shadow-sm border border-lgrey px-8 py-5 text-center min-w-[140px]">
               {loading ? (
                 <div className="skeleton h-8 w-20 mx-auto mb-1 rounded" />
-              ) : (
+              ) : historicalApy !== null ? (
                 <div className="text-3xl font-extrabold" style={{ color: pillColors.dot }}>
-                  {averageApy.toFixed(2)}%
+                  {historicalApy.toFixed(1)}%
                 </div>
+              ) : (
+                <div className="text-3xl font-extrabold text-navy/30">—</div>
               )}
-              <div className="text-sm text-navy/50 font-medium mt-1">{t('hero.estimatedApy')}</div>
-              {!loading && (
+              <div className="text-sm text-navy/50 font-medium mt-1">{t('hero.historicalApy')}</div>
+              {!loading && historicalApy !== null && (
                 <div className="flex items-center justify-center gap-1 mt-1">
-                  <span
-                    className={`w-1.5 h-1.5 rounded-full ${hasLiveData ? 'bg-green-500 animate-pulse' : 'bg-amber-400'}`}
-                  />
                   <span className="text-xs text-navy/40">
-                    {hasLiveData ? 'live' : 'est.'}
+                    {historicalCoverage}% du portef.
                   </span>
                 </div>
               )}

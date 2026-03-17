@@ -47,7 +47,8 @@ export const RETAINED_PROTOCOLS = [
     name: 'Aave v3',
     category: 'Lending',
     allocation: EQ_WEIGHT,
-    fallbackApy: 2.0,
+    fallbackApy: 3.3,
+    historicalApy12m: 3.3, // Moyenne 12 mois glissants vérifiée mars 2026
     llamaConfig: {
       fullPoolId: 'aa70268e-4b52-42bf-a116-608b370f9501',
       project: 'aave-v3',
@@ -64,7 +65,8 @@ export const RETAINED_PROTOCOLS = [
     name: 'Morpho (Gauntlet USDC Core)',
     category: 'Lending',
     allocation: EQ_WEIGHT,
-    fallbackApy: 3.9,
+    fallbackApy: 8.7,
+    historicalApy12m: 8.7, // Moyenne 12 mois glissants vérifiée mars 2026
     llamaConfig: {
       fullPoolId: 'baf1a020-a2a4-401a-9425-eba22ffce13c',
       project: 'morpho-v1',
@@ -81,7 +83,8 @@ export const RETAINED_PROTOCOLS = [
     name: 'Morpho (Steakhouse USDC)',
     category: 'Lending',
     allocation: EQ_WEIGHT,
-    fallbackApy: 3.0,
+    fallbackApy: 7.5,
+    historicalApy12m: null, // Moins de 12 mois d'existence
     llamaConfig: {
       fullPoolId: 'b55f43a8-f444-4cd8-a3a4-0a4e786ba566',
       project: 'morpho-v1',
@@ -98,7 +101,8 @@ export const RETAINED_PROTOCOLS = [
     name: 'Compound v3',
     category: 'Lending',
     allocation: EQ_WEIGHT,
-    fallbackApy: 2.5,
+    fallbackApy: 2.7,
+    historicalApy12m: 2.7, // Moyenne 12 mois glissants vérifiée mars 2026
     llamaConfig: {
       fullPoolId: '7da72d09-56ca-4ec5-a45f-59114353e487',
       project: 'compound-v3',
@@ -115,7 +119,8 @@ export const RETAINED_PROTOCOLS = [
     name: 'SparkLend (Sky)',
     category: 'Lending',
     allocation: EQ_WEIGHT,
-    fallbackApy: 3.0,
+    fallbackApy: 3.8,
+    historicalApy12m: 5.5, // Moyenne 12 mois glissants vérifiée mars 2026
     llamaConfig: {
       fullPoolId: '65ce8276-b4d9-41ba-9f6f-21fc374cf9bc',
       project: 'sparklend',
@@ -133,6 +138,7 @@ export const RETAINED_PROTOCOLS = [
     category: 'Lending',
     allocation: EQ_WEIGHT,
     fallbackApy: 3.5,
+    historicalApy12m: 3.5, // Moyenne 12 mois glissants vérifiée mars 2026
     llamaConfig: {
       fullPoolId: 'fa4d7ee4-0001-4133-9e8d-cf7d5d194a91',
       project: 'flux-finance',
@@ -149,7 +155,8 @@ export const RETAINED_PROTOCOLS = [
     name: 'Euler v2',
     category: 'Lending',
     allocation: EQ_WEIGHT,
-    fallbackApy: 4.0,
+    fallbackApy: 5.5,
+    historicalApy12m: null, // Moins de 12 mois d'existence (relancé 2024)
     llamaConfig: {
       fullPoolId: '0fde8996-ecdf-441c-94a9-ec67403e9b8c',
       project: 'euler-v2',
@@ -167,6 +174,7 @@ export const RETAINED_PROTOCOLS = [
     category: 'Savings Rate',
     allocation: EQ_WEIGHT,
     fallbackApy: 4.0,
+    historicalApy12m: null, // Moins de 12 mois d'existence (lancé 2024)
     llamaConfig: {
       fullPoolId: 'd8c4eff5-c8a9-46fc-a888-057c4c668e72',
       project: 'sky-lending',
@@ -184,6 +192,7 @@ export const RETAINED_PROTOCOLS = [
     category: 'Stability Pool',
     allocation: EQ_WEIGHT,
     fallbackApy: 6.0,
+    historicalApy12m: null, // Moins de 12 mois d'existence
     llamaConfig: {
       fullPoolId: 'abd6c9e1-3b52-459a-a31b-9022a4dcf7e2',
       project: 'fx-protocol',
@@ -200,7 +209,8 @@ export const RETAINED_PROTOCOLS = [
     name: 'USDY (Ondo)',
     category: 'RWA T-bills',
     allocation: EQ_WEIGHT,
-    fallbackApy: 3.5,
+    fallbackApy: 4.2,
+    historicalApy12m: 4.2, // Moyenne 12 mois glissants vérifiée mars 2026
     llamaConfig: {
       fullPoolId: 'ac61ee82-2fe4-4f9b-a9cd-7fb33f598859',
       project: 'ondo-yield-assets',
@@ -217,7 +227,8 @@ export const RETAINED_PROTOCOLS = [
     name: 'scrvUSD (Curve)',
     category: 'Savings Rate',
     allocation: EQ_WEIGHT,
-    fallbackApy: 9.1,
+    fallbackApy: 7.0,
+    historicalApy12m: null, // Moins de 12 mois d'existence
     llamaConfig: {
       fullPoolId: '5fd328af-4203-471b-bd16-1705c726d926',
       project: 'crvusd',
@@ -234,7 +245,8 @@ export const RETAINED_PROTOCOLS = [
     name: 'sBOLD (Liquity v2)',
     category: 'Stability Pool',
     allocation: EQ_WEIGHT,
-    fallbackApy: 2.6,
+    fallbackApy: 5.5,
+    historicalApy12m: null, // Moins de 12 mois d'existence
     llamaConfig: {
       fullPoolId: 'a635df9a-4cfc-4d17-86d0-934ea441e79f',
       project: 'liquity-v2',
@@ -251,7 +263,8 @@ export const RETAINED_PROTOCOLS = [
     name: 'Resolv USR',
     category: 'Delta-Neutral',
     allocation: EQ_WEIGHT,
-    fallbackApy: 2.6,
+    fallbackApy: 8.0,
+    historicalApy12m: null, // Moins de 12 mois d'existence
     llamaConfig: {
       fullPoolId: '0aedb3f6-9298-49de-8bb0-2f611a4df784',
       project: 'resolv',
@@ -268,7 +281,8 @@ export const RETAINED_PROTOCOLS = [
     name: 'cUSDO (OpenEden)',
     category: 'RWA T-bills',
     allocation: EQ_WEIGHT,
-    fallbackApy: 3.1,
+    fallbackApy: 4.5,
+    historicalApy12m: null, // Moins de 12 mois d'existence
     llamaConfig: {
       fullPoolId: '12169161-7815-4160-bd77-a4202cf7c2c1',
       project: 'openeden-usdo',
@@ -285,7 +299,8 @@ export const RETAINED_PROTOCOLS = [
     name: 'syrupUSDC (Maple)',
     category: 'Institutional Credit',
     allocation: EQ_WEIGHT,
-    fallbackApy: 4.6,
+    fallbackApy: 8.5,
+    historicalApy12m: 8.5, // Moyenne 12 mois glissants vérifiée mars 2026
     llamaConfig: {
       fullPoolId: '43641cf5-a92e-416b-bce9-27113d3c0db6',
       project: 'maple',
@@ -302,7 +317,8 @@ export const RETAINED_PROTOCOLS = [
     name: 'sUSDe (Ethena)',
     category: 'Market Neutral',
     allocation: EQ_WEIGHT,
-    fallbackApy: 3.5,
+    fallbackApy: 7.5,
+    historicalApy12m: 8.5, // Moyenne 12 mois glissants vérifiée mars 2026
     llamaConfig: {
       fullPoolId: '66985a81-9c51-46ca-9977-42b4fe7bc6df',
       project: 'ethena-usde',
@@ -319,7 +335,8 @@ export const RETAINED_PROTOCOLS = [
     name: 'reUSD (Re Protocol)',
     category: 'Reinsurance',
     allocation: EQ_WEIGHT,
-    fallbackApy: 5.0,
+    fallbackApy: 7.0,
+    historicalApy12m: null, // Moins de 12 mois d'existence
     llamaConfig: {
       project: 're-protocol',
       chain: 'Ethereum',
@@ -336,7 +353,8 @@ export const RETAINED_PROTOCOLS = [
     name: 'sNUSD (Neutrl)',
     category: 'Delta-Neutral',
     allocation: EQ_WEIGHT,
-    fallbackApy: 16.5,
+    fallbackApy: 16.0,
+    historicalApy12m: null, // Moins de 12 mois d'existence
     llamaConfig: {
       fullPoolId: null, // à confirmer via DeFiLlama
       project: 'neutrl',
@@ -353,7 +371,8 @@ export const RETAINED_PROTOCOLS = [
     name: 'jrUSDe (Strata)',
     category: 'Market Neutral',
     allocation: EQ_WEIGHT,
-    fallbackApy: 8.0,
+    fallbackApy: 12.0,
+    historicalApy12m: null, // Moins de 12 mois d'existence
     llamaConfig: {
       fullPoolId: '8352355c-5ad7-45c5-aca2-628de224f8d8',
       project: 'strata-markets',
@@ -370,7 +389,8 @@ export const RETAINED_PROTOCOLS = [
     name: 'sUSD3 (3Jane)',
     category: 'Institutional Credit',
     allocation: EQ_WEIGHT,
-    fallbackApy: 10.0,
+    fallbackApy: 12.0,
+    historicalApy12m: null, // Moins de 12 mois d'existence (~3 mois)
     llamaConfig: {
       fullPoolId: 'a99bb965-ebaa-4d98-9ed2-fa18de52c605',
       project: '3jane-lending',
@@ -387,7 +407,8 @@ export const RETAINED_PROTOCOLS = [
     name: 'mPT-sUSDe (mStable)',
     category: 'Fixed Rate',
     allocation: EQ_WEIGHT,
-    fallbackApy: 20.0,
+    fallbackApy: 15.0,
+    historicalApy12m: null, // Moins de 12 mois d'existence
     llamaConfig: {
       fullPoolId: '6d177bd3-fafa-4d2e-b86f-4fb14ea73c7c',
       project: 'mstable-v2',
@@ -404,7 +425,8 @@ export const RETAINED_PROTOCOLS = [
     name: 'stkUSDC (Aave Umbrella)',
     category: 'Safety Module',
     allocation: EQ_WEIGHT,
-    fallbackApy: 4.0,
+    fallbackApy: 5.0,
+    historicalApy12m: null, // Moins de 12 mois d'existence
     llamaConfig: {
       fullPoolId: null, // à confirmer via DeFiLlama
       project: 'aave-umbrella',
@@ -421,7 +443,8 @@ export const RETAINED_PROTOCOLS = [
     name: 'reUSDe (Re Protocol)',
     category: 'Reinsurance',
     allocation: EQ_WEIGHT,
-    fallbackApy: 9.0,
+    fallbackApy: 18.0,
+    historicalApy12m: null, // Moins de 12 mois d'existence
     llamaConfig: {
       fullPoolId: null, // à confirmer via DeFiLlama
       project: 're-protocol',
@@ -438,7 +461,8 @@ export const RETAINED_PROTOCOLS = [
     name: 'RLP (Resolv)',
     category: 'Delta-Neutral',
     allocation: EQ_WEIGHT,
-    fallbackApy: 6.0,
+    fallbackApy: 18.0,
+    historicalApy12m: null, // Moins de 12 mois d'existence
     llamaConfig: {
       fullPoolId: '2ad8497d-c855-4840-85ad-cdc536b92ced',
       project: 'resolv',

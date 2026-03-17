@@ -76,7 +76,7 @@ export const PROFILES = {
     shareToken: 'glUSDC-P',
     protocolIds: PRUDENT_PROTOCOL_IDS,
     weights: PRUDENT_WEIGHTS,
-    apyRange: '~4–6%',
+    apyRange: '~5.5%',
     theme: 'light',
   },
   balanced: {
@@ -85,7 +85,7 @@ export const PROFILES = {
     shareToken: 'glUSDC-B',
     protocolIds: [...PRUDENT_PROTOCOL_IDS, ...DYNAMIC_PROTOCOL_IDS],
     weights: BALANCED_WEIGHTS,
-    apyRange: '~6–9%',
+    apyRange: '~6.1%',
     theme: 'light',
   },
   dynamic: {
@@ -94,7 +94,7 @@ export const PROFILES = {
     shareToken: 'glUSDC-D',
     protocolIds: DYNAMIC_PROTOCOL_IDS,
     weights: DYNAMIC_WEIGHTS,
-    apyRange: '~9–15%',
+    apyRange: '~8.5%',
     theme: 'dark', // ← déclenche le mode Cyber/Neon
   },
 }

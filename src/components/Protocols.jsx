@@ -68,6 +68,14 @@ function ProtocolCard({ protocol, apyData, loading, lang, onClick, profileColor,
           <div className="text-xs text-navy/40 mt-0.5">
             {isLive ? t('protocols.liveApy') : t('protocols.estApy')}
           </div>
+          {/* Badge affiché uniquement si le protocole a moins de 12 mois d'historique */}
+          {protocol.historicalApy12m === null && (
+            <div className="mt-1.5">
+              <span className="inline-block text-xs bg-gray-100 text-gray-500 border border-gray-200 rounded-full px-2 py-0.5">
+                {t('protocols.noHistory')}
+              </span>
+            </div>
+          )}
         </div>
         <div className="text-right">
           <div className="text-lg font-bold text-navy">{((weight ?? 0) * 100).toFixed(1)}%</div>

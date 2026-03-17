@@ -33,7 +33,7 @@ import Learn from './components/Learn'
 // ── Composant interne qui utilise les deux contextes ──────────────────────────
 function AppContent() {
   const { apyData, loading, averageApy, hasLiveData } = useDefiLlama()
-  const { isDark, profileProtocols } = useRiskProfile()
+  const { isDark, profileProtocols, profileConfig } = useRiskProfile()
 
   // ── Page active ───────────────────────────────────────────────────────────
   const [currentPage, setCurrentPage] = useState(() =>
@@ -58,6 +58,33 @@ function AppContent() {
     const values = profileProtocols.map((p) => apyData[p.id]?.apy ?? p.fallbackApy)
     return values.reduce((sum, v) => sum + v, 0) / values.length
   }, [profileProtocols, apyData, averageApy])
+
+  // ── APY historique pondéré (12 mois) — uniquement protocoles avec historique ──
+  // On filtre les protocoles qui ont un historicalApy12m non null,
+  // puis on re-normalise les poids sur ce sous-ensemble pour avoir une moyenne cohérente.
+  const profileHistoricalApy = useMemo(() => {
+    if (!profileProtocols || profileProtocols.length === 0) return null
+    const weights = profileConfig.weights
+    const withHistory = profileProtocols.filter(p => p.historicalApy12m !== null)
+    if (withHistory.length === 0) return null
+    // Somme des poids des protocoles ayant un historique
+    const totalW = withHistory.reduce((s, p) => s + (weights[p.id] ?? 0), 0)
+    if (totalW === 0) return null
+    // Moyenne pondérée re-normalisée
+    return withHistory.reduce((s, p) => s + (weights[p.id] / totalW) * p.historicalApy12m, 0)
+  }, [profileProtocols, profileConfig])
+
+  // ── Pourcentage du portefeuille couvert par l'historique 12 mois ──────────
+  // Ex : 65 signifie que 65% du poids total du profil a 12 mois d'historique
+  const profileHistoricalCoverage = useMemo(() => {
+    if (!profileProtocols || profileProtocols.length === 0) return 0
+    const weights = profileConfig.weights
+    const withHistory = profileProtocols.filter(p => p.historicalApy12m !== null)
+    const totalAllW = profileProtocols.reduce((s, p) => s + (weights[p.id] ?? 0), 0)
+    const totalHistW = withHistory.reduce((s, p) => s + (weights[p.id] ?? 0), 0)
+    if (totalAllW === 0) return 0
+    return Math.round((totalHistW / totalAllW) * 100)
+  }, [profileProtocols, profileConfig])
 
   // ── Navigation ────────────────────────────────────────────────────────────
   const navigateTo = (page) => {
@@ -106,10 +133,17 @@ function AppContent() {
               loading={loading}
               hasLiveData={hasLiveData}
               onSimulateClick={() => navigateTo('simulator')}
+              historicalApy={profileHistoricalApy}
+              historicalCoverage={profileHistoricalCoverage}
             />
             <HowItWorks />
             <Protocols apyData={apyData} loading={loading} />
-            <Strategy apyData={apyData} averageApy={profileAverageApy} />
+            <Strategy
+              apyData={apyData}
+              averageApy={profileAverageApy}
+              historicalApy={profileHistoricalApy}
+              historicalCoverage={profileHistoricalCoverage}
+            />
           </>
         )}
 

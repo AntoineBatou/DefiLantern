@@ -101,6 +101,7 @@ export const translations = {
       subtitle: 'DeFi Lantern alloue vos USDC sur les meilleurs protocoles DeFi et récolte les rendements automatiquement — sans que vous ayez à gérer quoi que ce soit.',
       protocols: 'protocoles',
       estimatedApy: 'APY estimé',
+      historicalApy: 'Perf. historique 12 mois',
       ctaSimulate: 'Simuler un dépôt',
       ctaLearnMore: 'En savoir plus',
       liveData: 'Données live DeFiLlama',
@@ -133,6 +134,7 @@ export const translations = {
       dataSource: 'Données DeFiLlama',
       retained: 'Protocoles retenus',
       evaluation: 'En évaluation',
+      noHistory: '< 12 mois d\'existence',
     },
 
     // ── Strategy ─────────────────────────────────────────────────
@@ -142,6 +144,8 @@ export const translations = {
       allocationTitle: 'Allocation équilibrée',
       allocationDesc: 'Chaque protocole reçoit 10% du capital, révisable par gouvernance GLOW. Cette diversification protège contre la défaillance d\'un protocole unique.',
       globalApy: 'APY estimé global',
+      historicalApy: 'Performance historique (12 mois)',
+      historicalApyNote: 'Moyenne pondérée basée sur les protocoles ayant 12 mois d\'historique',
       governanceNote: 'Les poids sont ajustables par gouvernance GLOW',
       riskTiers: 'Niveaux de risque',
       riskScale: 'Échelle sur 6 — à titre de comparaison, Bitcoin = 6/6',
@@ -408,6 +412,7 @@ export const translations = {
       subtitle: 'DeFi Lantern allocates your USDC across the best DeFi protocols and harvests yields automatically — without any action required from you.',
       protocols: 'protocols',
       estimatedApy: 'Est. APY',
+      historicalApy: '12-month historical perf.',
       ctaSimulate: 'Simulate a deposit',
       ctaLearnMore: 'Learn more',
       liveData: 'Live DeFiLlama data',
@@ -440,6 +445,7 @@ export const translations = {
       dataSource: 'DeFiLlama data',
       retained: 'Retained protocols',
       evaluation: 'Under evaluation',
+      noHistory: '< 12 months of existence',
     },
 
     // ── Strategy ─────────────────────────────────────────────────
@@ -449,6 +455,8 @@ export const translations = {
       allocationTitle: 'Balanced allocation',
       allocationDesc: 'Each protocol receives 10% of capital, revisable by GLOW governance. This diversification protects against the failure of any single protocol.',
       globalApy: 'Global estimated APY',
+      historicalApy: 'Historical performance (12 months)',
+      historicalApyNote: 'Weighted average based on protocols with 12 months of history',
       governanceNote: 'Weights are adjustable by GLOW governance',
       riskTiers: 'Risk levels',
       riskScale: 'Scale of 6 — for reference, Bitcoin = 6/6',

@@ -39,7 +39,7 @@ function CustomLegend({ payload }) {
   )
 }
 
-export default function Strategy({ apyData, averageApy }) {
+export default function Strategy({ apyData, averageApy, historicalApy, historicalCoverage }) {
   const { t } = useLang()
   const { profileProtocols, profile, profileWeights } = useRiskProfile()
   const pillColors = PROFILE_PILL_COLORS[profile]
@@ -177,19 +177,31 @@ export default function Strategy({ apyData, averageApy }) {
           {/* Colonne droite : infos */}
           <div className="flex flex-col gap-6">
 
-            {/* APY global du profil */}
+            {/* Performance historique 12 mois du profil */}
             <div className="bg-gradient-to-br from-teal-light to-white rounded-2xl border border-teal-200 p-6">
-              <div className="text-sm text-navy/60 mb-1">{t('strategy.globalApy')}</div>
-              <div className="text-4xl font-extrabold" style={{ color: pillColors.dot }}>
-                {averageApy.toFixed(2)}%
-                <span className="text-lg font-normal text-navy/40 ml-2">{t('common.perYear')}</span>
-              </div>
-              <p className="text-xs text-navy/50 mt-2">
-                {t('strategy.allocationDesc')}
-              </p>
-              <p className="text-xs text-navy/40 mt-1">
-                Poids variables par gouvernance · {profileProtocols.length} protocoles actifs
-              </p>
+              <div className="text-sm text-navy/60 mb-1">{t('strategy.historicalApy')}</div>
+              {historicalApy !== null ? (
+                <>
+                  <div className="text-4xl font-extrabold" style={{ color: pillColors.dot }}>
+                    {historicalApy.toFixed(1)}%
+                    <span className="text-lg font-normal text-navy/40 ml-2">{t('common.perYear')}</span>
+                  </div>
+                  {/* Note de couverture : précise sur quelle part du portefeuille repose le calcul */}
+                  <p className="text-xs text-navy/50 mt-2">
+                    {t('strategy.historicalApyNote')}
+                  </p>
+                  <p className="text-xs text-navy/40 mt-1">
+                    Basé sur {historicalCoverage}% du portefeuille · {profileProtocols.length} protocoles actifs
+                  </p>
+                </>
+              ) : (
+                <>
+                  <div className="text-4xl font-extrabold text-navy/30">—</div>
+                  <p className="text-xs text-navy/40 mt-2">
+                    {t('protocols.noHistory')}
+                  </p>
+                </>
+              )}
             </div>
 
             {/* Tiers de risque (filtrés) */}
