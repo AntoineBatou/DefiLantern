@@ -90,7 +90,25 @@ export default function Hero({ averageApy, loading, hasLiveData, onSimulateClick
               <div className="text-sm text-navy/50 font-medium mt-1">{t('hero.protocols')}</div>
             </div>
 
-            {/* Stat 2 : Performance historique 12 mois du profil */}
+            {/* Stat 2 : APY actuel (live DeFiLlama) */}
+            <div className="bg-white rounded-2xl shadow-sm border border-lgrey px-8 py-5 text-center min-w-[140px]">
+              {loading ? (
+                <div className="skeleton h-8 w-20 mx-auto mb-1 rounded" />
+              ) : (
+                <div className="text-3xl font-extrabold" style={{ color: pillColors.dot }}>
+                  {averageApy.toFixed(1)}%
+                </div>
+              )}
+              <div className="text-sm text-navy/50 font-medium mt-1">{t('hero.currentApy')}</div>
+              {hasLiveData && !loading && (
+                <div className="flex items-center justify-center gap-1 mt-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
+                  <span className="text-xs text-navy/40">live</span>
+                </div>
+              )}
+            </div>
+
+            {/* Stat 3 : Performance historique 12 mois du profil */}
             <div className="bg-white rounded-2xl shadow-sm border border-lgrey px-8 py-5 text-center min-w-[140px]">
               {loading ? (
                 <div className="skeleton h-8 w-20 mx-auto mb-1 rounded" />
@@ -103,10 +121,8 @@ export default function Hero({ averageApy, loading, hasLiveData, onSimulateClick
               )}
               <div className="text-sm text-navy/50 font-medium mt-1">{t('hero.historicalApy')}</div>
               {!loading && historicalApy !== null && (
-                <div className="flex items-center justify-center gap-1 mt-1">
-                  <span className="text-xs text-navy/40">
-                    {historicalCoverage}% du portef.
-                  </span>
+                <div className="text-xs text-navy/40 mt-1">
+                  {historicalCoverage}% du portef.
                 </div>
               )}
             </div>
