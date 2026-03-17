@@ -10,6 +10,7 @@
 
 import { useState } from 'react'
 import { useLang } from '../context/LangContext'
+import { useRiskProfile } from '../context/RiskProfileContext'
 
 // ── Icônes SVG simples ────────────────────────────────────────────────────────
 function UsdcIcon() {
@@ -52,6 +53,8 @@ function CheckIcon() {
 // ── Composant principal ────────────────────────────────────────────────────────
 export default function Deposit({ averageApy }) {
   const { t } = useLang()
+  const { profileConfig } = useRiskProfile()
+  const shareToken = profileConfig.shareToken
 
   // Actif sélectionné : 'USDC' ou 'EURC'
   const [asset, setAsset] = useState('USDC')
@@ -87,7 +90,7 @@ export default function Deposit({ averageApy }) {
 
   const handleDeposit = () => {
     // Mock : en v1 pas de vraie transaction
-    alert(`[Démo académique] Dépôt simulé : ${numAmount} ${asset} → ${glUsdcReceived.toFixed(2)} glUSDC\n\nCette interface est un prototype — aucun vrai fonds n'est déplacé.`)
+    alert(`[Démo académique] Dépôt simulé : ${numAmount} ${asset} → ${glUsdcReceived.toFixed(2)} ${shareToken}\n\nCette interface est un prototype — aucun vrai fonds n'est déplacé.`)
   }
 
   const apyColor =
@@ -206,7 +209,7 @@ export default function Deposit({ averageApy }) {
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-navy/60">{t('deposit.receiveLabel')}</span>
                   <span className="font-bold text-navy">
-                    {glUsdcReceived.toLocaleString()} glUSDC
+                    {glUsdcReceived.toLocaleString()} {shareToken}
                   </span>
                 </div>
                 <div className="flex justify-between items-center">

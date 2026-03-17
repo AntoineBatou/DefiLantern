@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [react()],
   // base = chemin public où sera déployée l'app
   // '/v2/' → les assets seront référencés en /v2/assets/... dans le HTML buildé
-  base: '/v2/',
+  base: '/',
   // Configuration du serveur de développement
   server: {
     port: 3000,

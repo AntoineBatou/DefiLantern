@@ -6,7 +6,7 @@
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 import { useLang } from '../context/LangContext'
 import { useRiskProfile } from '../context/RiskProfileContext'
-import { DONUT_COLORS } from '../data/protocols'
+import { DONUT_COLORS, RETAINED_PROTOCOLS } from '../data/protocols'
 import { PROFILE_PILL_COLORS } from '../data/profiles'
 
 // ── Tooltip personnalisé ───────────────────────────────────────────────────────
@@ -41,20 +41,21 @@ function CustomLegend({ payload }) {
 
 export default function Strategy({ apyData, averageApy }) {
   const { t } = useLang()
-  const { profileProtocols, profile } = useRiskProfile()
+  const { profileProtocols, profile, profileWeights } = useRiskProfile()
   const pillColors = PROFILE_PILL_COLORS[profile]
 
-  // Allocation équilibrée entre les protocoles du profil actif
-  const allocationPerProtocol = 100 / profileProtocols.length
-
-  // Données pour Recharts : protocoles filtrés + allocation calculée
-  const chartData = profileProtocols.map((protocol, index) => ({
-    ...protocol,
-    name: protocol.name.split(' ')[0], // Nom court pour la légende
-    value: allocationPerProtocol,
-    allocation: allocationPerProtocol,
-    color: DONUT_COLORS[index % DONUT_COLORS.length],
-  }))
+  // Données pour Recharts : protocoles filtrés + poids réels du profil
+  const chartData = profileProtocols.map((protocol) => {
+    const globalIndex = RETAINED_PROTOCOLS.findIndex(p => p.id === protocol.id)
+    const weight = profileWeights[protocol.id] ?? 0
+    return {
+      ...protocol,
+      name: protocol.name.split(' ')[0],
+      value: parseFloat((weight * 100).toFixed(1)),
+      allocation: parseFloat((weight * 100).toFixed(1)),
+      color: DONUT_COLORS[globalIndex % DONUT_COLORS.length],
+    }
+  })
 
   // Tiers de risque : filtrés selon le profil (on n'affiche que les tiers présents)
   const allTiers = [
@@ -187,7 +188,7 @@ export default function Strategy({ apyData, averageApy }) {
                 {t('strategy.allocationDesc')}
               </p>
               <p className="text-xs text-navy/40 mt-1">
-                {allocationPerProtocol.toFixed(1)}% par protocole · {profileProtocols.length} protocoles actifs
+                Poids variables par gouvernance · {profileProtocols.length} protocoles actifs
               </p>
             </div>
 

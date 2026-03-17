@@ -20,6 +20,7 @@ import {
   ResponsiveContainer,
 } from 'recharts'
 import { useLang } from '../context/LangContext'
+import { useRiskProfile } from '../context/RiskProfileContext'
 
 // ── Constantes de durée ────────────────────────────────────────────────────────
 // months = durée en mois pour le calcul
@@ -115,6 +116,8 @@ function ResultCard({ label, value, highlight = false }) {
 // ── Composant principal ────────────────────────────────────────────────────────
 export default function Simulator({ averageApy, onAddPosition }) {
   const { t } = useLang()
+  const { profileConfig } = useRiskProfile()
+  const shareToken = profileConfig.shareToken
 
   // États du simulateur
   const [amount, setAmount] = useState(1000)           // Montant en USDC
@@ -279,7 +282,7 @@ export default function Simulator({ averageApy, onAddPosition }) {
               />
               <ResultCard
                 label={t('simulator.glUsdcReceived')}
-                value={`${fmt(results.glUsdcReceived)} glUSDC`}
+                value={`${fmt(results.glUsdcReceived)} ${shareToken}`}
               />
               <ResultCard
                 label={t('simulator.estimatedYield')}

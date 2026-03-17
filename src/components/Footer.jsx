@@ -76,9 +76,9 @@ export default function Footer({ navigateTo }) {
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-2.5">
               <img
-                src="/logo.png"
+                src={`${import.meta.env.BASE_URL}lantern-logo.svg`}
                 alt="DeFi Lantern"
-                className="h-8 w-8 object-contain"
+                className="h-8 w-auto"
               />
               <span className="font-bold text-xl text-[#2ABFAB]">DeFi Lantern</span>
             </div>

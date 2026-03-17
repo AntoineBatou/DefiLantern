@@ -77,11 +77,11 @@ export default function Header({ currentPage, navigateTo, navigateToSection }) {
     dynamic:  t('profile.dynamic'),
   }
 
-  // Nombre de protocoles par profil
+  // Nombre de protocoles par profil (issu des listes explicites dans profiles.js)
   const profileProtocolCounts = {
-    prudent:  6,   // risk <= 1
-    balanced: 13,  // risk <= 2
-    dynamic:  17,  // tous
+    prudent:  9,   // tier 1 + sUSDe + reUSD + Resolv USR
+    balanced: 17,  // 50% Prudent + 50% Dynamic
+    dynamic:  8,   // tranches junior (reUSDe + RLP inclus)
   }
 
   return (
@@ -95,13 +95,11 @@ export default function Header({ currentPage, navigateTo, navigateToSection }) {
 
           {/* ── Logo ── */}
           <a href="/" onClick={handleLogoClick} className="flex items-center gap-2 group flex-shrink-0">
-            <div className="h-11 w-11 flex items-center justify-center overflow-hidden flex-shrink-0">
-              <img
-                src="/miniature.png"
-                alt="DeFi Lantern"
-                className="h-14 w-14 object-contain transition-transform group-hover:scale-105"
-              />
-            </div>
+            <img
+              src={`${import.meta.env.BASE_URL}lantern-logo.svg`}
+              alt="DeFi Lantern"
+              className="h-10 w-auto transition-transform duration-200 group-hover:scale-105"
+            />
             <span className="font-bold text-xl tracking-tight text-[#2ABFAB]">
               DeFi Lantern
             </span>

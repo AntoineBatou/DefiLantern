@@ -16,19 +16,21 @@ export const CATEGORY_COLORS = {
   'Stability Pool':       { bg: 'bg-red-100',    text: 'text-red-700'    },
   'Market Neutral':       { bg: 'bg-indigo-100', text: 'text-indigo-700' },
   'Fixed Rate':           { bg: 'bg-pink-100',   text: 'text-pink-700'   },
+  'Safety Module':        { bg: 'bg-cyan-100',   text: 'text-cyan-700'   },
 }
 
-// Couleurs pour le graphique donut (17 protocoles)
+// Couleurs pour le graphique donut (24 protocoles)
 export const DONUT_COLORS = [
   '#2ABFAB', '#22A898', '#3DD4C0', '#F5A623',
   '#1A9E8C', '#F7B94A', '#50DBC8', '#E8943F',
   '#0D8B7B', '#FAC96B', '#60D2C5', '#F5BC56',
   '#47CBB8', '#E89B47', '#2DB8A7', '#FCBA45',
-  '#1BCCB8',
+  '#1BCCB8', '#8B5CF6', '#A78BFA', '#34D399',
+  '#6EE7B7', '#FCA5A5', '#FB7185', '#FBBF24',
 ]
 
-// Poids équipondéré : 100 / 17 ≈ 5.88% par protocole
-const EQ_WEIGHT = parseFloat((100 / 17).toFixed(2)) // 5.88
+// Poids équipondéré : 100 / 24 ≈ 4.17% par protocole
+const EQ_WEIGHT = parseFloat((100 / 24).toFixed(2)) // 4.17
 
 // ── Les 17 protocoles RETENUS ──────────────────────────────────────────────────
 //
@@ -328,6 +330,126 @@ export const RETAINED_PROTOCOLS = [
     risk: 3,
     link: 'https://re.xyz',
   },
+  // ── Tier 3 — Nouveaux protocoles Dynamic ────────────────────────────────────
+  {
+    id: 'snusd',
+    name: 'sNUSD (Neutrl)',
+    category: 'Delta-Neutral',
+    allocation: EQ_WEIGHT,
+    fallbackApy: 16.5,
+    llamaConfig: {
+      fullPoolId: null, // à confirmer via DeFiLlama
+      project: 'neutrl',
+      chain: 'Ethereum',
+      symbol: 'SNUSD',
+    },
+    descFr: 'Stratégie delta-neutre sur ETH : position longue spot compensée par une position courte en perp sur plusieurs exchanges. Dépôt USDC direct. Rendement issu des taux de financement perp (~16–17% APY).',
+    descEn: 'ETH delta-neutral strategy: spot long offset by perp short across multiple exchanges. Direct USDC deposit. Yield from perp funding rates (~16–17% APY).',
+    risk: 3,
+    link: 'https://neutrl.com',
+  },
+  {
+    id: 'jrusde',
+    name: 'jrUSDe (Strata)',
+    category: 'Market Neutral',
+    allocation: EQ_WEIGHT,
+    fallbackApy: 8.0,
+    llamaConfig: {
+      fullPoolId: '8352355c-5ad7-45c5-aca2-628de224f8d8',
+      project: 'strata-markets',
+      chain: 'Ethereum',
+      symbol: 'JRUSDE',
+    },
+    descFr: 'Tranche junior de la stratégie USDe d\'Ethena via Strata Finance. Rendement amplifié (~8–20% variable) en échange d\'une absorption prioritaire des pertes. Swap adapter : USDC → USDe (Uniswap V3) → jrUSDe.',
+    descEn: 'Junior tranche of Ethena\'s USDe strategy via Strata Finance. Amplified yield (~8–20% variable) in exchange for first-loss absorption. Swap adapter: USDC → USDe (Uniswap V3) → jrUSDe.',
+    risk: 3,
+    link: 'https://strata.finance',
+  },
+  {
+    id: 'susd3',
+    name: 'sUSD3 (3Jane)',
+    category: 'Institutional Credit',
+    allocation: EQ_WEIGHT,
+    fallbackApy: 10.0,
+    llamaConfig: {
+      fullPoolId: 'a99bb965-ebaa-4d98-9ed2-fa18de52c605',
+      project: '3jane-lending',
+      chain: 'Ethereum',
+      symbol: 'SUSD3',
+    },
+    descFr: 'Prêts institutionnels non-sécurisés vérifiés via zkTLS (preuve de solvabilité on-chain). Soutenu par Paradigm. Rendement estimé ~9–13%. Protocole récent (~3 mois). Cooldown : 1 mois.',
+    descEn: 'Unsecured institutional lending verified via zkTLS (on-chain solvency proof). Backed by Paradigm. Estimated yield ~9–13%. Recent protocol (~3 months). Cooldown: 1 month.',
+    risk: 3,
+    link: 'https://3jane.xyz',
+  },
+  {
+    id: 'imusd',
+    name: 'mPT-sUSDe (mStable)',
+    category: 'Fixed Rate',
+    allocation: EQ_WEIGHT,
+    fallbackApy: 20.0,
+    llamaConfig: {
+      fullPoolId: '6d177bd3-fafa-4d2e-b86f-4fb14ea73c7c',
+      project: 'mstable-v2',
+      chain: 'Ethereum',
+      symbol: 'MPT-SUSDE',
+    },
+    descFr: 'Stratégie leviérisée combinant sUSDe (Ethena), un PT à taux fixe via Pendle et un borrow loop sur Aave. mStable gère la boucle automatiquement — l\'utilisateur dépose des USDC et reçoit un rendement amplifié (~15–35% APY selon les conditions de marché).',
+    descEn: 'Leveraged strategy combining sUSDe (Ethena), a fixed-rate PT via Pendle, and a borrow loop on Aave. mStable manages the loop automatically — users deposit USDC and receive amplified yield (~15–35% APY depending on market conditions).',
+    risk: 3,
+    link: 'https://www.mstable.com',
+  },
+  {
+    id: 'stkusdc',
+    name: 'stkUSDC (Aave Umbrella)',
+    category: 'Safety Module',
+    allocation: EQ_WEIGHT,
+    fallbackApy: 4.0,
+    llamaConfig: {
+      fullPoolId: null, // à confirmer via DeFiLlama
+      project: 'aave-umbrella',
+      chain: 'Ethereum',
+      symbol: 'STKUSDC',
+    },
+    descFr: 'Module de sécurité du protocole Aave v3 (Umbrella). Les USDC sont convertis en aUSDC puis stakés pour couvrir les déficits de bad debt d\'Aave. Récompenses de sécurité ~3–5% APY en échange d\'une exposition aux risques de liquidation d\'Aave.',
+    descEn: 'Aave v3 safety module (Umbrella). USDC is converted to aUSDC then staked to cover Aave bad debt shortfalls. Safety rewards ~3–5% APY in exchange for exposure to Aave liquidation risk.',
+    risk: 3,
+    link: 'https://aave.com',
+  },
+  {
+    id: 'reusde',
+    name: 'reUSDe (Re Protocol)',
+    category: 'Reinsurance',
+    allocation: EQ_WEIGHT,
+    fallbackApy: 9.0,
+    llamaConfig: {
+      fullPoolId: null, // à confirmer via DeFiLlama
+      project: 're-protocol',
+      chain: 'Ethereum',
+      symbol: 'reUSDe',
+    },
+    descFr: 'Tranche junior de réassurance on-chain Re Protocol. Contrairement à reUSD (tranche senior protégée), reUSDe absorbe les pertes en premier si la stratégie Ethena sous-performe — en échange d\'un rendement supérieur (~8–12% APY). Réservé au profil Dynamique.',
+    descEn: 'Re Protocol on-chain reinsurance junior tranche. Unlike reUSD (protected senior tranche), reUSDe absorbs losses first if the Ethena strategy underperforms — in exchange for higher yield (~8–12% APY). Reserved for the Dynamic profile.',
+    risk: 3,
+    link: 'https://re.xyz',
+  },
+  {
+    id: 'rlp',
+    name: 'RLP (Resolv)',
+    category: 'Delta-Neutral',
+    allocation: EQ_WEIGHT,
+    fallbackApy: 6.0,
+    llamaConfig: {
+      fullPoolId: '2ad8497d-c855-4840-85ad-cdc536b92ced',
+      project: 'resolv',
+      chain: 'Ethereum',
+      symbol: 'RLP',
+    },
+    descFr: 'Tranche junior du protocole Resolv. RLP absorbe les pertes de USR et capte le surplus des taux de financement positifs. Son prix n\'est pas stable (~$1.28) — il peut baisser en cas de crash ETH prolongé. APY élevé (~15–25%) mais risque de capital. Réservé au profil Dynamique.',
+    descEn: 'Resolv protocol junior tranche. RLP absorbs USR losses and captures excess from positive funding rates. Its price is not stable (~$1.28) — it can drop during prolonged ETH crashes. High APY (~15–25%) but capital at risk. Reserved for the Dynamic profile.',
+    risk: 3,
+    link: 'https://resolv.xyz',
+  },
 ]
 
 // ── Les protocoles EN ÉVALUATION (coming soon) ────────────────────────────────
@@ -338,13 +460,6 @@ export const COMING_SOON_PROTOCOLS = [
     category: 'Fixed Rate',
     descFr: 'Taux fixe garanti via la séparation du principal et du rendement. Complexité de gestion des dates d\'expiration.',
     descEn: 'Guaranteed fixed rate via principal/yield separation. Complexity in managing expiration dates.',
-  },
-  {
-    id: 'usd3',
-    name: 'USD3 (3Jane)',
-    category: 'Institutional Credit',
-    descFr: 'Crédit institutionnel de nouvelle génération. En cours d\'audit et d\'évaluation approfondie.',
-    descEn: 'Next-generation institutional credit. Currently under audit and deep evaluation.',
   },
   {
     id: 'venus-core',

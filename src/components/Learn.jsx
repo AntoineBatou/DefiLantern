@@ -1,10 +1,9 @@
 // Learn.jsx — Page pédagogique "Comprendre le yield DeFi"
 //
-// 4 sections :
-// 1. D'où vient le rendement ? (4 sources)
-// 2. Les stratégies expliquées (4 familles)
-// 3. Comprendre les risques (3 types)
-// 4. Pourquoi diversifier ? (réponse au jury)
+// 3 sections :
+// 1. D'où vient le rendement ? (4 sources avec APY + risque intégrés)
+// 2. Comprendre les risques (3 types)
+// 3. Pourquoi DeFi Lantern plutôt qu'un vault concurrent ?
 
 import { useLang } from '../context/LangContext'
 
@@ -43,7 +42,7 @@ const Icons = {
 }
 
 // ── Composant carte de source de rendement ────────────────────────────────────
-function YieldSourceCard({ icon, title, desc, example, color }) {
+function YieldSourceCard({ icon, title, desc, example, color, apy, risk, riskColor }) {
   return (
     <div className="bg-white rounded-2xl border border-lgrey p-6 shadow-sm flex flex-col gap-4 hover:shadow-md transition-shadow">
       <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${color}`}>
@@ -56,20 +55,7 @@ function YieldSourceCard({ icon, title, desc, example, color }) {
       <div className="text-xs text-navy/40 bg-lgrey rounded-lg px-3 py-2 font-mono">
         ex. {example}
       </div>
-    </div>
-  )
-}
-
-// ── Composant carte de stratégie ──────────────────────────────────────────────
-function StrategyCard({ icon, title, mechanism, apy, risk, riskColor }) {
-  return (
-    <div className="bg-white rounded-2xl border border-lgrey p-5 shadow-sm flex flex-col gap-3 hover:shadow-md transition-shadow">
-      <div className="flex items-center gap-3">
-        <span className="text-2xl">{icon}</span>
-        <h3 className="font-bold text-navy text-sm">{title}</h3>
-      </div>
-      <p className="text-xs text-navy/60 leading-relaxed flex-1">{mechanism}</p>
-      <div className="flex items-center justify-between pt-2 border-t border-lgrey">
+      <div className="flex items-center justify-between pt-2 border-t border-lgrey mt-auto">
         <span className="text-xs font-semibold text-[#2ABFAB]">{apy}</span>
         <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${riskColor}`}>{risk}</span>
       </div>
@@ -101,70 +87,46 @@ function RiskColumn({ icon, title, desc, example, level, levelColor }) {
 export default function Learn({ navigateTo }) {
   const { t, lang } = useLang()
 
-  // Sources de rendement
+  // Sources de rendement (avec APY et risque intégrés)
   const yieldSources = [
     {
       icon: Icons.lending,
       titleKey: 'learn.yieldLendingTitle',
       descKey: 'learn.yieldLendingDesc',
       exampleKey: 'learn.yieldLendingExample',
+      apyKey: 'learn.yieldLendingApy',
+      riskKey: 'learn.yieldLendingRisk',
       color: 'bg-blue-50 text-blue-600',
+      riskColor: 'bg-green-100 text-green-700',
     },
     {
       icon: Icons.rwa,
       titleKey: 'learn.yieldRwaTitle',
       descKey: 'learn.yieldRwaDesc',
       exampleKey: 'learn.yieldRwaExample',
+      apyKey: 'learn.yieldRwaApy',
+      riskKey: 'learn.yieldRwaRisk',
       color: 'bg-amber-50 text-amber-600',
+      riskColor: 'bg-blue-100 text-blue-700',
     },
     {
       icon: Icons.funding,
       titleKey: 'learn.yieldFundingTitle',
       descKey: 'learn.yieldFundingDesc',
       exampleKey: 'learn.yieldFundingExample',
+      apyKey: 'learn.yieldFundingApy',
+      riskKey: 'learn.yieldFundingRisk',
       color: 'bg-green-50 text-green-600',
+      riskColor: 'bg-amber-100 text-amber-700',
     },
     {
       icon: Icons.stability,
       titleKey: 'learn.yieldStabilityTitle',
       descKey: 'learn.yieldStabilityDesc',
       exampleKey: 'learn.yieldStabilityExample',
+      apyKey: 'learn.yieldStabilityApy',
+      riskKey: 'learn.yieldStabilityRisk',
       color: 'bg-purple-50 text-purple-600',
-    },
-  ]
-
-  // Stratégies
-  const strategies = [
-    {
-      icon: '🏦',
-      titleKey: 'learn.stratLendingTitle',
-      mechKey: 'learn.stratLendingMech',
-      apyKey: 'learn.stratLendingApy',
-      riskKey: 'learn.stratLendingRisk',
-      riskColor: 'bg-green-100 text-green-700',
-    },
-    {
-      icon: '🏛️',
-      titleKey: 'learn.stratRwaTitle',
-      mechKey: 'learn.stratRwaMech',
-      apyKey: 'learn.stratRwaApy',
-      riskKey: 'learn.stratRwaRisk',
-      riskColor: 'bg-blue-100 text-blue-700',
-    },
-    {
-      icon: '⚖️',
-      titleKey: 'learn.stratNeutralTitle',
-      mechKey: 'learn.stratNeutralMech',
-      apyKey: 'learn.stratNeutralApy',
-      riskKey: 'learn.stratNeutralRisk',
-      riskColor: 'bg-amber-100 text-amber-700',
-    },
-    {
-      icon: '🛡️',
-      titleKey: 'learn.stratStabilityTitle',
-      mechKey: 'learn.stratStabilityMech',
-      apyKey: 'learn.stratStabilityApy',
-      riskKey: 'learn.stratStabilityRisk',
       riskColor: 'bg-purple-100 text-purple-700',
     },
   ]
@@ -197,15 +159,24 @@ export default function Learn({ navigateTo }) {
     },
   ]
 
-  // Points pro/con comparatif
-  const singlePros = ['learn.singlePro1', 'learn.singlePro2']
-  const singleCons = ['learn.singleCon1', 'learn.singleCon2', 'learn.singleCon3']
+  // Comparatif vaults concurrents vs DeFi Lantern
+  const singleCons = [
+    'learn.singleCon1',
+    'learn.singleCon2',
+    'learn.singleCon3',
+    'learn.singleCon4',
+    'learn.singleCon5',
+    'learn.singleCon6',
+    'learn.singleCon7',
+  ]
   const fireflyPros = [
     'learn.fireflyPro1',
     'learn.fireflyPro2',
     'learn.fireflyPro3',
     'learn.fireflyPro4',
     'learn.fireflyPro5',
+    'learn.fireflyPro6',
+    'learn.fireflyPro7',
   ]
 
   return (
@@ -246,34 +217,16 @@ export default function Learn({ navigateTo }) {
                 title={t(source.titleKey)}
                 desc={t(source.descKey)}
                 example={t(source.exampleKey)}
+                apy={t(source.apyKey)}
+                risk={t(source.riskKey)}
                 color={source.color}
+                riskColor={source.riskColor}
               />
             ))}
           </div>
         </section>
 
-        {/* ── Section 2 : Stratégies expliquées ── */}
-        <section>
-          <div className="text-center mb-10">
-            <h2 className="text-2xl font-bold text-navy mb-2">{t('learn.strategiesTitle')}</h2>
-            <p className="text-navy/60 max-w-xl mx-auto">{t('learn.strategiesSubtitle')}</p>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {strategies.map((s) => (
-              <StrategyCard
-                key={s.titleKey}
-                icon={s.icon}
-                title={t(s.titleKey)}
-                mechanism={t(s.mechKey)}
-                apy={t(s.apyKey)}
-                risk={t(s.riskKey)}
-                riskColor={s.riskColor}
-              />
-            ))}
-          </div>
-        </section>
-
-        {/* ── Section 3 : Risques ── */}
+        {/* ── Section 2 : Risques ── */}
         <section>
           <div className="text-center mb-10">
             <h2 className="text-2xl font-bold text-navy mb-2">{t('learn.risksTitle')}</h2>
@@ -294,31 +247,22 @@ export default function Learn({ navigateTo }) {
           </div>
         </section>
 
-        {/* ── Section 4 : Pourquoi diversifier ── */}
+        {/* ── Section 3 : Pourquoi DeFi Lantern vs vaults concurrents ── */}
         <section>
           <div className="text-center mb-10">
             <h2 className="text-2xl font-bold text-navy mb-2">{t('learn.diversifyTitle')}</h2>
-            <p className="text-navy/60 max-w-xl mx-auto">{t('learn.diversifySubtitle')}</p>
+            <p className="text-navy/60 max-w-2xl mx-auto">{t('learn.diversifySubtitle')}</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-            {/* Vault unique */}
+            {/* Vaults concurrents */}
             <div className="bg-white rounded-2xl border border-lgrey p-6 shadow-sm">
               <div className="flex items-center gap-3 mb-5">
                 <div className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center text-xl">🏪</div>
                 <h3 className="font-bold text-navy">{t('learn.diversifySingle')}</h3>
               </div>
-              <div className="flex flex-col gap-2 mb-4">
-                {singlePros.map((key) => (
-                  <div key={key} className="flex items-start gap-2 text-sm text-navy/70">
-                    {Icons.check}
-                    <span>{t(key)}</span>
-                  </div>
-                ))}
-              </div>
-              <div className="h-px bg-lgrey my-3" />
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-3">
                 {singleCons.map((key) => (
                   <div key={key} className="flex items-start gap-2 text-sm text-navy/70">
                     {Icons.cross}
@@ -334,7 +278,7 @@ export default function Learn({ navigateTo }) {
                 <div className="w-10 h-10 rounded-xl bg-[#2ABFAB] flex items-center justify-center text-xl">🏮</div>
                 <h3 className="font-bold text-navy">{t('learn.diversifyFirefly')}</h3>
               </div>
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-3">
                 {fireflyPros.map((key) => (
                   <div key={key} className="flex items-start gap-2 text-sm text-navy/70">
                     {Icons.check}

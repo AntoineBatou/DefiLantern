@@ -1,30 +1,100 @@
 // profiles.js — Configuration des 3 profils de risque
 //
-// Chaque profil définit un niveau de risque max, un thème visuel,
-// et un APY cible. Le profil Dynamique déclenche le mode Cyber/Neon.
+// Architecture : chaque profil définit une liste explicite de protocoles
+// et leurs poids d'allocation (sum = 1.0 = 100%).
 //
-// Le filtrage des protocoles utilise le champ `risk` de protocols.js (1|2|3).
+// Prudent  : 9 protocoles (tier 1 + sUSDe + reUSD + Resolv USR)
+// Dynamic  : 8 protocoles à rendement élevé (tranches junior incluses)
+// Balanced : 50% capital Prudent + 50% capital Dynamic (17 protocoles)
+//
+// Le profil Dynamique déclenche le mode Cyber/Neon (isDark = true).
+
+// ── Listes de protocoles par profil ────────────────────────────────────────
+// Les IDs correspondent au champ `id` dans protocols.js
+
+const PRUDENT_PROTOCOL_IDS = [
+  'aave-v3',
+  'morpho-gauntlet',
+  'morpho-steakhouse',
+  'compound-v3',
+  'sparklend',
+  'susds',
+  'susde',  // delta-neutre audité, tire l'APY vers le haut
+  'reusd',  // tranche senior protégée Re Protocol
+  'resolv', // USR delta-neutre, rendement modéré
+]
+
+const DYNAMIC_PROTOCOL_IDS = [
+  'snusd',
+  'syrupusdc',
+  'jrusde',
+  'susd3',
+  'imusd',
+  'reusde',  // tranche junior Re Protocol
+  'rlp',     // tranche junior Resolv
+  'stkusdc',
+]
+
+// Poids d'allocation pour Prudent (sum = 1.0)
+// Règle : aucun protocole ne dépasse 15% (cap structurel, cohérent avec le whitepaper)
+const PRUDENT_WEIGHTS = {
+  'aave-v3':           0.15,
+  'morpho-gauntlet':   0.15,
+  'morpho-steakhouse': 0.14,
+  'compound-v3':       0.13,
+  'sparklend':         0.12,
+  'susds':             0.12,
+  'susde':             0.08,
+  'reusd':             0.06,
+  'resolv':            0.05,
+}
+
+// Poids d'allocation pour Dynamic (sum = 1.0)
+const DYNAMIC_WEIGHTS = {
+  'snusd':     0.16,
+  'syrupusdc': 0.15,
+  'jrusde':    0.14,
+  'susd3':     0.13,
+  'imusd':     0.12,
+  'reusde':    0.11,
+  'rlp':       0.11,
+  'stkusdc':   0.08,
+}
+
+// Poids Balanced = 50% Prudent + 50% Dynamic (sum = 1.0)
+const BALANCED_WEIGHTS = Object.fromEntries([
+  ...Object.entries(PRUDENT_WEIGHTS).map(([id, w]) => [id, w * 0.5]),
+  ...Object.entries(DYNAMIC_WEIGHTS).map(([id, w]) => [id, w * 0.5]),
+])
+
+// ── Définition des profils ──────────────────────────────────────────────────
 
 export const PROFILES = {
   prudent: {
     id: 'prudent',
     icon: '🛡️',
-    maxRisk: 1,
-    apyRange: '~3–4%',
+    shareToken: 'glUSDC-P',
+    protocolIds: PRUDENT_PROTOCOL_IDS,
+    weights: PRUDENT_WEIGHTS,
+    apyRange: '~4–6%',
     theme: 'light',
   },
   balanced: {
     id: 'balanced',
     icon: '⚖️',
-    maxRisk: 2,
-    apyRange: '~5–6%',
+    shareToken: 'glUSDC-B',
+    protocolIds: [...PRUDENT_PROTOCOL_IDS, ...DYNAMIC_PROTOCOL_IDS],
+    weights: BALANCED_WEIGHTS,
+    apyRange: '~6–9%',
     theme: 'light',
   },
   dynamic: {
     id: 'dynamic',
     icon: '⚡',
-    maxRisk: 3,
-    apyRange: '~7–9%',
+    shareToken: 'glUSDC-D',
+    protocolIds: DYNAMIC_PROTOCOL_IDS,
+    weights: DYNAMIC_WEIGHTS,
+    apyRange: '~9–15%',
     theme: 'dark', // ← déclenche le mode Cyber/Neon
   },
 }

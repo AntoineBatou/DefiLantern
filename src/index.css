@@ -146,60 +146,109 @@ section {
   color-scheme: dark;
 }
 
-/* Corps et fond */
-.dark body {
-  background-color: #0A0A0F;
-  color: #E2E8F0;
-}
+/* ── Fonds ───────────────────────────────────────────────────────────────────── */
 
-/* Header sticky */
+.dark body         { background-color: #0A0A0F; color: #E2E8F0; }
+
 .dark header {
   background-color: #111118 !important;
   border-bottom-color: rgba(124, 58, 237, 0.25) !important;
   box-shadow: 0 1px 20px rgba(124, 58, 237, 0.08) !important;
 }
 
-/* Fonds principaux */
-.dark .bg-white   { background-color: #111118 !important; }
-.dark .bg-bg      { background-color: #0A0A0F !important; }
-.dark .bg-lgrey   { background-color: #1A1A2E !important; }
-.dark .bg-gray-50 { background-color: #16213E !important; }
+.dark .bg-white    { background-color: #111118 !important; }
+.dark .bg-bg       { background-color: #0A0A0F !important; }
+.dark .bg-lgrey    { background-color: #1A1A2E !important; }
+.dark .bg-gray-50  { background-color: #16213E !important; }
+.dark .bg-teal-light { background-color: #1A1A2E !important; }
 
-/* Texte principal */
-.dark .text-navy  { color: #E2E8F0 !important; }
+/* Dégradés → fond uni sombre (sinon les from-/via-/to- restent clairs) */
+.dark .bg-gradient-to-br,
+.dark .bg-gradient-to-r,
+.dark .bg-gradient-to-b {
+  background-image: none !important;
+  background-color: #111118 !important;
+}
+/* Exception : Hero garde un dégradé sombre */
+.dark section#hero {
+  background: linear-gradient(135deg, #0A0A0F 0%, #111118 60%, #16213E 100%) !important;
+}
+/* Exception : carte APY Strategy garde un fond bleuté */
+.dark .from-teal-light {
+  background: #16213E !important;
+  border-color: rgba(124, 58, 237, 0.2) !important;
+}
 
-/* Bordures */
-.dark .border-lgrey      { border-color: rgba(124, 58, 237, 0.18) !important; }
-.dark .border-gray-200   { border-color: rgba(124, 58, 237, 0.15) !important; }
-.dark .border-b.border-lgrey { border-color: rgba(124, 58, 237, 0.18) !important; }
+/* ── Texte ───────────────────────────────────────────────────────────────────── */
 
-/* Ombres */
-.dark .shadow-sm { box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6) !important; }
-.dark .shadow-md { box-shadow: 0 4px 15px rgba(124, 58, 237, 0.12) !important; }
+/* Classe de base */
+.dark .text-navy    { color: #E2E8F0 !important; }
 
-/* Cartes */
+/* Variantes avec opacité (text-navy/60 etc.) — le "/" est échappé en CSS */
+.dark .text-navy\/10 { color: rgba(226, 232, 240, 0.10) !important; }
+.dark .text-navy\/20 { color: rgba(226, 232, 240, 0.20) !important; }
+.dark .text-navy\/30 { color: rgba(226, 232, 240, 0.30) !important; }
+.dark .text-navy\/40 { color: rgba(226, 232, 240, 0.40) !important; }
+.dark .text-navy\/50 { color: rgba(226, 232, 240, 0.50) !important; }
+.dark .text-navy\/60 { color: rgba(226, 232, 240, 0.60) !important; }
+.dark .text-navy\/70 { color: rgba(226, 232, 240, 0.70) !important; }
+.dark .text-navy\/80 { color: rgba(226, 232, 240, 0.80) !important; }
+
+/* ── Fonds avec opacité ───────────────────────────────────────────────────── */
+
+.dark .bg-navy\/5   { background-color: rgba(255, 255, 255, 0.04) !important; }
+.dark .bg-navy\/10  { background-color: rgba(255, 255, 255, 0.07) !important; }
+.dark .bg-white\/70 { background-color: rgba(255, 255, 255, 0.07) !important; }
+
+/* Risk tiers (bg-green-50, bg-amber-50, bg-orange-50) */
+.dark .bg-green-50   { background-color: #0f2318 !important; }
+.dark .bg-amber-50   { background-color: #1f1a0f !important; }
+.dark .bg-orange-50  { background-color: #1f140d !important; }
+.dark .bg-purple-50  { background-color: #1a0f2e !important; }
+.dark .bg-blue-50    { background-color: #0f1a2e !important; }
+.dark .bg-red-50     { background-color: #2e0f0f !important; }
+
+/* Bordures colorées (risk tiers) */
+.dark .border-green-200  { border-color: rgba(74, 222, 128, 0.2) !important; }
+.dark .border-amber-200  { border-color: rgba(251, 191, 36, 0.2) !important; }
+.dark .border-orange-200 { border-color: rgba(251, 146, 60, 0.2) !important; }
+.dark .border-teal-200   { border-color: rgba(42, 191, 171, 0.2) !important; }
+
+/* ── Bordures générales ──────────────────────────────────────────────────────── */
+
+.dark .border-lgrey    { border-color: rgba(124, 58, 237, 0.18) !important; }
+.dark .border-gray-200 { border-color: rgba(124, 58, 237, 0.15) !important; }
+.dark .border-dashed   { border-color: rgba(124, 58, 237, 0.15) !important; }
+
+/* ── Ombres ──────────────────────────────────────────────────────────────────── */
+
+.dark .shadow-sm  { box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6) !important; }
+.dark .shadow-md  { box-shadow: 0 4px 15px rgba(124, 58, 237, 0.12) !important; }
+.dark .shadow-lg  { box-shadow: 0 8px 25px rgba(124, 58, 237, 0.15) !important; }
+.dark .shadow-xl  { box-shadow: 0 12px 35px rgba(124, 58, 237, 0.2) !important; }
+
+/* ── Cartes ──────────────────────────────────────────────────────────────────── */
+
 .dark .card {
   background-color: #111118 !important;
   border-color: rgba(124, 58, 237, 0.18) !important;
 }
 .dark .card:hover {
   box-shadow: 0 4px 20px rgba(124, 58, 237, 0.18) !important;
-  border-color: rgba(124, 58, 237, 0.4) !important;
+  border-color: rgba(124, 58, 237, 0.35) !important;
 }
 
-/* Bouton primaire → violet en mode sombre */
-.dark .btn-primary {
-  background-color: #7C3AED !important;
-}
-.dark .btn-primary:hover {
-  background-color: #9333EA !important;
-}
-.dark .btn-secondary {
-  border-color: #7C3AED !important;
-  color: #7C3AED !important;
-}
+/* ── Boutons ─────────────────────────────────────────────────────────────────── */
 
-/* Inputs */
+.dark .btn-primary             { background-color: #7C3AED !important; }
+.dark .btn-primary:hover       { background-color: #9333EA !important; }
+.dark .btn-secondary           { border-color: #7C3AED !important; color: #7C3AED !important; }
+.dark .bg-\[#2ABFAB\]          { background-color: #7C3AED !important; }
+.dark .bg-\[#22A898\]          { background-color: #9333EA !important; }
+.dark .hover\:bg-\[#22A898\]:hover { background-color: #9333EA !important; }
+
+/* ── Inputs ──────────────────────────────────────────────────────────────────── */
+
 .dark input[type="number"],
 .dark input[type="text"],
 .dark input[type="range"] {
@@ -207,22 +256,24 @@ section {
   border-color: rgba(124, 58, 237, 0.3) !important;
   color: #E2E8F0 !important;
 }
-.dark input[type="range"] {
-  accent-color: #7C3AED !important;
-}
+.dark input[type="range"] { accent-color: #7C3AED !important; }
 
-/* Sélecteur FR/EN en dark */
-.dark .bg-\[#EEF2F2\] { background-color: #1A1A2E !important; }
+/* ── Divers ──────────────────────────────────────────────────────────────────── */
 
-/* Hamburger bars */
-.dark .bg-navy.h-0\.5 { background-color: #E2E8F0 !important; }
+.dark .bg-\[#EEF2F2\]  { background-color: #1A1A2E !important; } /* Toggle FR/EN */
+.dark .skeleton        { background: linear-gradient(90deg, #1A1A2E 25%, #16213E 50%, #1A1A2E 75%) !important; }
 
 /* Scrollbar */
 .dark ::-webkit-scrollbar-track { background: #1A1A2E; }
 .dark ::-webkit-scrollbar-thumb { background: #7C3AED; }
 
-/* Recharts en dark */
-.dark .recharts-wrapper { background: transparent !important; }
+/* Recharts */
+.dark .recharts-wrapper    { background: transparent !important; }
+.dark .recharts-cartesian-grid line { stroke: rgba(124, 58, 237, 0.15) !important; }
+.dark .recharts-text       { fill: rgba(226, 232, 240, 0.5) !important; }
+
+/* Toast */
+.dark .bg-green-600 { background-color: #7C3AED !important; }
 
 /* ── Animations Cyber/Neon ─────────────────────────────────────────────────── */
 

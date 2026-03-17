@@ -1,7 +1,8 @@
 // RiskProfileContext.jsx — Contexte global pour le profil de risque
 //
 // State : profile ('prudent' | 'balanced' | 'dynamic')
-// Dérivé : isDark (true si profile === 'dynamic'), profileConfig, profileProtocols
+// Dérivé : isDark (true si profile === 'dynamic'), profileConfig,
+//          profileProtocols (liste filtrée), profileWeights (poids d'allocation)
 // Persistance : localStorage pour retrouver le profil au retour
 
 import { createContext, useContext, useState, useMemo } from 'react'
@@ -28,14 +29,17 @@ export function RiskProfileProvider({ children }) {
   // Mode sombre uniquement pour le profil Dynamique
   const isDark = profile === 'dynamic'
 
-  // Protocoles filtrés selon le niveau de risque max du profil
-  // Utilise le champ `risk` (1|2|3) de chaque protocole
+  // Protocoles du profil actif — filtrés par liste explicite d'IDs
   const profileProtocols = useMemo(() => {
-    return RETAINED_PROTOCOLS.filter((p) => p.risk <= profileConfig.maxRisk)
+    const ids = new Set(profileConfig.protocolIds)
+    return RETAINED_PROTOCOLS.filter((p) => ids.has(p.id))
   }, [profile]) // eslint-disable-line react-hooks/exhaustive-deps
 
+  // Poids d'allocation du profil actif (ex : { 'aave-v3': 0.15, ... })
+  const profileWeights = profileConfig.weights
+
   return (
-    <RiskProfileContext.Provider value={{ profile, setProfile, profileConfig, isDark, profileProtocols }}>
+    <RiskProfileContext.Provider value={{ profile, setProfile, profileConfig, isDark, profileProtocols, profileWeights }}>
       {children}
     </RiskProfileContext.Provider>
   )

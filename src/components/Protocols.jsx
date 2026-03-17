@@ -12,7 +12,7 @@ import { PROFILE_PILL_COLORS } from '../data/profiles'
 import ProtocolModal from './ProtocolModal'
 
 // ── Composant carte protocole retenu ──────────────────────────────────────────
-function ProtocolCard({ protocol, apyData, loading, lang, onClick, isInProfile, profileColor }) {
+function ProtocolCard({ protocol, apyData, loading, lang, onClick, profileColor, weight }) {
   const { t } = useLang()
 
   const apyInfo = apyData[protocol.id]
@@ -32,20 +32,16 @@ function ProtocolCard({ protocol, apyData, loading, lang, onClick, isInProfile, 
   return (
     <button
       onClick={() => onClick(protocol)}
-      className={`relative bg-white rounded-2xl border p-5 shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-1 flex flex-col gap-4 text-left w-full cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2ABFAB] ${
-        isInProfile ? 'border-lgrey' : 'border-lgrey opacity-50 grayscale-[30%]'
-      }`}
+      className="relative bg-white rounded-2xl border border-lgrey p-5 shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-1 flex flex-col gap-4 text-left w-full cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2ABFAB]"
       aria-label={`Voir les détails de ${protocol.name}`}
     >
-      {/* Badge "dans mon profil" */}
-      {isInProfile && (
-        <div
-          className="absolute top-2 right-2 w-2 h-2 rounded-full"
-          style={{ backgroundColor: profileColor }}
-          title="Inclus dans votre profil"
-          aria-hidden="true"
-        />
-      )}
+      {/* Badge profil */}
+      <div
+        className="absolute top-2 right-2 w-2 h-2 rounded-full"
+        style={{ backgroundColor: profileColor }}
+        title="Inclus dans votre profil"
+        aria-hidden="true"
+      />
 
       {/* En-tête */}
       <div className="flex items-start justify-between gap-2 pr-4">
@@ -74,17 +70,10 @@ function ProtocolCard({ protocol, apyData, loading, lang, onClick, isInProfile, 
           </div>
         </div>
         <div className="text-right">
-          <div className="text-lg font-bold text-navy">{protocol.allocation}%</div>
+          <div className="text-lg font-bold text-navy">{((weight ?? 0) * 100).toFixed(1)}%</div>
           <div className="text-xs text-navy/40">{t('protocols.allocation')}</div>
         </div>
       </div>
-
-      {/* Tooltip hors profil */}
-      {!isInProfile && (
-        <div className="text-xs text-navy/40 font-medium -mt-2 italic">
-          Non inclus dans votre profil
-        </div>
-      )}
     </button>
   )
 }
@@ -136,16 +125,13 @@ function ComingSoonCard({ protocol }) {
 // ── Composant principal ────────────────────────────────────────────────────────
 export default function Protocols({ apyData, loading }) {
   const { t, lang } = useLang()
-  const { profileProtocols, profile } = useRiskProfile()
+  const { profileProtocols, profile, profileWeights } = useRiskProfile()
   const pillColors = PROFILE_PILL_COLORS[profile]
 
   const [selectedProtocol, setSelectedProtocol] = useState(null)
 
   const hasAnyLive = Object.values(apyData).some((v) => v.isLive)
   const selectedApyInfo = selectedProtocol ? apyData[selectedProtocol.id] : null
-
-  // Ensemble des IDs dans le profil actif
-  const profileIds = new Set(profileProtocols.map((p) => p.id))
 
   return (
     <section id="protocols" className="section bg-bg">
@@ -189,14 +175,14 @@ export default function Protocols({ apyData, loading }) {
         <div className="mt-10 mb-6 flex items-center gap-3">
           <div className="flex-1 h-px bg-lgrey" />
           <h3 className="text-sm font-semibold text-navy/50 uppercase tracking-wider px-2">
-            {t('protocols.retained')} ({RETAINED_PROTOCOLS.length})
+            {t('protocols.retained')} ({profileProtocols.length})
           </h3>
           <div className="flex-1 h-px bg-lgrey" />
         </div>
 
-        {/* Grille des protocoles */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 group">
-          {RETAINED_PROTOCOLS.map((protocol) => (
+        {/* Grille des protocoles du profil actif */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          {profileProtocols.map((protocol) => (
             <ProtocolCard
               key={protocol.id}
               protocol={protocol}
@@ -204,8 +190,8 @@ export default function Protocols({ apyData, loading }) {
               loading={loading}
               lang={lang}
               onClick={setSelectedProtocol}
-              isInProfile={profileIds.has(protocol.id)}
               profileColor={pillColors.dot}
+              weight={profileWeights[protocol.id]}
             />
           ))}
         </div>
@@ -214,7 +200,7 @@ export default function Protocols({ apyData, loading }) {
         <div className="mt-12 mb-6 flex items-center gap-3">
           <div className="flex-1 h-px bg-lgrey" />
           <h3 className="text-sm font-semibold text-navy/50 uppercase tracking-wider px-2">
-            {t('protocols.evaluation')} (4)
+            {t('protocols.evaluation')} ({COMING_SOON_PROTOCOLS.length})
           </h3>
           <div className="flex-1 h-px bg-lgrey" />
         </div>
