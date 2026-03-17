@@ -52,39 +52,34 @@ function AppContent() {
     setPositions((prev) => prev.filter((p) => p.id !== id))
   }
 
-  // ── APY moyen calculé sur les protocoles du profil actif ─────────────────
+  // ── APY moyen pondéré calculé sur les protocoles du profil actif ─────────
+  // Tous les protocoles du profil, sans filtre ni renormalisation.
+  // APY courant = live DeFiLlama si disponible, sinon fallbackApy statique.
+  // Retourne null pendant le chargement initial (apyData vide) pour le skeleton.
   const profileAverageApy = useMemo(() => {
-    if (!profileProtocols || profileProtocols.length === 0) return averageApy
-    const values = profileProtocols.map((p) => apyData[p.id]?.apy ?? p.fallbackApy)
-    return values.reduce((sum, v) => sum + v, 0) / values.length
-  }, [profileProtocols, apyData, averageApy])
+    if (!profileProtocols || profileProtocols.length === 0) return null
+    if (Object.keys(apyData).length === 0) return null
+    const weights = profileConfig.weights
+    return profileProtocols.reduce((sum, p) => {
+      const apy = apyData[p.id]?.apy ?? p.fallbackApy
+      const weight = weights[p.id] ?? 0
+      return sum + weight * apy
+    }, 0)
+  }, [profileProtocols, profileConfig, apyData])
 
-  // ── APY historique pondéré (12 mois) — uniquement protocoles avec historique ──
-  // On filtre les protocoles qui ont un historicalApy12m non null,
-  // puis on re-normalise les poids sur ce sous-ensemble pour avoir une moyenne cohérente.
+  // ── APY historique pondéré (12 mois) ─────────────────────────────────────
+  // Tous les protocoles du profil, sans exception.
+  // apy_i = historicalApy12m si dispo, sinon live DeFiLlama, sinon fallbackApy.
+  // Les poids somment déjà à 1.0 — pas de normalisation.
   const profileHistoricalApy = useMemo(() => {
     if (!profileProtocols || profileProtocols.length === 0) return null
     const weights = profileConfig.weights
-    const withHistory = profileProtocols.filter(p => p.historicalApy12m !== null)
-    if (withHistory.length === 0) return null
-    // Somme des poids des protocoles ayant un historique
-    const totalW = withHistory.reduce((s, p) => s + (weights[p.id] ?? 0), 0)
-    if (totalW === 0) return null
-    // Moyenne pondérée re-normalisée
-    return withHistory.reduce((s, p) => s + (weights[p.id] / totalW) * p.historicalApy12m, 0)
-  }, [profileProtocols, profileConfig])
-
-  // ── Pourcentage du portefeuille couvert par l'historique 12 mois ──────────
-  // Ex : 65 signifie que 65% du poids total du profil a 12 mois d'historique
-  const profileHistoricalCoverage = useMemo(() => {
-    if (!profileProtocols || profileProtocols.length === 0) return 0
-    const weights = profileConfig.weights
-    const withHistory = profileProtocols.filter(p => p.historicalApy12m !== null)
-    const totalAllW = profileProtocols.reduce((s, p) => s + (weights[p.id] ?? 0), 0)
-    const totalHistW = withHistory.reduce((s, p) => s + (weights[p.id] ?? 0), 0)
-    if (totalAllW === 0) return 0
-    return Math.round((totalHistW / totalAllW) * 100)
-  }, [profileProtocols, profileConfig])
+    return profileProtocols.reduce((sum, p) => {
+      const apy = p.historicalApy12m ?? apyData[p.id]?.apy ?? p.fallbackApy
+      const weight = weights[p.id] ?? 0
+      return sum + weight * apy
+    }, 0)
+  }, [profileProtocols, profileConfig, apyData])
 
   // ── Navigation ────────────────────────────────────────────────────────────
   const navigateTo = (page) => {
@@ -134,7 +129,6 @@ function AppContent() {
               hasLiveData={hasLiveData}
               onSimulateClick={() => navigateTo('simulator')}
               historicalApy={profileHistoricalApy}
-              historicalCoverage={profileHistoricalCoverage}
             />
             <HowItWorks />
             <Protocols apyData={apyData} loading={loading} />
@@ -142,7 +136,6 @@ function AppContent() {
               apyData={apyData}
               averageApy={profileAverageApy}
               historicalApy={profileHistoricalApy}
-              historicalCoverage={profileHistoricalCoverage}
             />
           </>
         )}

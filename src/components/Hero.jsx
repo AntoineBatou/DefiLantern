@@ -6,7 +6,7 @@ import { useLang } from '../context/LangContext'
 import { useRiskProfile } from '../context/RiskProfileContext'
 import { PROFILE_PILL_COLORS } from '../data/profiles'
 
-export default function Hero({ averageApy, loading, hasLiveData, onSimulateClick, historicalApy, historicalCoverage }) {
+export default function Hero({ averageApy, loading, hasLiveData, onSimulateClick, historicalApy }) {
   const { t } = useLang()
   const { profile, profileConfig, profileProtocols } = useRiskProfile()
   const pillColors = PROFILE_PILL_COLORS[profile]
@@ -96,7 +96,7 @@ export default function Hero({ averageApy, loading, hasLiveData, onSimulateClick
                 <div className="skeleton h-8 w-20 mx-auto mb-1 rounded" />
               ) : (
                 <div className="text-3xl font-extrabold" style={{ color: pillColors.dot }}>
-                  {averageApy.toFixed(1)}%
+                  {averageApy !== null ? `${averageApy.toFixed(1)}%` : '—'}
                 </div>
               )}
               <div className="text-sm text-navy/50 font-medium mt-1">{t('hero.currentApy')}</div>
@@ -120,11 +120,6 @@ export default function Hero({ averageApy, loading, hasLiveData, onSimulateClick
                 <div className="text-3xl font-extrabold text-navy/30">—</div>
               )}
               <div className="text-sm text-navy/50 font-medium mt-1">{t('hero.historicalApy')}</div>
-              {!loading && historicalApy !== null && (
-                <div className="text-xs text-navy/40 mt-1">
-                  {historicalCoverage}% du portef.
-                </div>
-              )}
             </div>
           </div>
 

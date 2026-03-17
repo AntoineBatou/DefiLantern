@@ -16,11 +16,11 @@ function ProtocolCard({ protocol, apyData, loading, lang, onClick, profileColor,
   const { t } = useLang()
 
   const apyInfo = apyData[protocol.id]
-  const apy = apyInfo?.apy ?? protocol.fallbackApy
   const isLive = apyInfo?.isLive ?? false
+  const apy = apyInfo?.apy ?? null
 
   const apyColor =
-    apy >= 7 ? 'text-green-600' : apy >= 4 ? 'text-[#F5A623]' : 'text-gray-500'
+    apy === null ? '' : apy >= 7 ? 'text-green-600' : apy >= 4 ? 'text-[#F5A623]' : 'text-gray-500'
 
   const catColor = CATEGORY_COLORS[protocol.category] || {
     bg: 'bg-gray-100',
@@ -61,21 +61,17 @@ function ProtocolCard({ protocol, apyData, loading, lang, onClick, profileColor,
             <div className="skeleton h-7 w-16 rounded" />
           ) : (
             <div className="flex items-center gap-1.5">
-              <span className={`w-2 h-2 rounded-full flex-shrink-0 ${isLive ? 'bg-green-500 animate-pulse' : 'bg-amber-400'}`} />
-              <span className={`text-2xl font-bold ${apyColor}`}>{apy.toFixed(2)}%</span>
+              {isLive && <span className="w-2 h-2 rounded-full flex-shrink-0 bg-green-500 animate-pulse" />}
+              {apy !== null ? (
+                <span className={`text-2xl font-bold ${apyColor}`}>{apy.toFixed(2)}%</span>
+              ) : (
+                <span className="text-2xl font-bold text-navy/30">—</span>
+              )}
             </div>
           )}
           <div className="text-xs text-navy/40 mt-0.5">
-            {isLive ? t('protocols.liveApy') : t('protocols.estApy')}
+            {t('protocols.currentApy')}
           </div>
-          {/* Badge affiché uniquement si le protocole a moins de 12 mois d'historique */}
-          {protocol.historicalApy12m === null && (
-            <div className="mt-1.5">
-              <span className="inline-block text-xs bg-gray-100 text-gray-500 border border-gray-200 rounded-full px-2 py-0.5">
-                {t('protocols.noHistory')}
-              </span>
-            </div>
-          )}
         </div>
         <div className="text-right">
           <div className="text-lg font-bold text-navy">{((weight ?? 0) * 100).toFixed(1)}%</div>

@@ -54,7 +54,7 @@ export default function Footer({ navigateTo }) {
     },
     {
       label: t('footer.github'),
-      href: 'https://github.com',
+      href: 'https://github.com/AntoineBatou/DefiLantern',
       external: true,
       icon: <GithubIcon />,
     },

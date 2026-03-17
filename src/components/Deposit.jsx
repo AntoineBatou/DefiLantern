@@ -215,7 +215,7 @@ export default function Deposit({ averageApy }) {
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-navy/60">{t('deposit.apyEstLabel')}</span>
                   <span className={`font-bold ${apyColor}`}>
-                    {averageApy.toFixed(2)}%
+                    {averageApy !== null ? `${averageApy.toFixed(2)}%` : '—'}
                   </span>
                 </div>
                 <div className="flex justify-between items-center">
@@ -281,7 +281,7 @@ export default function Deposit({ averageApy }) {
             <div className="bg-navy rounded-3xl p-6 text-white text-center">
               <div className="text-sm text-white/60 mb-2">{t('deposit.apyEstLabel')} global</div>
               <div className={`text-5xl font-black mb-2 ${apyColor}`}>
-                {averageApy.toFixed(2)}%
+                {averageApy !== null ? `${averageApy.toFixed(2)}%` : '—'}
               </div>
               <div className="text-xs text-white/50">
                 Moyenne live DeFiLlama · {t('deposit.protocolCount')}

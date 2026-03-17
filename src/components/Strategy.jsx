@@ -3,7 +3,7 @@
 // Nouveau : le donut et le tableau des protocoles sont filtrés selon le profil actif.
 // L'allocation de chaque protocole = 100 / nb protocoles du profil.
 
-import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts'
+import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts'
 import { useLang } from '../context/LangContext'
 import { useRiskProfile } from '../context/RiskProfileContext'
 import { DONUT_COLORS, RETAINED_PROTOCOLS } from '../data/protocols'
@@ -25,21 +25,8 @@ function CustomTooltip({ active, payload, apyData }) {
   )
 }
 
-// ── Légende personnalisée ─────────────────────────────────────────────────────
-function CustomLegend({ payload }) {
-  return (
-    <ul className="flex flex-wrap gap-2 justify-center mt-4">
-      {payload.map((entry, index) => (
-        <li key={index} className="flex items-center gap-1.5">
-          <span className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: entry.color }} />
-          <span className="text-xs text-navy/60 whitespace-nowrap">{entry.value}</span>
-        </li>
-      ))}
-    </ul>
-  )
-}
 
-export default function Strategy({ apyData, averageApy, historicalApy, historicalCoverage }) {
+export default function Strategy({ apyData, averageApy, historicalApy }) {
   const { t } = useLang()
   const { profileProtocols, profile, profileWeights } = useRiskProfile()
   const pillColors = PROFILE_PILL_COLORS[profile]
@@ -137,41 +124,54 @@ export default function Strategy({ apyData, averageApy, historicalApy, historica
               </span>
             </p>
 
-            <ResponsiveContainer width="100%" height={380}>
-              <PieChart>
-                <Pie
-                  data={chartData}
-                  cx="50%"
-                  cy="45%"
-                  innerRadius={80}
-                  outerRadius={130}
-                  paddingAngle={2}
-                  dataKey="value"
-                >
-                  {chartData.map((entry, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={entry.color}
-                      stroke="white"
-                      strokeWidth={2}
-                    />
-                  ))}
-                </Pie>
-                <Tooltip content={<CustomTooltip apyData={apyData} />} />
-                <Legend content={<CustomLegend />} />
-              </PieChart>
-            </ResponsiveContainer>
+            {/* SVG seul — sans Legend intégrée pour un cy="50%" fiable */}
+            <div className="relative">
+              <ResponsiveContainer width="100%" height={300}>
+                <PieChart>
+                  <Pie
+                    data={chartData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={80}
+                    outerRadius={130}
+                    paddingAngle={2}
+                    dataKey="value"
+                  >
+                    {chartData.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={entry.color}
+                        stroke="white"
+                        strokeWidth={2}
+                      />
+                    ))}
+                  </Pie>
+                  <Tooltip content={<CustomTooltip apyData={apyData} />} />
+                </PieChart>
+              </ResponsiveContainer>
 
-            {/* Texte centré dans le donut */}
-            <div
-              className="pointer-events-none relative -mt-72 mb-32 flex items-center justify-center"
-              aria-hidden="true"
-            >
-              <div className="text-center">
-                <div className="text-2xl font-bold text-navy">{averageApy.toFixed(2)}%</div>
-                <div className="text-xs text-navy/50">APY moy.</div>
+              {/* Overlay : cy="50%" → top 50% → parfaitement centré dans le trou */}
+              <div
+                className="pointer-events-none absolute inset-x-0 flex items-center justify-center"
+                style={{ top: '50%', transform: 'translateY(-50%)' }}
+                aria-hidden="true"
+              >
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-navy">{averageApy !== null ? `${averageApy.toFixed(2)}%` : '—'}</div>
+                  <div className="text-xs text-navy/50">APY moy.</div>
+                </div>
               </div>
             </div>
+
+            {/* Légende hors SVG — liste simple sans dépendance Recharts */}
+            <ul className="flex flex-wrap gap-2 justify-center mt-4">
+              {chartData.map((entry, index) => (
+                <li key={index} className="flex items-center gap-1.5">
+                  <span className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: entry.color }} />
+                  <span className="text-xs text-navy/60 whitespace-nowrap">{entry.name}</span>
+                </li>
+              ))}
+            </ul>
           </div>
 
           {/* Colonne droite : infos */}
@@ -186,12 +186,11 @@ export default function Strategy({ apyData, averageApy, historicalApy, historica
                     {historicalApy.toFixed(1)}%
                     <span className="text-lg font-normal text-navy/40 ml-2">{t('common.perYear')}</span>
                   </div>
-                  {/* Note de couverture : précise sur quelle part du portefeuille repose le calcul */}
                   <p className="text-xs text-navy/50 mt-2">
                     {t('strategy.historicalApyNote')}
                   </p>
-                  <p className="text-xs text-navy/40 mt-1">
-                    Basé sur {historicalCoverage}% du portefeuille · {profileProtocols.length} protocoles actifs
+                  <p className="text-xs text-navy/40 mt-1 italic">
+                    * Pour les protocoles de moins de 12 mois, le rendement actuel est utilisé à défaut.
                   </p>
                 </>
               ) : (

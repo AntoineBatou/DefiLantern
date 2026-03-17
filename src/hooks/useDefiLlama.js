@@ -62,6 +62,8 @@ export function useDefiLlama() {
         let response
         try {
           response = await fetch(DEFILLAMA_URL, { signal: AbortSignal.timeout(8000) })
+          // En production le proxy n'existe pas → 404 → on bascule sur l'URL directe
+          if (!response.ok) throw new Error(`proxy ${response.status}`)
         } catch {
           response = await fetch(DEFILLAMA_DIRECT_URL, { signal: AbortSignal.timeout(8000) })
         }

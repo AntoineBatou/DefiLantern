@@ -267,7 +267,7 @@ export default function Simulator({ averageApy, onAddPosition }) {
                 <span className="text-sm text-navy/60">{t('simulator.avgApy')}</span>
                 <p className="text-xs text-navy/40 mt-0.5">{t('profile.label')}</p>
               </div>
-              <span className="text-xl font-bold text-[#2ABFAB]">{averageApy.toFixed(2)}%</span>
+              <span className="text-xl font-bold text-[#2ABFAB]">{averageApy !== null ? `${averageApy.toFixed(2)}%` : '—'}</span>
             </div>
           </div>
 
@@ -311,12 +311,12 @@ export default function Simulator({ averageApy, onAddPosition }) {
                 {/* Barre Firefly (proportionnelle au gain) */}
                 <div
                   className="absolute left-0 top-0 h-full bg-[#2ABFAB] rounded-full transition-all duration-500"
-                  style={{ width: `${Math.min((averageApy / 15) * 100, 100)}%` }}
+                  style={{ width: `${Math.min(((averageApy ?? 0) / 15) * 100, 100)}%` }}
                 />
               </div>
               <div className="flex justify-between text-xs mt-1">
                 <span className="text-gray-400">Livret A</span>
-                <span className="text-[#2ABFAB] font-semibold">DeFi Lantern {averageApy.toFixed(2)}%</span>
+                <span className="text-[#2ABFAB] font-semibold">DeFi Lantern {averageApy !== null ? `${averageApy.toFixed(2)}%` : '—'}</span>
               </div>
             </div>
 

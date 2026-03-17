@@ -128,6 +128,7 @@ export const translations = {
       subtitle: 'DeFi Lantern diversifie votre capital sur des protocoles audités et éprouvés',
       liveApy: 'APY live',
       estApy: 'APY estimé',
+      currentApy: 'APY actuel',
       allocation: 'Allocation',
       comingSoon: 'Bientôt',
       underEvaluation: 'En évaluation',
@@ -136,6 +137,7 @@ export const translations = {
       retained: 'Protocoles retenus',
       evaluation: 'En évaluation',
       noHistory: '< 12 mois d\'existence',
+      noData: 'Données indisponibles',
     },
 
     // ── Strategy ─────────────────────────────────────────────────
@@ -440,6 +442,7 @@ export const translations = {
       subtitle: 'DeFi Lantern diversifies your capital across audited and battle-tested protocols',
       liveApy: 'Live APY',
       estApy: 'Est. APY',
+      currentApy: 'Current APY',
       allocation: 'Allocation',
       comingSoon: 'Soon',
       underEvaluation: 'Under evaluation',
@@ -448,6 +451,7 @@ export const translations = {
       retained: 'Retained protocols',
       evaluation: 'Under evaluation',
       noHistory: '< 12 months of existence',
+      noData: 'Data unavailable',
     },
 
     // ── Strategy ─────────────────────────────────────────────────
