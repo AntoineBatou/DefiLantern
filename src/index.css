@@ -302,3 +302,182 @@ section {
 .theme-transition * {
   transition: background-color 300ms ease, border-color 300ms ease, color 300ms ease !important;
 }
+
+/* ── Thème Christmas (Airdrop Hunter) ────────── */
+/* Activé via la classe .theme-christmas sur le wrapper racine dans App.jsx */
+.theme-christmas {
+  background-color: #1A0A0A;
+  color: #F5F0E8;
+}
+
+/* ── Fonds ── */
+.theme-christmas .bg-white    { background-color: #2E1414 !important; }
+.theme-christmas .bg-bg       { background-color: #1A0A0A !important; }
+.theme-christmas .bg-gray-50  { background-color: #200E0E !important; }
+.theme-christmas .bg-gray-100 { background-color: #2A1010 !important; }
+.theme-christmas .bg-lgrey    { background-color: #381818 !important; } /* distinct de bg-white pour les hovers */
+.theme-christmas .bg-teal-light { background-color: #2E1414 !important; }
+
+/* ── Texte ── */
+.theme-christmas .text-navy       { color: #F5F0E8 !important; }
+.theme-christmas .text-gray-600   { color: #E8C0A0 !important; }
+.theme-christmas .text-gray-500   { color: #CCAA88 !important; }
+
+/* Opacités augmentées pour lisibilité sur fond très sombre */
+.theme-christmas .text-navy\/10 { color: rgba(245, 240, 232, 0.15) !important; }
+.theme-christmas .text-navy\/20 { color: rgba(245, 240, 232, 0.28) !important; }
+.theme-christmas .text-navy\/30 { color: rgba(245, 240, 232, 0.42) !important; }
+.theme-christmas .text-navy\/40 { color: rgba(245, 240, 232, 0.58) !important; }
+.theme-christmas .text-navy\/50 { color: rgba(245, 240, 232, 0.70) !important; }
+.theme-christmas .text-navy\/60 { color: rgba(245, 240, 232, 0.80) !important; }
+.theme-christmas .text-navy\/70 { color: rgba(245, 240, 232, 0.88) !important; }
+.theme-christmas .text-navy\/80 { color: rgba(245, 240, 232, 0.94) !important; }
+
+/* Couleur APY verte (cartes protocoles) */
+.theme-christmas .text-green-600  { color: #4ADE80 !important; }
+
+/* ── Bordures ── */
+.theme-christmas .border-gray-200 { border-color: #5A2020 !important; }
+.theme-christmas .border-lgrey    { border-color: #5A2020 !important; }
+
+/* ── Ombres ── */
+.theme-christmas .shadow    { box-shadow: 0 1px 3px rgba(192,57,43,0.15) !important; }
+.theme-christmas .shadow-sm { box-shadow: 0 1px 4px rgba(192,57,43,0.20) !important; }
+.theme-christmas .shadow-md { box-shadow: 0 4px 15px rgba(192,57,43,0.15) !important; }
+
+/* ── Boutons ── */
+.theme-christmas .btn-primary             { background-color: #C0392B !important; color: white !important; }
+.theme-christmas .btn-primary:hover       { background-color: #A93226 !important; }
+.theme-christmas .bg-\[#2ABFAB\]          { background-color: #C0392B !important; }
+.theme-christmas .bg-\[#22A898\]          { background-color: #A93226 !important; }
+.theme-christmas .hover\:bg-\[#22A898\]:hover { background-color: #A93226 !important; }
+
+/* Accents APY : teal → or */
+.theme-christmas .text-teal-500,
+.theme-christmas .text-\[\#2ABFAB\] { color: #FFD700 !important; }
+
+/* ── Header : se fond dans le hero (même fond que #hero) ──
+   On surcharge explicitement header.bg-white pour battre la spécificité de .bg-white */
+.theme-christmas header,
+.theme-christmas header.bg-white {
+  background-color: #1A0A0A !important;
+  border-bottom-color: rgba(192, 57, 43, 0.20) !important;
+  box-shadow: none !important;
+}
+/* Quand scrollé, on distingue légèrement avec un fond + shadow */
+.theme-christmas header.shadow-md,
+.theme-christmas header.shadow-md.bg-white {
+  background-color: #220D0D !important;
+  box-shadow: 0 2px 20px rgba(192, 57, 43, 0.28) !important;
+}
+
+/* Nav mobile (hérite du header) */
+.theme-christmas nav { border-color: #5A2020 !important; }
+
+/* ── Fonds avec opacité ── */
+.theme-christmas .bg-navy\/5   { background-color: rgba(255, 255, 255, 0.03) !important; }
+.theme-christmas .bg-navy\/10  { background-color: rgba(255, 255, 255, 0.06) !important; }
+.theme-christmas .bg-white\/70 { background-color: rgba(46, 20, 20, 0.70) !important; }
+
+/* ── Cartes ── */
+.theme-christmas .card {
+  background-color: #2E1414 !important;
+  border-color: #5A2020 !important;
+}
+.theme-christmas .card:hover {
+  box-shadow: 0 4px 20px rgba(192, 57, 43, 0.28) !important;
+  border-color: rgba(192, 57, 43, 0.55) !important;
+}
+
+/* ── Dégradés → fond uni sombre ── */
+.theme-christmas .bg-gradient-to-br,
+.theme-christmas .bg-gradient-to-r,
+.theme-christmas .bg-gradient-to-b {
+  background-image: none !important;
+  background-color: #2E1414 !important;
+}
+/* Hero garde un dégradé sombre rouge */
+.theme-christmas section#hero {
+  background: linear-gradient(135deg, #1A0A0A 0%, #2A1010 60%, #3A0A0A 100%) !important;
+}
+
+/* ── Inputs ── */
+.theme-christmas input[type="number"],
+.theme-christmas input[type="text"],
+.theme-christmas input[type="range"] {
+  background-color: #2E1414 !important;
+  border-color: rgba(192, 57, 43, 0.3) !important;
+  color: #F5F0E8 !important;
+}
+.theme-christmas input[type="range"] { accent-color: #C0392B !important; }
+
+/* ── Toggle FR/EN ── */
+.theme-christmas .bg-\[#EEF2F2\] { background-color: #2E1414 !important; }
+
+/* ── Skeleton ── */
+.theme-christmas .skeleton {
+  background: linear-gradient(90deg, #2E1414 25%, #3A1818 50%, #2E1414 75%) !important;
+}
+
+/* ── Scrollbar ── */
+.theme-christmas ::-webkit-scrollbar-track { background: #2E1414; }
+.theme-christmas ::-webkit-scrollbar-thumb { background: #C0392B; }
+
+/* ── Recharts ── */
+.theme-christmas .recharts-wrapper { background: transparent !important; }
+.theme-christmas .recharts-cartesian-grid line { stroke: rgba(192, 57, 43, 0.15) !important; }
+.theme-christmas .recharts-text { fill: rgba(245, 240, 232, 0.55) !important; }
+
+/* ── Badges catégorie protocoles (bg-xxx-100 + text-xxx-700) ──
+   Sans override ces badges restent dans leurs couleurs light, illisibles sur fond sombre */
+.theme-christmas .bg-blue-100    { background-color: rgba(59,  130, 246, 0.18) !important; }
+.theme-christmas .text-blue-700  { color: #93C5FD !important; }
+.theme-christmas .bg-purple-100  { background-color: rgba(168,  85, 247, 0.18) !important; }
+.theme-christmas .text-purple-700 { color: #D8B4FE !important; }
+.theme-christmas .bg-amber-100   { background-color: rgba(245, 158,  11, 0.18) !important; }
+.theme-christmas .text-amber-700  { color: #FCD34D !important; }
+.theme-christmas .bg-green-100   { background-color: rgba(34,  197,  94, 0.18) !important; }
+.theme-christmas .text-green-700  { color: #86EFAC !important; }
+.theme-christmas .bg-orange-100  { background-color: rgba(249, 115,  22, 0.18) !important; }
+.theme-christmas .text-orange-700 { color: #FDBA74 !important; }
+.theme-christmas .bg-rose-100    { background-color: rgba(244,  63,  94, 0.18) !important; }
+.theme-christmas .text-rose-700   { color: #FCA5A5 !important; }
+.theme-christmas .bg-red-100     { background-color: rgba(239,  68,  68, 0.18) !important; }
+.theme-christmas .text-red-700    { color: #FCA5A5 !important; }
+.theme-christmas .bg-indigo-100  { background-color: rgba(99,  102, 241, 0.18) !important; }
+.theme-christmas .text-indigo-700 { color: #A5B4FC !important; }
+.theme-christmas .bg-pink-100    { background-color: rgba(236,  72, 153, 0.18) !important; }
+.theme-christmas .text-pink-700   { color: #F9A8D4 !important; }
+.theme-christmas .bg-cyan-100    { background-color: rgba(6,   182, 212, 0.18) !important; }
+.theme-christmas .text-cyan-700   { color: #67E8F9 !important; }
+
+/* ── Risk tier backgrounds (bg-xxx-50) ── */
+.theme-christmas .bg-green-50   { background-color: rgba(34,  197,  94, 0.10) !important; }
+.theme-christmas .bg-amber-50   { background-color: rgba(245, 158,  11, 0.10) !important; }
+.theme-christmas .bg-orange-50  { background-color: rgba(249, 115,  22, 0.10) !important; }
+.theme-christmas .bg-purple-50  { background-color: rgba(168,  85, 247, 0.10) !important; }
+.theme-christmas .bg-blue-50    { background-color: rgba(59,  130, 246, 0.10) !important; }
+.theme-christmas .bg-red-50     { background-color: rgba(239,  68,  68, 0.10) !important; }
+
+/* ── Toast ── */
+.theme-christmas .bg-green-600 { background-color: #C0392B !important; }
+
+/* Cacher les éléments luciole dans ce thème */
+.theme-christmas .firefly-element { display: none !important; }
+
+/* ── Animation parachutes (Airdrop Hunter) ─── */
+@keyframes parachuteFall {
+  0%   { transform: translateY(-80px) translateX(0px) rotate(-3deg); opacity: 0; }
+  8%   { opacity: 0.18; }
+  92%  { opacity: 0.15; }
+  100% { transform: translateY(105vh) translateX(25px) rotate(4deg); opacity: 0; }
+}
+
+.parachute-element {
+  animation: parachuteFall linear infinite;
+  font-size: 1.6rem;
+  pointer-events: none;
+  position: fixed;
+  user-select: none;
+  z-index: 1;
+}

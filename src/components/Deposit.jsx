@@ -1,16 +1,24 @@
 // Deposit.jsx — Page de dépôt (interface wallet + dépôt USDC / EURC)
 //
-// Interface mock pour la démo académique.
-// - Toggle USDC / EURC
-// - Saisie du montant
-// - Estimation des shares glUSDC reçues et de l'APY
-// - Bouton "Connecter le wallet" (simulé — pas de vraie connexion en v1)
-//
-// En production : intégrer wagmi + RainbowKit pour la vraie connexion wallet.
+// Connexion wallet réelle via wagmi + RainbowKit.
+// - ConnectButton RainbowKit : MetaMask, Rabby, Coinbase, WalletConnect…
+// - useAccount : adresse et statut de connexion
+// - useBalance : solde USDC on-chain (Ethereum mainnet / Sepolia / Polygon)
+// - Le dépôt reste simulé (bouton mock) — aucun contrat déployé en v1 académique
 
 import { useState } from 'react'
+import { ConnectButton } from '@rainbow-me/rainbowkit'
+import { useAccount, useBalance } from 'wagmi'
 import { useLang } from '../context/LangContext'
 import { useRiskProfile } from '../context/RiskProfileContext'
+import { PROFILES, PROFILE_PILL_COLORS } from '../data/profiles'
+
+// Adresses USDC selon la chaîne (pour lire le solde on-chain)
+const USDC_ADDRESSES = {
+  1:        '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', // Ethereum mainnet
+  11155111: '0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238', // Sepolia
+  137:      '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359', // Polygon PoS
+}
 
 // ── Icônes SVG simples ────────────────────────────────────────────────────────
 function UsdcIcon() {
@@ -31,30 +39,23 @@ function EurcIcon() {
   )
 }
 
-function WalletIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <rect x="2" y="6" width="20" height="14" rx="2" />
-      <path d="M16 12h2" />
-      <path d="M2 10h20" />
-      <path d="M6 2l4 4H6" />
-    </svg>
-  )
-}
-
-function CheckIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-      <polyline points="20 6 9 17 4 12" />
-    </svg>
-  )
-}
 
 // ── Composant principal ────────────────────────────────────────────────────────
 export default function Deposit({ averageApy }) {
   const { t } = useLang()
-  const { profileConfig } = useRiskProfile()
+  const { profile, setProfile, profileConfig } = useRiskProfile()
   const shareToken = profileConfig.shareToken
+
+  // ── Wagmi : état du wallet réel ──────────────────────────────────────────
+  const { address, isConnected, chain } = useAccount()
+
+  // Solde USDC on-chain sur la chaîne active
+  const usdcAddress = chain ? USDC_ADDRESSES[chain.id] : undefined
+  const { data: usdcBalance } = useBalance({
+    address,
+    token: usdcAddress,
+    query: { enabled: isConnected && !!usdcAddress },
+  })
 
   // Actif sélectionné : 'USDC' ou 'EURC'
   const [asset, setAsset] = useState('USDC')
@@ -62,34 +63,23 @@ export default function Deposit({ averageApy }) {
   // Montant saisi par l'utilisateur
   const [amount, setAmount] = useState('')
 
-  // Simulation de connexion wallet (mock)
-  const [walletConnected, setWalletConnected] = useState(false)
-  const [mockAddress, setMockAddress] = useState('')
-
-  // Solde simulé (fictif pour la démo)
-  const mockBalances = { USDC: 10000, EURC: 5000 }
-
   // ── Calculs ────────────────────────────────────────────────────────────────
   const numAmount = parseFloat(amount) || 0
-  // glUSDC reçus : 1:1 au dépôt (le prix du share évolue ensuite)
   const glUsdcReceived = numAmount
-  // Rendement annuel estimé
-  const estimatedYield = numAmount * (averageApy / 100)
+  const estimatedYield = numAmount * ((averageApy ?? 0) / 100)
+
+  // Solde USDC formaté (on-chain si connecté, — sinon)
+  const usdcBalanceFormatted = usdcBalance
+    ? parseFloat(usdcBalance.formatted).toLocaleString('fr-FR', { maximumFractionDigits: 2 })
+    : '—'
 
   // ── Handlers ───────────────────────────────────────────────────────────────
   const handleMax = () => {
-    setAmount(mockBalances[asset].toString())
-  }
-
-  const handleConnectWallet = () => {
-    // Simulation : génère une adresse mock
-    const mockAddr = '0x' + Math.random().toString(16).slice(2, 12).toUpperCase() + '...'
-    setMockAddress(mockAddr)
-    setWalletConnected(true)
+    if (usdcBalance) setAmount(usdcBalance.formatted)
   }
 
   const handleDeposit = () => {
-    // Mock : en v1 pas de vraie transaction
+    // Mock : aucun contrat déployé en v1 académique
     alert(`[Démo académique] Dépôt simulé : ${numAmount} ${asset} → ${glUsdcReceived.toFixed(2)} ${shareToken}\n\nCette interface est un prototype — aucun vrai fonds n'est déplacé.`)
   }
 
@@ -117,28 +107,21 @@ export default function Deposit({ averageApy }) {
           {/* ── Formulaire de dépôt ── */}
           <div className="bg-bg rounded-3xl p-6 sm:p-8 flex flex-col gap-6">
 
-            {/* Wallet */}
-            <div className="flex items-center justify-between">
-              {walletConnected ? (
-                <div className="flex items-center gap-2 bg-green-50 text-green-700 border border-green-200 rounded-full px-4 py-2">
-                  <CheckIcon />
-                  <span className="text-sm font-medium">{mockAddress}</span>
+            {/* Wallet — ConnectButton RainbowKit */}
+            <div className="flex items-center justify-between flex-wrap gap-2">
+              <ConnectButton
+                showBalance={false}
+                chainStatus="icon"
+                accountStatus="address"
+              />
+              {isConnected && (
+                <div className="text-xs text-navy/40">
+                  {t('deposit.balance')} :{' '}
+                  <span className="font-medium text-navy/60">
+                    {usdcBalanceFormatted} USDC
+                  </span>
                 </div>
-              ) : (
-                <button
-                  onClick={handleConnectWallet}
-                  className="flex items-center gap-2 bg-navy text-white rounded-full px-4 py-2 hover:bg-navy/80 transition-colors text-sm font-medium"
-                >
-                  <WalletIcon />
-                  {t('deposit.connectWallet')}
-                </button>
               )}
-              <div className="text-xs text-navy/40">
-                {t('deposit.balance')} :{' '}
-                <span className="font-medium text-navy/60">
-                  {walletConnected ? mockBalances[asset].toLocaleString() : '—'} {asset}
-                </span>
-              </div>
             </div>
 
             {/* Toggle USDC / EURC */}
@@ -176,6 +159,41 @@ export default function Deposit({ averageApy }) {
               </div>
             </div>
 
+            {/* Sélecteur de profil */}
+            <div>
+              <label className="text-xs font-semibold text-navy/50 uppercase tracking-wider mb-2 block">
+                Profil de risque
+              </label>
+              <div className="grid grid-cols-2 gap-2">
+                {Object.values(PROFILES).map((p) => {
+                  const colors = PROFILE_PILL_COLORS[p.id]
+                  const isActive = profile === p.id
+                  return (
+                    <button
+                      key={p.id}
+                      onClick={() => setProfile(p.id)}
+                      className={`flex items-center gap-2 px-3 py-2.5 rounded-2xl border-2 transition-all text-left ${
+                        isActive
+                          ? 'border-transparent text-white shadow-sm'
+                          : 'border-lgrey bg-white/50 text-navy/70 hover:border-navy/20'
+                      }`}
+                      style={isActive ? { backgroundColor: colors.dot } : {}}
+                    >
+                      <span className="text-base flex-shrink-0">{p.icon}</span>
+                      <div className="min-w-0">
+                        <div className="text-xs font-semibold leading-tight truncate">
+                          {p.shareToken}
+                        </div>
+                        <div className={`text-[10px] leading-tight ${isActive ? 'text-white/70' : 'text-navy/40'}`}>
+                          {p.apyRange}
+                        </div>
+                      </div>
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+
             {/* Montant */}
             <div>
               <label className="text-xs font-semibold text-navy/50 uppercase tracking-wider mb-2 block">
@@ -193,7 +211,7 @@ export default function Deposit({ averageApy }) {
                 <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2">
                   <button
                     onClick={handleMax}
-                    disabled={!walletConnected}
+                    disabled={!isConnected || !usdcBalance}
                     className="text-xs font-bold text-[#2ABFAB] hover:text-[#22A898] disabled:text-navy/30 transition-colors"
                   >
                     {t('deposit.maxBtn')}
@@ -234,7 +252,7 @@ export default function Deposit({ averageApy }) {
             )}
 
             {/* Bouton dépôt */}
-            {walletConnected ? (
+            {isConnected ? (
               <button
                 onClick={handleDeposit}
                 disabled={numAmount <= 0}

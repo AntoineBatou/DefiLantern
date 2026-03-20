@@ -93,7 +93,7 @@ function WhitepaperFR() {
         <p className="text-navy/70 leading-relaxed">
           DeFi Lantern est un agrégateur de rendement non-custodial et multi-protocoles pour stablecoins,
           déployé sur Ethereum mainnet. Les utilisateurs déposent des USDC et reçoivent des parts ERC-4626 —
-          <strong>glUSDC-P</strong>, <strong>glUSDC-B</strong> ou <strong>glUSDC-D</strong> selon le profil
+          <strong>glUSDC-P</strong>, <strong>glUSDC-B</strong>, <strong>glUSDC-D</strong> ou <strong>glUSDC-AH</strong> selon le profil
           de risque choisi — dont la valeur augmente au fil du temps à mesure que le protocole
           collecte les rendements d'un ensemble sélectionné de protocoles DeFi éprouvés.
         </p>
@@ -134,9 +134,9 @@ function WhitepaperFR() {
 
         <SubSection title="1.2 La réponse DeFi Lantern">
           <p className="text-navy/70 leading-relaxed mb-3">
-            DeFi Lantern agrège le rendement de plusieurs protocoles via trois vaults spécialisés.
+            DeFi Lantern agrège le rendement de plusieurs protocoles via quatre vaults spécialisés.
             L'utilisateur choisit un profil de risque, dépose ses USDC dans le vault correspondant
-            et reçoit des parts ERC-4626 (glUSDC-P, glUSDC-B ou glUSDC-D) dont la valeur
+            et reçoit des parts ERC-4626 (glUSDC-P, glUSDC-B, glUSDC-D ou glUSDC-AH) dont la valeur
             s'apprécie passivement. DeFi Lantern gère l'allocation, la collecte des rendements
             et le rééquilibrage.
           </p>
@@ -168,7 +168,7 @@ function WhitepaperFR() {
 
         <SubSection title="2.2 Caractéristiques clés">
           <p className="text-navy/70 text-sm mb-2"><strong className="text-navy">Rendement à entrée unique.</strong> Un seul dépôt USDC donne accès à jusqu'à seize stratégies de rendement simultanées.</p>
-          <p className="text-navy/70 text-sm mb-2"><strong className="text-navy">Conforme ERC-4626.</strong> glUSDC-P, glUSDC-B et glUSDC-D sont des tokens de vault pleinement standardisés ERC-4626, composables avec tout protocole supportant ce standard. Chaque token est pleinement fongible au sein de son vault — un acheteur sur le marché secondaire connaît immédiatement son exposition.</p>
+          <p className="text-navy/70 text-sm mb-2"><strong className="text-navy">Conforme ERC-4626.</strong> glUSDC-P, glUSDC-B, glUSDC-D et glUSDC-AH sont des tokens de vault pleinement standardisés ERC-4626, composables avec tout protocole supportant ce standard. Chaque token est pleinement fongible au sein de son vault — un acheteur sur le marché secondaire connaît immédiatement son exposition.</p>
           <p className="text-navy/70 text-sm mb-2"><strong className="text-navy">Non-custodial par conception.</strong> Aucune clé admin ne peut déplacer les fonds des utilisateurs. Le multisig Guardian peut uniquement mettre en pause les nouveaux dépôts — les retraits restent ouverts en permanence.</p>
           <p className="text-navy/70 text-sm mb-2"><strong className="text-navy">Allocation transparente.</strong> Les poids cibles par protocole sont stockés on-chain en points de base (somme = 10 000). Tout détenteur de GLOW peut vérifier la stratégie à tout moment.</p>
           <p className="text-navy/70 text-sm"><strong className="text-navy">Gouvernance on-chain.</strong> Tous les changements de paramètres passent par un contrat Governor avec un Timelock de 48 heures.</p>
@@ -206,25 +206,25 @@ function WhitepaperFR() {
 
       {/* 3. ARCHITECTURE */}
       <Section id="architecture" title="3. Architecture">
-        <SubSection title="3.1 Trois vaults ERC-4626 — glUSDC-P / glUSDC-B / glUSDC-D">
+        <SubSection title="3.1 Quatre vaults ERC-4626 — glUSDC-P / glUSDC-B / glUSDC-D / glUSDC-AH">
           <p className="text-navy/70 leading-relaxed mb-3">
-            DeFi Lantern déploie <strong>trois instances du même contrat</strong>{' '}
+            DeFi Lantern déploie <strong>quatre instances du même contrat</strong>{' '}
             <code className="bg-navy/10 px-1 rounded">DeFiLanternVault.sol</code>, chacune avec
             ses propres adapters et poids d'allocation. Chaque vault émet un token distinct
-            (glUSDC-P, glUSDC-B, glUSDC-D), pleinement fongible au sein de son vault.
+            (glUSDC-P, glUSDC-B, glUSDC-D, glUSDC-AH), pleinement fongible au sein de son vault.
             L'utilisateur choisit son profil puis interagit avec le vault correspondant.
           </p>
           <p className="text-navy/70 text-sm mb-2"><strong className="text-navy">Flux de dépôt :</strong></p>
           <ol className="list-decimal list-inside text-navy/70 text-sm space-y-1 mb-3">
-            <li>L'utilisateur choisit son profil (Prudent / Équilibré / Dynamique) et sélectionne le vault correspondant</li>
+            <li>L'utilisateur choisit son profil (Prudent / Équilibré / Dynamique / Airdrop Hunter) et sélectionne le vault correspondant</li>
             <li>Il appelle <code className="bg-navy/10 px-1 rounded">deposit(amount, receiver)</code> sur ce vault</li>
-            <li>Le vault mint des parts (glUSDC-P/B/D) proportionnelles à <code className="bg-navy/10 px-1 rounded">amount / pricePerShare</code></li>
+            <li>Le vault mint des parts (glUSDC-P/B/D/AH) proportionnelles à <code className="bg-navy/10 px-1 rounded">amount / pricePerShare</code></li>
             <li>Les USDC sont alloués aux protocoles du profil selon les poids cibles</li>
           </ol>
           <p className="text-navy/70 text-sm mb-2"><strong className="text-navy">Flux de retrait :</strong></p>
           <ol className="list-decimal list-inside text-navy/70 text-sm space-y-1 mb-3">
             <li>L'utilisateur appelle <code className="bg-navy/10 px-1 rounded">redeem(shares, receiver, owner)</code></li>
-            <li>Le vault brûle les parts glUSDC-P/B/D</li>
+            <li>Le vault brûle les parts glUSDC-P/B/D/AH</li>
             <li>Le vault récupère les USDC des protocoles sous-jacents (en respectant les contraintes de cooldown)</li>
             <li>Les USDC sont envoyés à l'utilisateur</li>
           </ol>
@@ -337,7 +337,7 @@ totalAssets() : shares × pricePerShare (oracle Chainlink) → USDC équivalent`
         <div id="risk-profiles">
         <SubSection title="3.5 Profils de risque">
           <p className="text-navy/70 leading-relaxed mb-3">
-            DeFi Lantern déploie <strong>trois vaults ERC-4626 distincts</strong>, un par profil de risque,
+            DeFi Lantern déploie <strong>quatre vaults ERC-4626 distincts</strong>, un par profil de risque,
             chacun émettant son propre token fongible. L'utilisateur choisit son profil à l'entrée
             et dépose dans le vault correspondant. Ce design garantit qu'un acheteur sur le marché
             secondaire connaît immédiatement son exposition : glUSDC-P = uniquement des protocoles
@@ -349,6 +349,7 @@ totalAssets() : shares × pricePerShare (oracle Chainlink) → USDC équivalent`
               ['🛡️ Prudent', '9 protocoles — tier 1 + sUSDe (delta-neutre audité) + reUSD (tranche senior Re Protocol) + Resolv USR (delta-neutre, rendement modéré)', '~4–6%', 'Poids max 15% par protocole — concentrés sur les protocoles les plus audités et liquides'],
               ['⚖️ Équilibré', '17 protocoles — 50% capital Prudent + 50% capital Dynamique', '~6–9%', 'Mix équipondéré entre les deux pools (poids × 0,5)'],
               ['⚡ Dynamique', '8 protocoles — tier 3 (sNUSD, syrupUSDC, jrUSDe, sUSD3, imUSD, reUSDe, RLP, stkUSDC)', '~9–15%', 'Poids concentrés sur les protocoles à rendement élevé, y compris tranches juniors'],
+              ['🪂 Airdrop Hunter', '1+ protocole(s) — Sierra Money (hybride RWA+DeFi, T-bills + Aave/Morpho, natif Avalanche bridgé LayerZero). Liste évolutive par vote de gouvernance.', 'Variable (~4–8%+)', 'Protocoles innovants sélectionnés pour vision, exécution technique et potentiel d\'airdrop. Poids 100% Sierra Money en v1.'],
             ]}
           />
           <InfoBox>
@@ -357,12 +358,77 @@ totalAssets() : shares × pricePerShare (oracle Chainlink) → USDC équivalent`
             (thème sombre violet/cyan) pour signaler visuellement le changement de niveau de risque.
             Ce signal UI rappelle à l'utilisateur qu'il opère dans une stratégie plus risquée.
           </InfoBox>
+          <InfoBox>
+            <strong>Profil Airdrop Hunter et thème Rouge & Or :</strong> le profil Airdrop Hunter
+            active un thème visuel distinct (fond sombre <code className="bg-navy/10 px-1 rounded">#1A0A0A</code>, accents rouge{' '}
+            <code className="bg-navy/10 px-1 rounded">#C0392B</code> et or{' '}
+            <code className="bg-navy/10 px-1 rounded">#FFD700</code>). Ce signal UI différencie clairement
+            ce profil des autres et rappelle à l'utilisateur sa nature spéculative.{' '}
+            <strong>Les airdrops constituent un bonus potentiel non garanti — jamais un rendement promis.</strong>
+          </InfoBox>
           <p className="text-navy/70 text-sm">
             Les poids d'allocation de chaque profil sont stockés on-chain et modifiables
             par vote de gouvernance, dans les limites fixées par les tiers de risque (§7.2).
           </p>
         </SubSection>
         </div>
+
+        <SubSection title="3.6 Architecture cross-chain (Dynamic et Airdrop Hunter)">
+          <p className="text-navy/70 leading-relaxed mb-3">
+            Les profils Prudent et Balanced s'appuient exclusivement sur des protocoles natifs Ethereum.
+            Pour les profils Dynamic et Airdrop Hunter, DeFi Lantern accède à des protocoles
+            sur d'autres chaînes tout en maintenant l'invariant fondamental : <strong>l'utilisateur
+            dépose et retire uniquement en USDC sur Ethereum mainnet</strong>.
+          </p>
+          <SubSection title="Problème fondamental">
+            <p className="text-navy/70 text-sm mb-3">
+              L'ERC-4626 suppose que <code className="bg-navy/10 px-1 rounded">totalAssets()</code> est
+              synchrone et observable on-chain. En contexte cross-chain, cette valeur dépend
+              d'actifs déposés sur d'autres chaînes, introduisant des délais et des risques d'oracle.
+            </p>
+          </SubSection>
+          <SubSection title="Quatre architectures possibles">
+            <WpTable
+              headers={['Architecture', 'Principe', 'Décentralisation', 'Complexité', 'Réalisme MVP']}
+              rows={[
+                ['0 — Token bridgé sur ETH', 'Le protocole cible émet un token représentatif sur ETH (ex. Sierra Money via LayerZero OFT). Le vault achète ce token directement.', '✅ Complète', 'Faible', '⭐⭐⭐⭐⭐'],
+                ['1 — Keeper + bridge natif', 'Un keeper off-chain exécute les bridges via Stargate V2 et pousse un oracle de balance toutes les ~1h.', '❌ Keeper central', 'Moyenne', '⭐⭐⭐'],
+                ['2 — Satellites + LayerZero', 'Contrats satellites déployés sur chaque chaîne cible ; le vault ETH coordonne via messages LZ. Architecture cible v2.', '✅ On-chain', 'Très haute', '⭐'],
+                ['3 — Chainlink CCIP', 'Identique à l\'Arch. 2 avec CCIP. Latence 5–15 min. Standard institutionnel (Sommelier, Synthetix v3).', '✅ On-chain', 'Extrême', '⭐'],
+              ]}
+            />
+          </SubSection>
+          <InfoBox>
+            <strong>Choix MVP — Architecture 0 (token bridgé sur ETH) :</strong> en v1,
+            DeFi Lantern n'intègre que des protocoles disposant d'un token représentatif sur
+            Ethereum mainnet (OFT LayerZero ou équivalent). Sierra Money en est l'exemple
+            fondateur. Cette approche maintient le vault 100% on-chain sur ETH,
+            avec <code className="bg-navy/10 px-1 rounded">totalAssets()</code> synchrone et les retraits
+            instantanés. L'Architecture 2 (satellites) constitue la roadmap v2 pour les
+            protocoles sans représentation sur ETH.
+          </InfoBox>
+          <SubSection title="Protocoles cross-chain étudiés">
+            <WpTable
+              headers={['Protocole', 'Chaîne native', 'Type', 'APY', 'Bridge ETH', 'Intégration']}
+              rows={[
+                ['Sierra Money', 'Avalanche', 'LYT hybride RWA+DeFi', '~4,78%', '✅ LayerZero OFT', '★★☆ — Arch. 0, SierraAdapter.sol requis'],
+                ['sUSDai (USD.AI)', 'ETH mainnet + L2s', 'Stablecoin adossé à des GPU IA (~13–17%)', '~13–17%', 'À confirmer (natif ETH probable)', '★★☆ — Arch. 0 si disponible sur ETH mainnet'],
+                ['yzPP — Yuzu Money', 'Plasma L1 (Tether)', 'Junior tranche (first-loss buffer)', '14–40% variable', '❌ Aucun bridge ETH connu', '★☆☆ — Arch. 1 ou 2 requise'],
+              ]}
+            />
+          </SubSection>
+          <SubSection title="Gestion des risques cross-chain">
+            <WpTable
+              headers={['Risque', 'Impact', 'Mitigation']}
+              rows={[
+                ['Oracle stale (délai de mise à jour)', 'NAV potentiellement incorrecte', 'TWAP + circuit breaker + MAX_STALENESS on-chain'],
+                ['Bridge hors service', 'Fonds temporairement inaccessibles', 'Buffer 10% TVL sur Aave v3 (ETH) toujours accessible'],
+                ['Slippage bridge', 'Drag sur le rendement net', 'Harvest hebdomadaire, Stargate Bus (réduction coûts >90%)'],
+                ['Exploit bridge', 'Perte partielle cross-chain', 'Cap 15% par protocole applicable aux positions cross-chain'],
+              ]}
+            />
+          </SubSection>
+        </SubSection>
       </Section>
 
       {/* 4. PROTOCOLES SOUS-JACENTS */}
@@ -557,7 +623,7 @@ totalAssets() : shares × pricePerShare (oracle Chainlink) → USDC équivalent`
           </p>
           <InfoBox>
             <strong>Implémentation :</strong> les frais ne sont jamais transférés en USDC.
-            À chaque harvest, le FeeManager mint de nouveaux tokens glUSDC-P/B/D au treasury proportionnellement
+            À chaque harvest, le FeeManager mint de nouveaux tokens glUSDC-P/B/D/AH au treasury proportionnellement
             au gain, diluant les actionnaires existants de 5% du rendement produit.
             Ce mécanisme aligne les intérêts du treasury avec ceux des utilisateurs —
             le treasury ne perçoit un revenu que lorsque les utilisateurs en perçoivent un.
@@ -585,7 +651,7 @@ new_shares  = fee_en_usd / pricePerShare_après_yield`}</CodeBlock>
           <p className="text-navy/70 text-sm mb-2"><strong className="text-navy">Flux de retrait :</strong></p>
           <ol className="list-decimal list-inside text-navy/70 text-sm space-y-1 mb-3">
             <li>L'utilisateur appelle <code className="bg-navy/10 px-1 rounded">redeem(shares)</code></li>
-            <li>Le vault brûle les parts glUSDC-P/B/D et calcule le montant proportionnel dû depuis chaque adapter</li>
+            <li>Le vault brûle les parts glUSDC-P/B/D/AH et calcule le montant proportionnel dû depuis chaque adapter</li>
             <li>Les fonds des protocoles sans cooldown sont reversés immédiatement à l'utilisateur</li>
             <li>Pour les protocoles avec cooldown, l'utilisateur attend la fin du délai propre à chaque protocole</li>
           </ol>
@@ -730,7 +796,7 @@ new_shares  = fee_en_usd / pricePerShare_après_yield`}</CodeBlock>
             rows={[
               ['Équipe (5 fondateurs)', '20%', '4 000 000 chacun', 'Cliff 12 mois + linéaire 24 mois', 'Les fondateurs ne peuvent pas vendre au lancement'],
               ['Treasury / DAO', '40%', '40 000 000', 'Gouverné par la DAO', 'Finance les audits, l\'infrastructure, le développement'],
-              ['Communauté / Liquidity Mining', '30%', '30 000 000', 'Émission sur 48 mois aux déposants des 3 vaults (glUSDC-P/B/D)', 'Bootstrap de l\'adoption par récompense des premiers utilisateurs'],
+              ['Communauté / Liquidity Mining', '30%', '30 000 000', 'Émission sur 48 mois aux déposants des 4 vaults (glUSDC-P/B/D/AH)', 'Bootstrap de l\'adoption par récompense des premiers utilisateurs'],
               ['Écosystème / Grants', '10%', '10 000 000', 'Discrétionnaire, gouverné par la DAO', 'Intégrations, hackathons, partenariats tiers'],
             ]}
           />
@@ -781,7 +847,7 @@ new_shares  = fee_en_usd / pricePerShare_après_yield`}</CodeBlock>
         <p className="text-navy/70 leading-relaxed mb-4">
           Notre réponse est un vault ERC-4626 non-custodial qui agrège seize sources de rendement
           complémentaires en un seul point d'entrée. L'utilisateur dépose une fois et reçoit des
-          glUSDC-P, glUSDC-B ou glUSDC-D dont la valeur s'apprécie automatiquement. DeFi Lantern gère l'allocation,
+          glUSDC-P, glUSDC-B, glUSDC-D ou glUSDC-AH dont la valeur s'apprécie automatiquement. DeFi Lantern gère l'allocation,
           le harvest et le rééquilibrage — sans jamais prendre la garde des fonds.
         </p>
         <p className="text-navy/70 leading-relaxed mb-4">
@@ -817,7 +883,7 @@ new_shares  = fee_en_usd / pricePerShare_après_yield`}</CodeBlock>
         <WarningBox>
           DeFi Lantern est un projet logiciel expérimental et open-source développé à des fins académiques.
           Ce n'est pas un produit financier enregistré ni un véhicule d'investissement. Les parts glUSDC-P,
-          glUSDC-B et glUSDC-D ne sont pas des titres financiers. Déposer des actifs dans DeFi Lantern implique des risques
+          glUSDC-B, glUSDC-D et glUSDC-AH ne sont pas des titres financiers. Déposer des actifs dans DeFi Lantern implique des risques
           significatifs incluant, sans s'y limiter : des vulnérabilités de smart contracts, des défaillances
           d'oracle, des défaillances des protocoles sous-jacents, des contraintes de liquidité et des
           changements réglementaires.
@@ -857,7 +923,7 @@ function WhitepaperEN() {
         <p className="text-navy/70 leading-relaxed">
           DeFi Lantern is a non-custodial, multi-protocol yield aggregator for stablecoins deployed on
           Ethereum mainnet. Users deposit USDC and receive ERC-4626 share tokens —
-          <strong>glUSDC-P</strong>, <strong>glUSDC-B</strong>, or <strong>glUSDC-D</strong> depending
+          <strong>glUSDC-P</strong>, <strong>glUSDC-B</strong>, <strong>glUSDC-D</strong>, or <strong>glUSDC-AH</strong> depending
           on their chosen risk profile — whose value appreciates over time as the protocol harvests
           yield from a curated set of battle-tested DeFi protocols.
         </p>
@@ -891,7 +957,7 @@ function WhitepaperEN() {
         <SubSection title="1.2 The DeFi Lantern Answer">
           <p className="text-navy/70 leading-relaxed">
             DeFi Lantern aggregates yield from multiple protocols into a single vault. The user deposits USDC
-            once into their chosen vault and receives glUSDC-P/B/D shares that appreciate passively. DeFi Lantern handles allocation,
+            once into their chosen vault and receives glUSDC-P/B/D/AH shares that appreciate passively. DeFi Lantern handles allocation,
             harvesting, and rebalancing. DeFi Lantern does not take custody of user funds — assets remain
             in the underlying protocols at all times, accessible only through the vault's non-custodial
             withdrawal mechanism.
@@ -918,7 +984,7 @@ function WhitepaperEN() {
         </SubSection>
         <SubSection title="2.2 Key Features">
           <p className="text-navy/70 text-sm mb-2"><strong className="text-navy">Single-entry yield.</strong> One USDC deposit gives exposure to up to sixteen yield strategies simultaneously.</p>
-          <p className="text-navy/70 text-sm mb-2"><strong className="text-navy">ERC-4626 compliant.</strong> glUSDC-P, glUSDC-B, and glUSDC-D are fully standard ERC-4626 vault tokens, composable with any protocol supporting the standard. Each token is fully fungible within its vault — a secondary market buyer immediately knows their exact risk exposure.</p>
+          <p className="text-navy/70 text-sm mb-2"><strong className="text-navy">ERC-4626 compliant.</strong> glUSDC-P, glUSDC-B, glUSDC-D, and glUSDC-AH are fully standard ERC-4626 vault tokens, composable with any protocol supporting the standard. Each token is fully fungible within its vault — a secondary market buyer immediately knows their exact risk exposure.</p>
           <p className="text-navy/70 text-sm mb-2"><strong className="text-navy">Non-custodial by design.</strong> No admin key can move user funds. The Guardian multisig can only pause new deposits — withdrawals remain open at all times.</p>
           <p className="text-navy/70 text-sm mb-2"><strong className="text-navy">Transparent allocation.</strong> Target weights per protocol are stored on-chain in basis points (sum = 10,000). Any GLOW holder can verify the strategy at any time.</p>
           <p className="text-navy/70 text-sm"><strong className="text-navy">On-chain governance.</strong> All parameter changes go through a Governor contract with a 48-hour Timelock.</p>
@@ -1016,7 +1082,7 @@ totalAssets() : shares × pricePerShare (Chainlink oracle) → USDC equivalent`}
         <div id="risk-profiles-en">
         <SubSection title="3.4 Risk Profiles">
           <p className="text-navy/70 leading-relaxed mb-3">
-            DeFi Lantern deploys <strong>three distinct ERC-4626 vaults</strong>, one per risk profile,
+            DeFi Lantern deploys <strong>four distinct ERC-4626 vaults</strong>, one per risk profile,
             each issuing its own fully fungible token. The user selects a profile at entry
             and deposits into the corresponding vault. This design ensures that any secondary
             market buyer knows their exact exposure immediately: glUSDC-P = tier 1 protocols only,
@@ -1028,6 +1094,7 @@ totalAssets() : shares × pricePerShare (Chainlink oracle) → USDC equivalent`}
               ['🛡️ Prudent', '9 protocols — tier 1 + sUSDe (audited delta-neutral) + reUSD (capital-protected senior tranche, Re Protocol) + Resolv USR (delta-neutral, moderate yield)', '~4–6%', 'Max 15% per protocol — concentrated in the most audited, most liquid protocols'],
               ['⚖️ Balanced', '17 protocols — 50% capital in Prudent pool + 50% in Dynamic pool', '~6–9%', 'Equal-weight blend of both pools (weights × 0.5)'],
               ['⚡ Dynamic', '8 protocols — tier 3 (sNUSD, syrupUSDC, jrUSDe, sUSD3, imUSD, reUSDe, RLP, stkUSDC)', '~9–15%', 'Concentrated in high-yield protocols, including junior tranches'],
+              ['🪂 Airdrop Hunter', '1+ protocol(s) — Sierra Money (RWA+DeFi hybrid, T-bills + Aave/Morpho, native Avalanche bridged via LayerZero). Evolving list via governance vote.', 'Variable (~4–8%+)', 'Innovative protocols selected for vision, technical execution, and airdrop potential. 100% Sierra Money weight in v1.'],
             ]}
           />
           <InfoBox>
@@ -1036,12 +1103,76 @@ totalAssets() : shares × pricePerShare (Chainlink oracle) → USDC equivalent`}
             theme) to signal the change in risk level. This UI cue reminds the user they are
             operating in a higher-risk strategy.
           </InfoBox>
+          <InfoBox>
+            <strong>Airdrop Hunter profile & Red/Gold theme:</strong> the Airdrop Hunter profile
+            activates a distinct visual theme (dark background <code className="bg-navy/10 px-1 rounded">#1A0A0A</code>, red accent{' '}
+            <code className="bg-navy/10 px-1 rounded">#C0392B</code> and gold{' '}
+            <code className="bg-navy/10 px-1 rounded">#FFD700</code>). This UI signal clearly differentiates
+            this profile from others and reminds the user of its speculative nature.{' '}
+            <strong>Airdrops are a potential bonus, never a guaranteed return.</strong>
+          </InfoBox>
           <p className="text-navy/70 text-sm">
             Each profile's allocation weights are stored on-chain and updatable by governance vote,
             within the limits set by the risk tiers (§7.1).
           </p>
         </SubSection>
         </div>
+
+        <SubSection title="3.5 Cross-Chain Architecture (Dynamic and Airdrop Hunter)">
+          <p className="text-navy/70 leading-relaxed mb-3">
+            The Prudent and Balanced profiles rely exclusively on native Ethereum protocols.
+            For the Dynamic and Airdrop Hunter profiles, DeFi Lantern accesses protocols on
+            other chains while maintaining the fundamental invariant: <strong>users deposit
+            and withdraw only in USDC on Ethereum mainnet</strong>.
+          </p>
+          <SubSection title="Core Challenge">
+            <p className="text-navy/70 text-sm mb-3">
+              ERC-4626 assumes <code className="bg-navy/10 px-1 rounded">totalAssets()</code> is
+              synchronous and observable on-chain. In a cross-chain context, this value depends
+              on assets deposited on other chains, introducing oracle delays and additional risks.
+            </p>
+          </SubSection>
+          <SubSection title="Four Possible Architectures">
+            <WpTable
+              headers={['Architecture', 'Principle', 'Decentralization', 'Complexity', 'MVP Realism']}
+              rows={[
+                ['0 — Bridged token on ETH', 'The target protocol issues a representative token on ETH (e.g. Sierra Money via LayerZero OFT). The vault buys this token directly.', '✅ Full', 'Low', '⭐⭐⭐⭐⭐'],
+                ['1 — Keeper + native bridge', 'An off-chain keeper executes bridges via Stargate V2 and pushes a balance oracle every ~1h.', '❌ Centralized keeper', 'Medium', '⭐⭐⭐'],
+                ['2 — Satellites + LayerZero', 'Satellite contracts deployed on each target chain; the ETH vault coordinates via LZ messages. Target architecture for v2.', '✅ On-chain', 'Very high', '⭐'],
+                ['3 — Chainlink CCIP', 'Same as Arch. 2 with CCIP. 5–15 min latency. Institutional standard (Sommelier, Synthetix v3).', '✅ On-chain', 'Extreme', '⭐'],
+              ]}
+            />
+          </SubSection>
+          <InfoBox>
+            <strong>MVP Choice — Architecture 0 (bridged token on ETH):</strong> in v1,
+            DeFi Lantern only integrates protocols that have a representative token on
+            Ethereum mainnet (LayerZero OFT or equivalent). Sierra Money is the founding
+            example. This approach keeps the vault 100% on-chain on ETH, with a synchronous{' '}
+            <code className="bg-navy/10 px-1 rounded">totalAssets()</code> and instant withdrawals.
+            Architecture 2 (satellites) forms the v2 roadmap for protocols without an ETH representation.
+          </InfoBox>
+          <SubSection title="Cross-Chain Protocols Under Study">
+            <WpTable
+              headers={['Protocol', 'Native Chain', 'Type', 'APY', 'ETH Bridge', 'Integration']}
+              rows={[
+                ['Sierra Money', 'Avalanche', 'LYT hybrid RWA+DeFi', '~4.78%', '✅ LayerZero OFT', '★★☆ — Arch. 0, SierraAdapter.sol required'],
+                ['sUSDai (USD.AI)', 'ETH mainnet + L2s', 'Stablecoin backed by AI GPUs', '~13–17%', 'To confirm (likely native ETH)', '★★☆ — Arch. 0 if available on ETH mainnet'],
+                ['yzPP — Yuzu Money', 'Plasma L1 (Tether)', 'Junior tranche (first-loss buffer)', '14–40% variable', '❌ No known ETH bridge', '★☆☆ — Arch. 1 or 2 required'],
+              ]}
+            />
+          </SubSection>
+          <SubSection title="Cross-Chain Risk Management">
+            <WpTable
+              headers={['Risk', 'Impact', 'Mitigation']}
+              rows={[
+                ['Stale oracle (update delay)', 'Potentially incorrect NAV', 'TWAP + circuit breaker + on-chain MAX_STALENESS'],
+                ['Bridge offline', 'Temporarily inaccessible funds', '10% TVL buffer on Aave v3 (ETH) always accessible'],
+                ['Bridge slippage', 'Net yield drag', 'Weekly harvest, Stargate Bus (>90% cost reduction)'],
+                ['Bridge exploit', 'Partial cross-chain loss', '15% cap per protocol applies to cross-chain positions'],
+              ]}
+            />
+          </SubSection>
+        </SubSection>
       </Section>
 
       {/* 4. UNDERLYING PROTOCOLS */}
@@ -1133,7 +1264,7 @@ totalAssets() : shares × pricePerShare (Chainlink oracle) → USDC equivalent`}
           </p>
           <InfoBox>
             <strong>Implementation:</strong> the fee is never transferred as USDC. At each harvest,
-            the FeeManager mints new glUSDC-P/B/D shares to the treasury proportional to the gain,
+            the FeeManager mints new glUSDC-P/B/D/AH shares to the treasury proportional to the gain,
             diluting existing shareholders by 5% of the yield produced.
             This mechanism aligns the treasury's interests with those of users —
             the treasury only earns when users earn.
@@ -1273,7 +1404,7 @@ new_shares  = fee_in_usd / pricePerShare_after_yield`}</CodeBlock>
             rows={[
               ['Team (5 founders)', '20%', '4,000,000 each', '12-month cliff + 24-month linear', 'Founders cannot sell at launch'],
               ['Treasury / DAO', '40%', '40,000,000', 'DAO-governed', 'Funds audits, infrastructure, development'],
-              ['Community / Liquidity Mining', '30%', '30,000,000', '48-month emission to depositors across all 3 vaults (glUSDC-P/B/D)', 'Bootstraps adoption, rewards early users'],
+              ['Community / Liquidity Mining', '30%', '30,000,000', '48-month emission to depositors across all 4 vaults (glUSDC-P/B/D/AH)', 'Bootstraps adoption, rewards early users'],
               ['Ecosystem / Grants', '10%', '10,000,000', 'Discretionary, DAO-governed', 'Integrations, hackathons, partnerships'],
             ]}
           />
@@ -1311,8 +1442,8 @@ new_shares  = fee_in_usd / pricePerShare_after_yield`}</CodeBlock>
           vast majority of stablecoin holders are not equipped to handle.
         </p>
         <p className="text-navy/70 leading-relaxed mb-4">
-          Our answer is a non-custodial ERC-4626 vault that aggregates sixteen complementary
-          yield sources across three specialized vaults. Users deposit once into their chosen vault and receive glUSDC-P/B/D shares
+          Our answer is a non-custodial ERC-4626 vault that aggregates yield across four specialized vaults.
+          Users deposit once into their chosen vault and receive glUSDC-P/B/D/AH shares
           that appreciate automatically. DeFi Lantern handles allocation, harvesting, and
           rebalancing — without ever taking custody of funds.
         </p>
@@ -1348,7 +1479,7 @@ new_shares  = fee_in_usd / pricePerShare_after_yield`}</CodeBlock>
       <Section id="legal-en" title="11. Legal Disclaimer">
         <WarningBox>
           DeFi Lantern is an experimental, open-source software project developed for academic purposes.
-          It is not a registered financial product or investment vehicle. glUSDC-P, glUSDC-B, and glUSDC-D shares are not securities.
+          It is not a registered financial product or investment vehicle. glUSDC-P, glUSDC-B, glUSDC-D, and glUSDC-AH shares are not securities.
           Depositing assets into DeFi Lantern involves significant risks including, but not limited to:
           smart contract vulnerabilities, oracle failures, underlying protocol failures, liquidity constraints,
           and regulatory changes.

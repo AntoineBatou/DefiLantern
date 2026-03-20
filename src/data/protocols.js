@@ -17,6 +17,7 @@ export const CATEGORY_COLORS = {
   'Market Neutral':       { bg: 'bg-indigo-100', text: 'text-indigo-700' },
   'Fixed Rate':           { bg: 'bg-pink-100',   text: 'text-pink-700'   },
   'Safety Module':        { bg: 'bg-cyan-100',   text: 'text-cyan-700'   },
+  'Liquid Yield Token':   { bg: 'bg-red-100',    text: 'text-red-700'    },
 }
 
 // Couleurs pour le graphique donut (24 protocoles)
@@ -473,6 +474,26 @@ export const RETAINED_PROTOCOLS = [
     descEn: 'Resolv protocol junior tranche. RLP absorbs USR losses and captures excess from positive funding rates. Its price is not stable (~$1.28) — it can drop during prolonged ETH crashes. High APY (~15–25%) but capital at risk. Reserved for the Dynamic profile.',
     risk: 3,
     link: 'https://resolv.xyz',
+  },
+  // ── Airdrop Hunter ───────────────────────────────────────────────────────────
+  {
+    id: 'sierra',
+    name: 'Sierra Money',
+    category: 'Liquid Yield Token',
+    allocation: EQ_WEIGHT,
+    fallbackApy: 4.78,
+    historicalApy12m: null, // Lancé nov. 2025 — moins de 12 mois d'existence
+    llamaConfig: {
+      fullPoolId: null, // à confirmer via DeFiLlama (protocole récent)
+      project: 'sierra-money',
+      chain: 'Avalanche',
+      symbol: 'SIERRA',
+    },
+    descFr: 'Protocole hybride RWA + DeFi. Vos USDC génèrent du rendement via des fonds monétaires US (T-bills) et des protocoles DeFi (Aave, Morpho, Euler, Pendle). Natif Avalanche, accessible sur Ethereum via bridge LayerZero. Protocole lancé en novembre 2025 — early adopters potentiellement bien positionnés en vue d\'une future émission tokenomique.',
+    descEn: 'Hybrid RWA + DeFi protocol. Your USDC earns yield through US money market funds (T-bills) and DeFi protocols (Aave, Morpho, Euler, Pendle). Native to Avalanche, accessible on Ethereum via LayerZero bridge. Launched November 2025 — early adopters may be well positioned for a potential future token emission.',
+    risk: 2,
+    link: 'https://app.sierra.money',
+    airdropPotential: true, // marqueur Airdrop Hunter
   },
 ]
 

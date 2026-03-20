@@ -1,16 +1,18 @@
-// profiles.js — Configuration des 3 profils de risque
+// profiles.js — Configuration des 4 profils de risque
 //
 // Architecture : chaque profil définit une liste explicite de protocoles
 // et leurs poids d'allocation (sum = 1.0 = 100%).
 //
-// Prudent  : 9 protocoles (tier 1 + sUSDe + reUSD + Resolv USR)
-// Dynamic  : 8 protocoles à rendement élevé (tranches junior incluses)
-// Balanced : 50% capital Prudent + 50% capital Dynamic (17 protocoles)
+// Prudent       : 9 protocoles (tier 1 + sUSDe + reUSD + Resolv USR)
+// Dynamic       : 8 protocoles à rendement élevé (tranches junior incluses)
+// Balanced      : 50% capital Prudent + 50% capital Dynamic (17 protocoles)
+// AirdropHunter : protocoles innovants avec potentiel airdrop (Sierra Money en premier)
 //
-// Le profil Dynamique déclenche le mode Cyber/Neon (isDark = true).
+// isDark = true pour les profils avec theme !== 'light' (dynamic et airdropHunter).
 
 // ── Listes de protocoles par profil ────────────────────────────────────────
 // Les IDs correspondent au champ `id` dans protocols.js
+// Airdrop Hunter : liste évolutive — Sierra Money est le premier protocole intégré
 
 const PRUDENT_PROTOCOL_IDS = [
   'aave-v3',
@@ -67,6 +69,16 @@ const BALANCED_WEIGHTS = Object.fromEntries([
   ...Object.entries(DYNAMIC_WEIGHTS).map(([id, w]) => [id, w * 0.5]),
 ])
 
+const AIRDROP_HUNTER_PROTOCOL_IDS = [
+  'sierra', // premier protocole — liste à compléter au fil des sélections
+]
+
+// Poids d'allocation pour Airdrop Hunter (sum = 1.0)
+// Sierra = 100% tant qu'il est seul dans le vault
+const AIRDROP_HUNTER_WEIGHTS = {
+  'sierra': 1.0,
+}
+
 // ── Définition des profils ──────────────────────────────────────────────────
 
 export const PROFILES = {
@@ -97,6 +109,15 @@ export const PROFILES = {
     apyRange: '8–15%',
     theme: 'dark', // ← déclenche le mode Cyber/Neon
   },
+  airdropHunter: {
+    id: 'airdropHunter',
+    icon: '🪂',
+    shareToken: 'glUSDC-AH',
+    protocolIds: AIRDROP_HUNTER_PROTOCOL_IDS,
+    weights: AIRDROP_HUNTER_WEIGHTS,
+    apyRange: 'Variable',
+    theme: 'christmas', // ← fond sombre rouge & or (#C0392B + #FFD700)
+  },
 }
 
 // Couleurs des pills dans le header selon le profil
@@ -118,5 +139,11 @@ export const PROFILE_PILL_COLORS = {
     active: 'bg-[#7C3AED] text-white shadow-sm',
     dot: '#7C3AED',
     darkInactive: 'dark:bg-violet-900/30 dark:text-violet-300 dark:border-violet-700',
+  },
+  airdropHunter: {
+    inactive: 'bg-red-50 text-red-800 border border-red-200 hover:bg-red-100',
+    active: 'bg-[#C0392B] text-white shadow-sm',
+    dot: '#C0392B',
+    darkInactive: 'dark:bg-red-900/30 dark:text-red-300 dark:border-red-700',
   },
 }

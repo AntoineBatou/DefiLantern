@@ -2,8 +2,15 @@
 // ReactDOM.createRoot est la méthode React 18 pour monter l'app
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+import { WagmiProvider } from 'wagmi'
+import { RainbowKitProvider } from '@rainbow-me/rainbowkit'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { wagmiConfig } from './config/wagmi.js'
 import App from './App.jsx'
-import './index.css' // Styles globaux Tailwind
+import './index.css'                        // Styles globaux Tailwind
+import '@rainbow-me/rainbowkit/styles.css' // Styles du modal Connect Wallet
+
+const queryClient = new QueryClient()
 
 // ErrorBoundary temporaire pour afficher l'erreur au lieu d'une page blanche
 class ErrorBoundary extends React.Component {
@@ -36,7 +43,13 @@ class ErrorBoundary extends React.Component {
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <ErrorBoundary>
-      <App />
+      <WagmiProvider config={wagmiConfig}>
+        <QueryClientProvider client={queryClient}>
+          <RainbowKitProvider>
+            <App />
+          </RainbowKitProvider>
+        </QueryClientProvider>
+      </WagmiProvider>
     </ErrorBoundary>
   </React.StrictMode>,
 )

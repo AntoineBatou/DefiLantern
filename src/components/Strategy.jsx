@@ -9,6 +9,13 @@ import { useRiskProfile } from '../context/RiskProfileContext'
 import { DONUT_COLORS, RETAINED_PROTOCOLS } from '../data/protocols'
 import { PROFILE_PILL_COLORS } from '../data/profiles'
 
+// Construit la clé de traduction pour la description du profil actif
+// ex: 'prudent' → 'strategy.profileDescPrudent'
+function profileDescKey(profileId) {
+  const capitalized = profileId.charAt(0).toUpperCase() + profileId.slice(1)
+  return `strategy.profileDesc${capitalized}`
+}
+
 // ── Tooltip personnalisé ───────────────────────────────────────────────────────
 function CustomTooltip({ active, payload, apyData }) {
   if (!active || !payload || !payload.length) return null
@@ -28,7 +35,7 @@ function CustomTooltip({ active, payload, apyData }) {
 
 export default function Strategy({ apyData, averageApy, historicalApy }) {
   const { t, lang } = useLang()
-  const { profileProtocols, profile, profileWeights } = useRiskProfile()
+  const { profileProtocols, profile, profileWeights, profileConfig, isDark } = useRiskProfile()
   const pillColors = PROFILE_PILL_COLORS[profile]
 
   // Données pour Recharts : protocoles filtrés + poids réels du profil
@@ -96,6 +103,10 @@ export default function Strategy({ apyData, averageApy, historicalApy }) {
                 fr: 'Rendement maximisé — stratégies avancées pour investisseurs avertis, avec une gestion rigoureuse du risque.',
                 en: 'Maximised yield — advanced strategies for experienced investors, with rigorous risk management.',
               },
+              airdropHunter: {
+                fr: "Protocoles innovants sélectionnés pour leur rendement compétitif et leur potentiel d'airdrop.",
+                en: 'Innovative protocols selected for their competitive yield and airdrop potential.',
+              },
             }[profile]?.[lang] ?? t('strategy.subtitle')}
           </p>
           {/* Indicateur du profil actif */}
@@ -108,6 +119,25 @@ export default function Strategy({ apyData, averageApy, historicalApy }) {
               {profileProtocols.length} protocoles sélectionnés
             </span>
             <div className="w-16 h-1 rounded-full bg-[#2ABFAB]" aria-hidden="true" />
+          </div>
+
+          {/* Carte de description du profil — placée sous l'indicateur */}
+          <div className={`mt-6 p-4 rounded-lg max-w-xl mx-auto ${
+            profileConfig?.theme === 'christmas'
+              ? 'bg-red-950/40 border border-red-900'
+              : isDark
+                ? 'bg-gray-800 border border-gray-700'
+                : 'bg-blue-50 border border-blue-100'
+          }`}>
+            <p className="text-sm leading-relaxed text-navy/70">
+              {t(profileDescKey(profile))}
+            </p>
+            {/* Avertissement spécifique Airdrop Hunter */}
+            {profile === 'airdropHunter' && (
+              <p className="mt-2 text-xs font-medium" style={{ color: '#FFD700' }}>
+                {t('strategy.airdropDisclaimerShort')}
+              </p>
+            )}
           </div>
         </div>
 

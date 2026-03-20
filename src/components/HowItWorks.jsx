@@ -130,13 +130,16 @@ export default function HowItWorks() {
         </div>
 
         {/* ── Note sur le token fyUSDC ── */}
-        <div className="mt-12 bg-teal-light rounded-2xl p-6 flex gap-4 items-start">
+        <div className="mt-12 bg-teal-light border-2 border-[#2ABFAB]/50 rounded-2xl p-6 flex gap-4 items-start">
           <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#2ABFAB] flex items-center justify-center mt-0.5">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
               <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
             </svg>
           </div>
           <div>
+            <p className="text-sm font-semibold text-navy mb-1">
+              {lang === 'fr' ? 'Rendement automatique, sans action de votre part' : 'Automatic yield, no action required'}
+            </p>
             <p className="text-sm text-navy/70 leading-relaxed">
               <strong className="text-navy">{shareToken}</strong> est un jeton de dépôt standardisé (ERC-4626).
               Contrairement à un staking classique, vous n'attendez pas de "récompenses" séparées —
@@ -147,7 +150,7 @@ export default function HowItWorks() {
         </div>
 
         {/* ── Bloc frais de performance ── */}
-        <div className="mt-4 bg-amber-50 border border-amber-200 rounded-2xl p-6 flex gap-4 items-start">
+        <div className="mt-4 bg-amber-50 border-2 border-amber-300 rounded-2xl p-6 flex gap-4 items-start">
           <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#F5A623] flex items-center justify-center mt-0.5 text-white font-bold text-sm">
             %
           </div>
@@ -160,7 +163,7 @@ export default function HowItWorks() {
         </div>
 
         {/* ── Bloc cap 15% par protocole ── */}
-        <div className="mt-4 bg-green-50 border border-green-200 rounded-2xl p-6 flex gap-4 items-start">
+        <div className="mt-4 bg-green-50 border-2 border-green-300 rounded-2xl p-6 flex gap-4 items-start">
           <div className="flex-shrink-0 w-8 h-8 rounded-full bg-green-500 flex items-center justify-center mt-0.5 text-white font-bold text-sm">
             🛡️
           </div>
@@ -177,7 +180,7 @@ export default function HowItWorks() {
         </div>
 
         {/* ── Bloc gouvernance DAO ── */}
-        <div className="mt-4 bg-purple-50 border border-purple-200 rounded-2xl p-6 flex gap-4 items-start">
+        <div className="mt-4 bg-purple-50 border-2 border-purple-300 rounded-2xl p-6 flex gap-4 items-start">
           <div className="flex-shrink-0 w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center mt-0.5 text-white font-bold text-sm">
             🗳️
           </div>

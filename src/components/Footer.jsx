@@ -8,6 +8,7 @@
 // - Copyright
 
 import { useLang } from '../context/LangContext'
+import { useRiskProfile } from '../context/RiskProfileContext'
 
 // Icône Ethereum SVG (logo officiel simplifié)
 function EthLogo() {
@@ -45,6 +46,9 @@ function TwitterIcon() {
 
 export default function Footer({ navigateTo }) {
   const { t } = useLang()
+  // Logo blanc sur fonds sombres (dynamic + airdropHunter), noir sur fond clair
+  const { isDark } = useRiskProfile()
+  const logoFile = isDark ? 'lantern-logo-black.svg' : 'lantern-logo-white.svg'
 
   const links = [
     {
@@ -76,7 +80,7 @@ export default function Footer({ navigateTo }) {
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-2.5">
               <img
-                src={`${import.meta.env.BASE_URL}lantern-logo.svg`}
+                src={`${import.meta.env.BASE_URL}${logoFile}`}
                 alt="DeFi Lantern"
                 className="h-8 w-auto"
               />

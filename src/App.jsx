@@ -29,6 +29,8 @@ import Footer from './components/Footer'
 import Governance from './components/Governance'
 import Whitepaper from './components/Whitepaper'
 import Learn from './components/Learn'
+import ParachuteOverlay from './components/ParachuteOverlay'
+import LanternCursor from './components/LanternCursor'
 
 // ── Composant interne qui utilise les deux contextes ──────────────────────────
 function AppContent() {
@@ -109,10 +111,22 @@ function AppContent() {
     }
   }, [currentPage, pendingScroll])
 
+  // Calcule la classe de thème selon le profil actif :
+  // - 'light'     → pas de classe (thème clair par défaut)
+  // - 'dark'      → classe .dark (mode Cyber/Neon pour Dynamic)
+  // - 'christmas' → classe .theme-christmas (mode Rouge & Or pour Airdrop Hunter)
+  const themeClass = profileConfig.theme === 'light' ? ''
+    : profileConfig.theme === 'dark' ? 'dark'
+    : `theme-${profileConfig.theme}` // → 'theme-christmas'
+
   return (
-    // Wrapper racine : la classe .dark active le mode Cyber/Neon sur tout l'arbre
+    // Wrapper racine : la classe de thème active le mode visuel sur tout l'arbre
     // theme-transition = transitions douces sur background-color/color/border
-    <div className={`${isDark ? 'dark' : ''} theme-transition min-h-screen`}>
+    <div className={`${themeClass} theme-transition min-h-screen`}>
+      {/* Overlay parachutes — visible uniquement en mode Airdrop Hunter */}
+      <ParachuteOverlay />
+      {/* Curseur lanterne — visible uniquement en mode Dynamic */}
+      <LanternCursor />
       <Header
         currentPage={currentPage}
         navigateTo={navigateTo}

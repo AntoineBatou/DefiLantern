@@ -12,7 +12,7 @@ import { PROFILES, PROFILE_PILL_COLORS } from '../data/profiles'
 
 export default function Header({ currentPage, navigateTo, navigateToSection }) {
   const { lang, setLang, t } = useLang()
-  const { profile, setProfile, profileConfig } = useRiskProfile()
+  const { profile, setProfile, profileConfig, isDark } = useRiskProfile()
 
   const [menuOpen, setMenuOpen] = useState(false)
   const [profileOpen, setProfileOpen] = useState(false)
@@ -72,16 +72,18 @@ export default function Header({ currentPage, navigateTo, navigateToSection }) {
 
   // Labels de profil traduits
   const profileLabels = {
-    prudent:  t('profile.prudent'),
-    balanced: t('profile.balanced'),
-    dynamic:  t('profile.dynamic'),
+    prudent:       t('profile.prudent'),
+    balanced:      t('profile.balanced'),
+    dynamic:       t('profile.dynamic'),
+    airdropHunter: t('profile.airdropHunter'),
   }
 
   // Nombre de protocoles par profil (issu des listes explicites dans profiles.js)
   const profileProtocolCounts = {
-    prudent:  9,   // tier 1 + sUSDe + reUSD + Resolv USR
-    balanced: 17,  // 50% Prudent + 50% Dynamic
-    dynamic:  8,   // tranches junior (reUSDe + RLP inclus)
+    prudent:       9,   // tier 1 + sUSDe + reUSD + Resolv USR
+    balanced:      17,  // 50% Prudent + 50% Dynamic
+    dynamic:       8,   // tranches junior (reUSDe + RLP inclus)
+    airdropHunter: 1,   // Sierra Money (liste évolutive)
   }
 
   return (
@@ -96,7 +98,7 @@ export default function Header({ currentPage, navigateTo, navigateToSection }) {
           {/* ── Logo ── */}
           <a href="/" onClick={handleLogoClick} className="flex items-center gap-2 group flex-shrink-0">
             <img
-              src={`${import.meta.env.BASE_URL}lantern-logo.svg`}
+              src={`${import.meta.env.BASE_URL}${isDark ? 'lantern-logo-black.svg' : 'lantern-logo-white.svg'}`}
               alt="DeFi Lantern"
               className="h-10 w-auto transition-transform duration-200 group-hover:scale-105"
             />
