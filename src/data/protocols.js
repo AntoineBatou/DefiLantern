@@ -260,24 +260,6 @@ export const RETAINED_PROTOCOLS = [
     link: 'https://liquity.org',
   },
   {
-    id: 'resolv',
-    name: 'Resolv USR',
-    category: 'Delta-Neutral',
-    allocation: EQ_WEIGHT,
-    fallbackApy: 7.0,
-    historicalApy12m: null, // Moins de 12 mois d'existence
-    llamaConfig: {
-      fullPoolId: '0aedb3f6-9298-49de-8bb0-2f611a4df784',
-      project: 'resolv',
-      chain: 'Ethereum',
-      symbol: 'STUSR',
-    },
-    descFr: 'Stratégie delta-neutre sur ETH : position longue spot compensée par une position courte en perp. Exposition nulle au prix de l\'ETH, rendement issu des taux de financement.',
-    descEn: 'ETH delta-neutral strategy: spot long position offset by a perp short. Zero ETH price exposure, yield from funding rates.',
-    risk: 2,
-    link: 'https://resolv.xyz',
-  },
-  {
     id: 'cusdo',
     name: 'cUSDO (OpenEden)',
     category: 'RWA T-bills',
@@ -456,24 +438,6 @@ export const RETAINED_PROTOCOLS = [
     descEn: 'Re Protocol on-chain reinsurance junior tranche. Unlike reUSD (protected senior tranche), reUSDe absorbs losses first if the Ethena strategy underperforms — in exchange for higher yield (~8–12% APY). Reserved for the Dynamic profile.',
     risk: 3,
     link: 'https://re.xyz',
-  },
-  {
-    id: 'rlp',
-    name: 'RLP (Resolv)',
-    category: 'Delta-Neutral',
-    allocation: EQ_WEIGHT,
-    fallbackApy: 15.0,
-    historicalApy12m: null, // Moins de 12 mois d'existence
-    llamaConfig: {
-      fullPoolId: '2ad8497d-c855-4840-85ad-cdc536b92ced',
-      project: 'resolv',
-      chain: 'Ethereum',
-      symbol: 'RLP',
-    },
-    descFr: 'Tranche junior du protocole Resolv. RLP absorbe les pertes de USR et capte le surplus des taux de financement positifs. Son prix n\'est pas stable (~$1.28) — il peut baisser en cas de crash ETH prolongé. APY élevé (~15–25%) mais risque de capital. Réservé au profil Dynamique.',
-    descEn: 'Resolv protocol junior tranche. RLP absorbs USR losses and captures excess from positive funding rates. Its price is not stable (~$1.28) — it can drop during prolonged ETH crashes. High APY (~15–25%) but capital at risk. Reserved for the Dynamic profile.',
-    risk: 3,
-    link: 'https://resolv.xyz',
   },
   // ── Airdrop Hunter ───────────────────────────────────────────────────────────
   {

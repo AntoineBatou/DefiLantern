@@ -290,7 +290,6 @@ totalAssets() : shares × pricePerShare (oracle Chainlink) → USDC équivalent`
 │   ├── USDYAdapter.sol
 │   ├── scrvUSDAdapter.sol
 │   ├── sBOLDAdapter.sol
-│   ├── ResolvUSRAdapter.sol
 │   ├── cUSDOAdapter.sol
 │   ├── syrupUSDCAdapter.sol
 │   └── reUSDAdapter.sol
@@ -321,7 +320,6 @@ totalAssets() : shares × pricePerShare (oracle Chainlink) → USDC équivalent`
               ['scrvUSD (Curve)', '2 — Standard', 'Savings Rate', '6%'],
               ['sBOLD (Liquity v2)', '2 — Standard', 'Stability Pool', '6%'],
               ['Euler v2', '2 — Standard', 'Lending', '5%'],
-              ['Resolv USR', '3 — Satellite', 'Delta-Neutral', '4%'],
               ['cUSDO (OpenEden)', '3 — Satellite', 'RWA T-bills', '4%'],
               ['fxSAVE (f(x) Protocol)', '3 — Satellite', 'Stability Pool', '4%'],
               ['Flux Finance', '3 — Satellite', 'Lending', '3%'],
@@ -346,9 +344,9 @@ totalAssets() : shares × pricePerShare (oracle Chainlink) → USDC équivalent`
           <WpTable
             headers={['Profil', 'Protocoles', 'APY cible', 'Allocation']}
             rows={[
-              ['🛡️ Prudent', '9 protocoles — tier 1 + sUSDe (delta-neutre audité) + reUSD (tranche senior Re Protocol) + Resolv USR (delta-neutre, rendement modéré)', '~4–6%', 'Poids max 15% par protocole — concentrés sur les protocoles les plus audités et liquides'],
-              ['⚖️ Équilibré', '17 protocoles — 50% capital Prudent + 50% capital Dynamique', '~6–9%', 'Mix équipondéré entre les deux pools (poids × 0,5)'],
-              ['⚡ Dynamique', '8 protocoles — tier 3 (sNUSD, syrupUSDC, jrUSDe, sUSD3, imUSD, reUSDe, RLP, stkUSDC)', '~9–15%', 'Poids concentrés sur les protocoles à rendement élevé, y compris tranches juniors'],
+              ['🛡️ Prudent', '8 protocoles — tier 1 + sUSDe (delta-neutre audité) + reUSD (tranche senior Re Protocol)', '~4–6%', 'Poids max 16% par protocole — concentrés sur les protocoles les plus audités et liquides'],
+              ['⚖️ Équilibré', '15 protocoles — 50% capital Prudent + 50% capital Dynamique', '~6–9%', 'Mix équipondéré entre les deux pools (poids × 0,5)'],
+              ['⚡ Dynamique', '7 protocoles — tier 3 (sNUSD, syrupUSDC, jrUSDe, sUSD3, imUSD, reUSDe, stkUSDC)', '~9–15%', 'Poids concentrés sur les protocoles à rendement élevé, y compris tranches juniors'],
               ['🪂 Airdrop Hunter', '1+ protocole(s) — Sierra Money (hybride RWA+DeFi, T-bills + Aave/Morpho, natif Avalanche bridgé LayerZero). Liste évolutive par vote de gouvernance.', 'Variable (~4–8%+)', 'Protocoles innovants sélectionnés pour vision, exécution technique et potentiel d\'airdrop. Poids 100% Sierra Money en v1.'],
             ]}
           />
@@ -513,11 +511,6 @@ totalAssets() : shares × pricePerShare (oracle Chainlink) → USDC équivalent`
                 desc: 'ERC-4626 natif. Le rendement provient de 75% des intérêts des emprunteurs BOLD, distribués aux déposants de la Pool de Stabilité. Le cœur de Liquity v2 est immuable (pas de clés admin). Audité par ChainSecurity, Dedaub et Certora. Pas de cooldown.',
               },
               {
-                name: 'Resolv USR',
-                cat: 'Delta-Neutral',
-                desc: '~400M$ TVL. USR est un stablecoin delta-neutre adossé à ETH spot long + ETH short en perp. Le rendement provient des taux de financement et des récompenses de staking. Pas de cooldown — remboursement instantané. Audité par PeckShield et Ottersec. DeFi Lantern intègre USR dans les profils Prudent et Équilibré. RLP (tranche junior, prix non-stable ~$1,28) est intégré uniquement dans le profil Dynamique.',
-              },
-              {
                 name: 'cUSDO (OpenEden)',
                 cat: 'RWA T-bills',
                 desc: '~100-150M$ TVL. 100% bons du Trésor américains + repo. Le seul produit T-bills pur natif sur Ethereum mainnet. Oracle Chainlink (cUSDO/USD). Audité par Certik et ChainSecurity. Pas de cooldown.',
@@ -562,11 +555,6 @@ totalAssets() : shares × pricePerShare (oracle Chainlink) → USDC équivalent`
                 cat: 'Reinsurance',
                 desc: '~8–12% APY. Tranche junior du protocole Re, adossée à la stratégie sUSDe d\'Ethena. reUSDe absorbe les pertes en premier si Ethena sous-performe — en échange d\'un rendement amplifié. DeFi Lantern intègre reUSDe uniquement dans le profil Dynamique. Disponible sur Ethereum mainnet.',
               },
-              {
-                name: 'RLP (Resolv)',
-                cat: 'Delta-Neutral',
-                desc: '~15–25% APY variable. Tranche junior du protocole Resolv — absorbe les pertes avant que USR ne soit affecté. Actif à prix variable (~1,28$), non-stable par conception. Disponible sur Ethereum mainnet. DeFi Lantern intègre RLP uniquement dans le profil Dynamique en raison de son prix non-stable et de son rôle de tranche junior. Audité par PeckShield et Ottersec.',
-              },
             ].map((p) => (
               <div key={p.name} className="bg-bg rounded-xl p-4 border border-lgrey">
                 <div className="flex items-center gap-2 mb-2">
@@ -589,9 +577,6 @@ totalAssets() : shares × pricePerShare (oracle Chainlink) → USDC équivalent`
               ['syrupUSDC (KYC wall)', 'Credit', 'Inclus en tier 3. Note : les emprunteurs institutionnels sont KYC — le dépôt dans le vault reste permissionless.'],
             ]}
           />
-          <InfoBox>
-            <strong>Note RLP :</strong> RLP (Resolv Liquidity Pool) était initialement envisagé comme exclu en raison de son prix non-stable (~$1,28) et de son rôle de tranche junior. Il a finalement été intégré dans le <strong>profil Dynamique uniquement</strong>, où son rendement élevé (15–25% APY) est justifié par le profil de risque explicitement plus agressif de ce vault.
-          </InfoBox>
         </SubSection>
 
         <SubSection title="4.4 Protocoles en évaluation">
@@ -751,7 +736,7 @@ new_shares  = fee_en_usd / pricePerShare_après_yield`}</CodeBlock>
             rows={[
               ['1 — Core', '20%', 'TVL > 1Md$, 3+ audits Tier-1, 2+ ans en production', 'Aave v3, Morpho (×2)'],
               ['2 — Standard', '10%', 'TVL > 200M$, 2+ audits, 1+ an en production', 'Compound v3, SparkLend, Euler v2, sUSDS, USDY, scrvUSD, sBOLD'],
-              ['3 — Satellite', '5%', 'TVL < 200M$ ou < 1 an en production, audits solides', 'Flux Finance, fxSAVE, Resolv USR, cUSDO, syrupUSDC, reUSD, reUSDe, RLP'],
+              ['3 — Satellite', '5%', 'TVL < 200M$ ou < 1 an en production, audits solides', 'Flux Finance, fxSAVE, cUSDO, syrupUSDC, reUSD, reUSDe'],
             ]}
           />
         </SubSection>
@@ -1069,7 +1054,6 @@ totalAssets() : shares × pricePerShare (Chainlink oracle) → USDC equivalent`}
               ['scrvUSD (Curve)', '2 — Standard', 'Savings Rate', '6%'],
               ['sBOLD (Liquity v2)', '2 — Standard', 'Stability Pool', '6%'],
               ['Euler v2', '2 — Standard', 'Lending', '5%'],
-              ['Resolv USR', '3 — Satellite', 'Delta-Neutral', '4%'],
               ['cUSDO (OpenEden)', '3 — Satellite', 'RWA T-bills', '4%'],
               ['fxSAVE (f(x) Protocol)', '3 — Satellite', 'Stability Pool', '4%'],
               ['Flux Finance', '3 — Satellite', 'Lending', '3%'],
@@ -1091,9 +1075,9 @@ totalAssets() : shares × pricePerShare (Chainlink oracle) → USDC equivalent`}
           <WpTable
             headers={['Profile', 'Protocols', 'Target APY', 'Allocation']}
             rows={[
-              ['🛡️ Prudent', '9 protocols — tier 1 + sUSDe (audited delta-neutral) + reUSD (capital-protected senior tranche, Re Protocol) + Resolv USR (delta-neutral, moderate yield)', '~4–6%', 'Max 15% per protocol — concentrated in the most audited, most liquid protocols'],
-              ['⚖️ Balanced', '17 protocols — 50% capital in Prudent pool + 50% in Dynamic pool', '~6–9%', 'Equal-weight blend of both pools (weights × 0.5)'],
-              ['⚡ Dynamic', '8 protocols — tier 3 (sNUSD, syrupUSDC, jrUSDe, sUSD3, imUSD, reUSDe, RLP, stkUSDC)', '~9–15%', 'Concentrated in high-yield protocols, including junior tranches'],
+              ['🛡️ Prudent', '8 protocols — tier 1 + sUSDe (audited delta-neutral) + reUSD (capital-protected senior tranche, Re Protocol)', '~4–6%', 'Max 16% per protocol — concentrated in the most audited, most liquid protocols'],
+              ['⚖️ Balanced', '15 protocols — 50% capital in Prudent pool + 50% in Dynamic pool', '~6–9%', 'Equal-weight blend of both pools (weights × 0.5)'],
+              ['⚡ Dynamic', '7 protocols — tier 3 (sNUSD, syrupUSDC, jrUSDe, sUSD3, imUSD, reUSDe, stkUSDC)', '~9–15%', 'Concentrated in high-yield protocols, including junior tranches'],
               ['🪂 Airdrop Hunter', '1+ protocol(s) — Sierra Money (RWA+DeFi hybrid, T-bills + Aave/Morpho, native Avalanche bridged via LayerZero). Evolving list via governance vote.', 'Variable (~4–8%+)', 'Innovative protocols selected for vision, technical execution, and airdrop potential. 100% Sierra Money weight in v1.'],
             ]}
           />
@@ -1207,7 +1191,6 @@ totalAssets() : shares × pricePerShare (Chainlink oracle) → USDC equivalent`}
               { name: 'USDY (Ondo Finance)', cat: 'RWA T-bills', desc: '~$650M TVL. USDC buys USDY, a yield-bearing token backed by short-term US Treasuries and investment-grade bonds (BlackRock, Franklin Templeton). APY: 4.3–5.3%. Permissionless (Reg S — US persons excluded). Oracle: Chainlink. No cooldown.' },
               { name: 'scrvUSD (Curve Finance)', cat: 'Savings Rate', desc: 'ERC-4626 native. Yield from interest paid by crvUSD borrowers (LLAMMA markets). Variable APY (~9% Sept. 2025). Audited by Trail of Bits, MixBytes, Quantstamp. Timelock: 7 days (Curve DAO vote). No cooldown.' },
               { name: 'sBOLD (Liquity v2)', cat: 'Stability Pool', desc: 'ERC-4626 native. Yield from 75% of BOLD borrower interest distributed to Stability Pool depositors. Liquity v2 core is immutable (no admin keys). Audited by ChainSecurity, Dedaub, and Certora. No cooldown.' },
-              { name: 'Resolv USR', cat: 'Delta-Neutral', desc: '~$400M TVL. USR is a delta-neutral stablecoin backed by ETH spot long + ETH short perpetuals. Yield from funding rates and staking rewards. Instant redemption — no cooldown. Audited by PeckShield and Ottersec. DeFi Lantern integrates USR in the Prudent and Balanced profiles. RLP (junior tranche, non-stable price ~$1.28) is integrated exclusively in the Dynamic profile.' },
               { name: 'cUSDO (OpenEden)', cat: 'RWA T-bills', desc: '~$100–150M TVL. 100% US Treasury bills + repo. The only pure T-bill product natively available on Ethereum mainnet. Chainlink oracle (cUSDO/USD). Audited by Certik and ChainSecurity. No cooldown.' },
               { name: 'syrupUSDC (Maple Finance)', cat: 'Institutional Credit', desc: '~$2.66B TVL. Yield from interest on loans to institutional crypto borrowers (market makers, hedge funds). APY: 8–12%. ERC-4626. Audited by Spearbit and Sherlock. Cooldown: ~5 minutes. Historical incident: Orthogonal Trading default Dec. 2022 ($36M). No incident since Maple 2.0 (2023).' },
               { name: 'reUSD (Re Protocol)', cat: 'Reinsurance', desc: 'Capital-protected yield token. Rate = max(risk-free + 250bps, Ethena basis + 250bps). reUSDe (junior tranche) absorbs losses before reUSD is affected. DeFi Lantern integrates reUSD only.' },
@@ -1217,7 +1200,6 @@ totalAssets() : shares × pricePerShare (Chainlink oracle) → USDC equivalent`}
               { name: 'mPT-sUSDe (mStable)', cat: 'Fixed Rate', desc: '~15–35% APY. Leveraged strategy combining sUSDe (Ethena), a fixed-rate PT via Pendle, and a borrow loop on Aave. mStable manages the loop automatically. Swap adapter: USDC → USDe (Uniswap V3) → sUSDe → PT-sUSDe (Pendle) → mStable vault.' },
               { name: 'stkUSDC (Aave Umbrella)', cat: 'Safety Module', desc: '~3–5% APY. Aave v3 safety module (Umbrella). USDC converted to aUSDC then staked to cover Aave bad debt shortfalls as last resort. Safety rewards compensate for the risk. Flow: USDC → aUSDC → stake.' },
               { name: 'reUSDe (Re Protocol)', cat: 'Reinsurance', desc: '~8–12% APY. Junior tranche of Re Protocol, backed by Ethena\'s sUSDe strategy. reUSDe absorbs losses first if Ethena underperforms — in exchange for amplified yield. DeFi Lantern integrates reUSDe exclusively in the Dynamic profile. Available on Ethereum mainnet.' },
-              { name: 'RLP (Resolv)', cat: 'Delta-Neutral', desc: '~15–25% variable APY. Junior tranche of Resolv — absorbs losses before USR is affected. Variable-price asset (~$1.28), non-stable by design. Available on Ethereum mainnet. DeFi Lantern integrates RLP exclusively in the Dynamic profile due to its non-stable price and first-loss junior role. Audited by PeckShield and Ottersec.' },
             ].map((p) => (
               <div key={p.name} className="bg-bg rounded-xl p-4 border border-lgrey">
                 <div className="flex items-center gap-2 mb-2">
@@ -1239,9 +1221,6 @@ totalAssets() : shares × pricePerShare (Chainlink oracle) → USDC equivalent`}
               ['Resupply reUSD', 'Lending', 'Protocol hacked in June 2025 (~$9.5M in losses). Definitively excluded from v1.'],
             ]}
           />
-          <InfoBox>
-            <strong>Note on RLP:</strong> RLP (Resolv Liquidity Pool) was initially considered for exclusion due to its non-stable price (~$1.28) and junior tranche role. It has been integrated into the <strong>Dynamic profile only</strong>, where its high yield (15–25% APY) is justified by the explicitly more aggressive risk profile of that vault.
-          </InfoBox>
         </SubSection>
 
         <SubSection title="4.4 Protocols Under Evaluation">
@@ -1362,7 +1341,7 @@ new_shares  = fee_in_usd / pricePerShare_after_yield`}</CodeBlock>
             rows={[
               ['1 — Core', '20%', 'TVL > $1B, 3+ Tier-1 audits, 2+ years live', 'Aave v3, Morpho (×2)'],
               ['2 — Standard', '10%', 'TVL > $200M, 2+ audits, 1+ year live', 'Compound v3, SparkLend, Euler v2, sUSDS, USDY, scrvUSD, sBOLD'],
-              ['3 — Satellite', '5%', 'TVL < $200M or < 1 year live, strong audits', 'Flux Finance, fxSAVE, Resolv USR, cUSDO, syrupUSDC, reUSD, reUSDe, RLP'],
+              ['3 — Satellite', '5%', 'TVL < $200M or < 1 year live, strong audits', 'Flux Finance, fxSAVE, cUSDO, syrupUSDC, reUSD, reUSDe'],
             ]}
           />
         </SubSection>

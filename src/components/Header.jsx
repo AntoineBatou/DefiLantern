@@ -80,9 +80,9 @@ export default function Header({ currentPage, navigateTo, navigateToSection }) {
 
   // Nombre de protocoles par profil (issu des listes explicites dans profiles.js)
   const profileProtocolCounts = {
-    prudent:       9,   // tier 1 + sUSDe + reUSD + Resolv USR
-    balanced:      17,  // 50% Prudent + 50% Dynamic
-    dynamic:       8,   // tranches junior (reUSDe + RLP inclus)
+    prudent:       8,   // tier 1 + sUSDe + reUSD
+    balanced:      15,  // 50% Prudent + 50% Dynamic
+    dynamic:       7,   // tranches junior (reUSDe inclus)
     airdropHunter: 1,   // Sierra Money (liste évolutive)
   }
 

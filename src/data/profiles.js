@@ -3,8 +3,8 @@
 // Architecture : chaque profil définit une liste explicite de protocoles
 // et leurs poids d'allocation (sum = 1.0 = 100%).
 //
-// Prudent       : 9 protocoles (tier 1 + sUSDe + reUSD + Resolv USR)
-// Dynamic       : 8 protocoles à rendement élevé (tranches junior incluses)
+// Prudent       : 8 protocoles (tier 1 + sUSDe + reUSD)
+// Dynamic       : 7 protocoles à rendement élevé (tranches junior incluses)
 // Balanced      : 50% capital Prudent + 50% capital Dynamic (17 protocoles)
 // AirdropHunter : protocoles innovants avec potentiel airdrop (Sierra Money en premier)
 //
@@ -23,7 +23,6 @@ const PRUDENT_PROTOCOL_IDS = [
   'susds',
   'susde',  // delta-neutre audité, tire l'APY vers le haut
   'reusd',  // tranche senior protégée Re Protocol
-  'resolv', // USR delta-neutre, rendement modéré
 ]
 
 const DYNAMIC_PROTOCOL_IDS = [
@@ -33,34 +32,31 @@ const DYNAMIC_PROTOCOL_IDS = [
   'susd3',
   'imusd',
   'reusde',  // tranche junior Re Protocol
-  'rlp',     // tranche junior Resolv
   'stkusdc',
 ]
 
 // Poids d'allocation pour Prudent (sum = 1.0)
 // Règle : aucun protocole ne dépasse 15% (cap structurel, cohérent avec le whitepaper)
 const PRUDENT_WEIGHTS = {
-  'aave-v3':           0.15,
-  'morpho-gauntlet':   0.15,
-  'morpho-steakhouse': 0.14,
-  'compound-v3':       0.13,
-  'sparklend':         0.12,
+  'aave-v3':           0.16,
+  'morpho-gauntlet':   0.16,
+  'morpho-steakhouse': 0.15,
+  'compound-v3':       0.14,
+  'sparklend':         0.13,
   'susds':             0.12,
   'susde':             0.08,
   'reusd':             0.06,
-  'resolv':            0.05,
 }
 
 // Poids d'allocation pour Dynamic (sum = 1.0)
 const DYNAMIC_WEIGHTS = {
-  'snusd':     0.16,
-  'syrupusdc': 0.15,
-  'jrusde':    0.14,
-  'susd3':     0.13,
-  'imusd':     0.12,
-  'reusde':    0.11,
-  'rlp':       0.11,
-  'stkusdc':   0.08,
+  'snusd':     0.18,
+  'syrupusdc': 0.17,
+  'jrusde':    0.16,
+  'susd3':     0.14,
+  'imusd':     0.13,
+  'reusde':    0.12,
+  'stkusdc':   0.10,
 }
 
 // Poids Balanced = 50% Prudent + 50% Dynamic (sum = 1.0)
