@@ -15,6 +15,7 @@ import { useState, useEffect, useMemo } from 'react'
 import { LangProvider } from './context/LangContext'
 import { RiskProfileProvider, useRiskProfile } from './context/RiskProfileContext'
 import { useDefiLlama } from './hooks/useDefiLlama'
+import { useProfileHistoricalApy } from './hooks/useProfileHistoricalApy'
 
 // Import de tous les composants section
 import Header from './components/Header'
@@ -70,18 +71,13 @@ function AppContent() {
   }, [profileProtocols, profileConfig, apyData])
 
   // ── APY historique pondéré (12 mois) ─────────────────────────────────────
-  // Tous les protocoles du profil, sans exception.
-  // apy_i = historicalApy12m si dispo, sinon live DeFiLlama, sinon fallbackApy.
-  // Les poids somment déjà à 1.0 — pas de normalisation.
-  const profileHistoricalApy = useMemo(() => {
-    if (!profileProtocols || profileProtocols.length === 0) return null
-    const weights = profileConfig.weights
-    return profileProtocols.reduce((sum, p) => {
-      const apy = p.historicalApy12m ?? apyData[p.id]?.apy ?? p.fallbackApy
-      const weight = weights[p.id] ?? 0
-      return sum + weight * apy
-    }, 0)
-  }, [profileProtocols, profileConfig, apyData])
+  // Pour chaque protocole : moyenne DeFiLlama sur 12 mois glissants si dispo,
+  // sinon APY live/fallback. Moyenne pondérée selon les poids du profil.
+  const { historicalApy: profileHistoricalApy } = useProfileHistoricalApy({
+    profileProtocols,
+    profileWeights: profileConfig.weights,
+    apyData,
+  })
 
   // ── Navigation ────────────────────────────────────────────────────────────
   const navigateTo = (page) => {

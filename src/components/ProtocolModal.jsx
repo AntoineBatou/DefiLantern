@@ -78,11 +78,13 @@ function computeAvg12m(history) {
   const nowMs      = Date.now()
   const oneYearAgo = nowMs - ONE_YEAR_MS
 
-  // Ancienneté du protocole : premier point de tout l'historique
-  const oldestMs = toMs(history[0]?.timestamp)
-  if (isNaN(oldestMs)) {
+  // Ancienneté du protocole : on prend le MIN sur tous les timestamps
+  // car DeFiLlama peut retourner l'historique en ordre décroissant (plus récent d'abord)
+  const allMs = history.map((d) => toMs(d.timestamp)).filter((t) => !isNaN(t))
+  if (allMs.length === 0) {
     return { avg: null, tooRecent: false, dataPoints: 0 }
   }
+  const oldestMs = Math.min(...allMs)
 
   if (nowMs - oldestMs < MIN_HISTORY_MS) {
     // Moins de ~11 mois de données → trop récent

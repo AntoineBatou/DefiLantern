@@ -18,9 +18,12 @@ export const CATEGORY_COLORS = {
   'Fixed Rate':           { bg: 'bg-pink-100',   text: 'text-pink-700'   },
   'Safety Module':        { bg: 'bg-cyan-100',   text: 'text-cyan-700'   },
   'Liquid Yield Token':   { bg: 'bg-red-100',    text: 'text-red-700'    },
+  'Fractional Reserve':   { bg: 'bg-emerald-100', text: 'text-emerald-700' },
+  'CDP Stablecoin':       { bg: 'bg-violet-100', text: 'text-violet-700' },
+  'RWA / AI Credit':      { bg: 'bg-sky-100',    text: 'text-sky-700'    },
 }
 
-// Couleurs pour le graphique donut (24 protocoles)
+// Couleurs pour le graphique donut
 export const DONUT_COLORS = [
   '#2ABFAB', '#22A898', '#3DD4C0', '#F5A623',
   '#1A9E8C', '#F7B94A', '#50DBC8', '#E8943F',
@@ -30,26 +33,25 @@ export const DONUT_COLORS = [
   '#6EE7B7', '#FCA5A5', '#FB7185', '#FBBF24',
 ]
 
-// Poids équipondéré : 100 / 24 ≈ 4.17% par protocole
-const EQ_WEIGHT = parseFloat((100 / 24).toFixed(2)) // 4.17
-
-// ── Les 17 protocoles RETENUS ──────────────────────────────────────────────────
+// ── PROTOCOLES RETENUS ──────────────────────────────────────────────────────
+//
+// 10 Prudent + 10 Dynamic + 4 Airdrop Hunter
+// Balanced = mix 50% Prudent + 50% Dynamic (aucun protocole exclusif)
+// (certains protocoles apparaissent dans plusieurs profils)
 //
 // llamaConfig : critères pour matcher le pool dans l'API DeFiLlama
-//   - fullPoolId : UUID complet DeFiLlama (vérifié mars 2026) → utilisé pour le chart
+//   - fullPoolId : UUID complet DeFiLlama (vérifié mars 2026)
 //   - project    : nom du projet dans l'API
 //   - chain      : chaîne blockchain
-//   - symbol     : symbole du pool (recherche partielle)
-//   - contains   : sous-texte optionnel dans poolMeta/symbol pour affiner
+//   - symbol     : symbole du pool
 
 export const RETAINED_PROTOCOLS = [
+  // ── Prudent 🛡️ ─────────────────────────────────────────────────────────────
   {
     id: 'aave-v3',
     name: 'Aave v3',
     category: 'Lending',
-    allocation: EQ_WEIGHT,
     fallbackApy: 2.5,
-    historicalApy12m: 3.3, // Moyenne 12 mois glissants vérifiée mars 2026
     llamaConfig: {
       fullPoolId: 'aa70268e-4b52-42bf-a116-608b370f9501',
       project: 'aave-v3',
@@ -63,29 +65,25 @@ export const RETAINED_PROTOCOLS = [
   },
   {
     id: 'morpho-gauntlet',
-    name: 'Morpho (Gauntlet USDC Core)',
+    name: 'Morpho (Gauntlet USDC Prime)',
     category: 'Lending',
-    allocation: EQ_WEIGHT,
-    fallbackApy: 6.5,
-    historicalApy12m: 8.7, // Moyenne 12 mois glissants vérifiée mars 2026
+    fallbackApy: 3.2,
     llamaConfig: {
-      fullPoolId: 'baf1a020-a2a4-401a-9425-eba22ffce13c',
+      fullPoolId: '71b34441-5a46-431b-a9b3-8c081cd0d74c',
       project: 'morpho-v1',
       chain: 'Ethereum',
-      symbol: 'GTUSDCCORE',
+      symbol: 'GTUSDCP',
     },
-    descFr: 'Vault Morpho géré par Gauntlet. Haute sécurité, meilleur taux grâce à une sélection fine des marchés de lending sous-jacents.',
-    descEn: 'Morpho vault managed by Gauntlet. High security, better rates through careful curation of underlying lending markets.',
+    descFr: 'Vault Morpho Prime géré par Gauntlet. Collatéral blue-chip uniquement (ETH, wstETH, WBTC), risque d\'insolvabilité minimal. $0 de bad debt durant le stress test de novembre 2025.',
+    descEn: 'Gauntlet Prime Morpho vault. Blue-chip collateral only (ETH, wstETH, WBTC), minimal insolvency risk. $0 bad debt during November 2025 stress test.',
     risk: 1,
-    link: 'https://morpho.org',
+    link: 'https://app.morpho.org/ethereum/vault/0xdd0f28e19C1780eb6396170735D45153D261490d/gauntlet-usdc-prime',
   },
   {
     id: 'morpho-steakhouse',
     name: 'Morpho (Steakhouse USDC)',
     category: 'Lending',
-    allocation: EQ_WEIGHT,
     fallbackApy: 6.0,
-    historicalApy12m: null, // Moins de 12 mois d'existence
     llamaConfig: {
       fullPoolId: 'b55f43a8-f444-4cd8-a3a4-0a4e786ba566',
       project: 'morpho-v1',
@@ -98,174 +96,42 @@ export const RETAINED_PROTOCOLS = [
     link: 'https://morpho.org',
   },
   {
-    id: 'compound-v3',
-    name: 'Compound v3',
-    category: 'Lending',
-    allocation: EQ_WEIGHT,
-    fallbackApy: 2.0,
-    historicalApy12m: 2.7, // Moyenne 12 mois glissants vérifiée mars 2026
-    llamaConfig: {
-      fullPoolId: '7da72d09-56ca-4ec5-a45f-59114353e487',
-      project: 'compound-v3',
-      chain: 'Ethereum',
-      symbol: 'USDC',
-    },
-    descFr: 'Protocole de lending historique de la DeFi. Le marché USDC v3 sur Ethereum est l\'un des plus audités et des plus liquides de l\'écosystème.',
-    descEn: 'A historic DeFi lending protocol. The USDC v3 market on Ethereum is one of the most audited and liquid in the ecosystem.',
-    risk: 1,
-    link: 'https://compound.finance',
-  },
-  {
-    id: 'sparklend',
-    name: 'SparkLend (Sky)',
-    category: 'Lending',
-    allocation: EQ_WEIGHT,
-    fallbackApy: 3.5,
-    historicalApy12m: 5.5, // Moyenne 12 mois glissants vérifiée mars 2026
-    llamaConfig: {
-      fullPoolId: '65ce8276-b4d9-41ba-9f6f-21fc374cf9bc',
-      project: 'sparklend',
-      chain: 'Ethereum',
-      symbol: 'USDC',
-    },
-    descFr: 'Fork d\'Aave v3 développé par Sky (ex-MakerDAO). Bénéficie de l\'infrastructure et de l\'expérience de l\'un des protocoles DeFi les plus éprouvés.',
-    descEn: 'Aave v3 fork developed by Sky (ex-MakerDAO). Benefits from the infrastructure and experience of one of DeFi\'s most battle-tested protocols.',
-    risk: 1,
-    link: 'https://spark.fi',
-  },
-  {
-    id: 'flux-finance',
-    name: 'Flux Finance',
-    category: 'Lending',
-    allocation: EQ_WEIGHT,
-    fallbackApy: 3.5,
-    historicalApy12m: null, // Aucune source indépendante vérifiée
-    llamaConfig: {
-      fullPoolId: 'fa4d7ee4-0001-4133-9e8d-cf7d5d194a91',
-      project: 'flux-finance',
-      chain: 'Ethereum',
-      symbol: 'USDC',
-    },
-    descFr: 'Protocole de lending spécialisé supportant OUSG (T-bills Ondo) comme collatéral. Fork de Compound v2 avec une exposition aux actifs réels institutionnels.',
-    descEn: 'Specialized lending protocol supporting OUSG (Ondo T-bills) as collateral. Compound v2 fork with exposure to institutional real-world assets.',
-    risk: 2,
-    link: 'https://flux.finance',
-  },
-  {
-    id: 'euler-v2',
-    name: 'Euler v2',
-    category: 'Lending',
-    allocation: EQ_WEIGHT,
-    fallbackApy: 5.0,
-    historicalApy12m: null, // Moins de 12 mois d'existence (relancé 2024)
-    llamaConfig: {
-      fullPoolId: '0fde8996-ecdf-441c-94a9-ec67403e9b8c',
-      project: 'euler-v2',
-      chain: 'Ethereum',
-      symbol: 'USDC',
-    },
-    descFr: 'Protocole de lending modulaire relancé après l\'incident de 2023 (remboursement intégral). Architecture repensée avec des vaults isolés et une sécurité renforcée.',
-    descEn: 'Modular lending protocol relaunched after the 2023 incident (full repayment). Redesigned architecture with isolated vaults and enhanced security.',
-    risk: 2,
-    link: 'https://euler.finance',
-  },
-  {
     id: 'susds',
     name: 'sUSDS (Sky)',
     category: 'Savings Rate',
-    allocation: EQ_WEIGHT,
     fallbackApy: 4.5,
-    historicalApy12m: null, // Moins de 12 mois d'existence (lancé 2024)
     llamaConfig: {
       fullPoolId: 'd8c4eff5-c8a9-46fc-a888-057c4c668e72',
       project: 'sky-lending',
       chain: 'Ethereum',
       symbol: 'SUSDS',
     },
-    descFr: 'Taux d\'épargne officiel de Sky (ex-MakerDAO), alimenté par les intérêts versés par les emprunteurs de USDS. Parmi les stablecoins les plus audités au monde.',
-    descEn: 'Official Sky (ex-MakerDAO) savings rate, funded by interest paid by USDS borrowers. Among the most audited stablecoins in the world.',
+    descFr: 'Taux d\'épargne officiel de Sky (ex-MakerDAO), alimenté par les intérêts versés par les emprunteurs de USDS. Parmi les protocoles les plus audités au monde.',
+    descEn: 'Official Sky (ex-MakerDAO) savings rate, funded by interest paid by USDS borrowers. Among the most audited protocols in the world.',
     risk: 1,
     link: 'https://sky.money',
   },
   {
-    id: 'fxsave',
-    name: 'fxSAVE (f(x) Protocol)',
-    category: 'Stability Pool',
-    allocation: EQ_WEIGHT,
-    fallbackApy: 6.0,
-    historicalApy12m: null, // Moins de 12 mois d'existence
-    llamaConfig: {
-      fullPoolId: 'abd6c9e1-3b52-459a-a31b-9022a4dcf7e2',
-      project: 'fx-protocol',
-      chain: 'Ethereum',
-      symbol: 'FXUSDSTABILITYPOOLV2.0',
-    },
-    descFr: 'Pool de stabilité ERC-4626 du protocole f(x). Architecture innovante à deux tokens (fxUSD et xETH) offrant un rendement supérieur via l\'absorption des liquidations.',
-    descEn: 'ERC-4626 stability pool for f(x) protocol. Innovative dual-token architecture (fxUSD and xETH) offering higher yield through liquidation absorption.',
-    risk: 2,
-    link: 'https://fx.aladdin.club',
-  },
-  {
-    id: 'usdy',
-    name: 'USDY (Ondo)',
-    category: 'RWA T-bills',
-    allocation: EQ_WEIGHT,
-    fallbackApy: 4.2,
-    historicalApy12m: 4.2, // Moyenne 12 mois glissants vérifiée mars 2026
-    llamaConfig: {
-      fullPoolId: 'ac61ee82-2fe4-4f9b-a9cd-7fb33f598859',
-      project: 'ondo-yield-assets',
-      chain: 'Ethereum',
-      symbol: 'USDY',
-    },
-    descFr: 'Des bons du Trésor américain tokenisés. Votre argent est investi dans la dette souveraine la plus sûre au monde, via Ondo Finance.',
-    descEn: 'Tokenized US Treasury bills. Your money is invested in the world\'s safest sovereign debt, through Ondo Finance.',
-    risk: 1,
-    link: 'https://ondo.finance',
-  },
-  {
-    id: 'scrvusd',
-    name: 'scrvUSD (Curve)',
-    category: 'Savings Rate',
-    allocation: EQ_WEIGHT,
+    id: 'susde',
+    name: 'sUSDe (Ethena)',
+    category: 'Delta-Neutral',
     fallbackApy: 5.5,
-    historicalApy12m: null, // Moins de 12 mois d'existence
     llamaConfig: {
-      fullPoolId: '5fd328af-4203-471b-bd16-1705c726d926',
-      project: 'crvusd',
+      fullPoolId: '66985a81-9c51-46ca-9977-42b4fe7bc6df',
+      project: 'ethena-usde',
       chain: 'Ethereum',
-      symbol: 'SCRVUSD',
+      symbol: 'SUSDE',
     },
-    descFr: 'Taux d\'épargne natif de Curve Finance. Les intérêts versés par les emprunteurs de crvUSD reviennent directement aux déposants de scrvUSD.',
-    descEn: 'Native Curve Finance savings rate. Interest paid by crvUSD borrowers flows directly back to scrvUSD depositors.',
+    descFr: 'Stratégie delta-neutre sur ETH : longue spot + courte en perpétuel. Rendement issu des taux de financement et du staking ETH. Cooldown de retrait : 7 jours.',
+    descEn: 'ETH delta-neutral strategy: spot long + perpetual short. Yield from funding rates and ETH staking. Withdrawal cooldown: 7 days.',
     risk: 2,
-    link: 'https://curve.fi',
-  },
-  {
-    id: 'sbold',
-    name: 'sBOLD (Liquity v2)',
-    category: 'Stability Pool',
-    allocation: EQ_WEIGHT,
-    fallbackApy: 5.5,
-    historicalApy12m: null, // Moins de 12 mois d'existence
-    llamaConfig: {
-      fullPoolId: 'a635df9a-4cfc-4d17-86d0-934ea441e79f',
-      project: 'liquity-v2',
-      chain: 'Ethereum',
-      symbol: 'BOLD',
-    },
-    descFr: 'Vos USDC absorbent les liquidations du protocole Liquity v2. Vous récupérez du collatéral à prix réduit et percevez une part des intérêts des emprunteurs. Protocole immuable, sans clé admin.',
-    descEn: 'Your USDC absorbs Liquity v2 liquidations. You receive collateral at a discount and earn a share of borrowers\' interest. Immutable protocol, no admin keys.',
-    risk: 2,
-    link: 'https://liquity.org',
+    link: 'https://ethena.fi',
   },
   {
     id: 'cusdo',
     name: 'cUSDO (OpenEden)',
     category: 'RWA T-bills',
-    allocation: EQ_WEIGHT,
     fallbackApy: 4.5,
-    historicalApy12m: null, // Moins de 12 mois d'existence
     llamaConfig: {
       fullPoolId: '12169161-7815-4160-bd77-a4202cf7c2c1',
       project: 'openeden-usdo',
@@ -278,92 +144,121 @@ export const RETAINED_PROTOCOLS = [
     link: 'https://openeden.com',
   },
   {
+    id: 'sbold',
+    name: 'sBOLD (Liquity v2)',
+    category: 'Stability Pool',
+    fallbackApy: 5.5,
+    llamaConfig: {
+      fullPoolId: 'a635df9a-4cfc-4d17-86d0-934ea441e79f',
+      project: 'liquity-v2',
+      chain: 'Ethereum',
+      symbol: 'BOLD',
+    },
+    descFr: 'Vos USDC absorbent les liquidations du protocole Liquity v2. Vous récupérez du collatéral à prix réduit et percevez les intérêts des emprunteurs. Protocole immuable, sans clé admin. Équipe depuis 2021.',
+    descEn: 'Your USDC absorbs Liquity v2 liquidations. You receive collateral at a discount and earn borrowers\' interest. Immutable protocol, no admin keys. Team since 2021.',
+    risk: 2,
+    link: 'https://liquity.org',
+  },
+  {
+    id: 'scrvusd',
+    name: 'scrvUSD (Curve)',
+    category: 'Savings Rate',
+    fallbackApy: 5.4,
+    llamaConfig: {
+      fullPoolId: '5fd328af-4203-471b-bd16-1705c726d926',
+      project: 'crvusd',
+      chain: 'Ethereum',
+      symbol: 'SCRVUSD',
+    },
+    descFr: 'Taux d\'épargne natif de Curve Finance. Les intérêts versés par les emprunteurs de crvUSD reviennent directement aux déposants. ERC-4626. Audité par Trail of Bits, MixBytes, Quantstamp. Timelock 7 jours.',
+    descEn: 'Native Curve Finance savings rate. Interest paid by crvUSD borrowers flows directly back to depositors. ERC-4626. Audited by Trail of Bits, MixBytes, Quantstamp. 7-day timelock.',
+    risk: 1,
+    link: 'https://curve.fi',
+  },
+  {
+    id: 'fxsave',
+    name: 'fxSAVE (f(x) Protocol)',
+    category: 'Stability Pool',
+    fallbackApy: 4.5,
+    llamaConfig: {
+      fullPoolId: 'ee0b7069-f8f3-4aa2-a415-728f13e6cc3d',
+      project: 'concentrator',
+      chain: 'Ethereum',
+      symbol: 'FXSAVE',
+    },
+    descFr: 'Pool de stabilité delta-neutre auto-compounding. Architecture dual-token (fxUSD + xETH). 16 audits couvrant 100% du code déployé. ERC-4626 natif. Équipe Aladdin DAO depuis 2021.',
+    descEn: 'Delta-neutral auto-compounding stability pool. Dual-token architecture (fxUSD + xETH). 16 audits covering 100% of deployed code. ERC-4626 native. Aladdin DAO team since 2021.',
+    risk: 2,
+    link: 'https://fx.aladdin.club',
+  },
+  {
+    id: 'thbill',
+    name: 'thBill (Theo Network)',
+    category: 'RWA T-bills',
+    fallbackApy: 2.5,
+    // Contrat ERC-4626 : 0x5FA487BCa6158c64046B2813623e20755091DA0b
+    // Source externe : https://app.rwa.xyz/assets/thBILL (APY 7D ~2.53%)
+    // DeFiLlama ne liste pas thBill dans l'API yields/pools (protocol-level uniquement)
+    // → fallbackApy utilisé ; à remplacer par un appel on-chain convertToAssets() en v2
+    llamaConfig: {
+      fullPoolId: null,
+      project: 'theo-network',
+      chain: 'Ethereum',
+      symbol: 'THBILL',
+    },
+    descFr: 'T-bills US tokenisés gérés par Theo Network. Partenaires : Standard Chartered (Libeara) + Wellington Management. ERC-4626. Acquisition via marché secondaire (Uniswap V3). Allocation plafonnée à 5% (exception : pas d\'audit Tier-1).',
+    descEn: 'Tokenized US T-bills managed by Theo Network. Partners: Standard Chartered (Libeara) + Wellington Management. ERC-4626. Secondary market acquisition (Uniswap V3). Capped at 5% (exception: no Tier-1 audit).',
+    risk: 2,
+    link: 'https://theo.network',
+    airdropPotential: true,
+  },
+
+  // ── Dynamic ⚡ ──────────────────────────────────────────────────────────────
+  {
+    id: 'snusd',
+    name: 'sNUSD (Neutrl)',
+    category: 'Delta-Neutral',
+    fallbackApy: 8.7,
+    llamaConfig: {
+      fullPoolId: null,
+      project: 'neutrl',
+      chain: 'Ethereum',
+      symbol: 'SNUSD',
+    },
+    descFr: 'Stratégie delta-neutre multi-exchanges. Position longue spot ETH compensée par position courte perp. Rendement issu des taux de financement.',
+    descEn: 'Multi-exchange delta-neutral strategy. ETH spot long offset by perp short. Yield from funding rates.',
+    risk: 3,
+    link: 'https://neutrl.com',
+  },
+  {
     id: 'syrupusdc',
     name: 'syrupUSDC (Maple)',
     category: 'Institutional Credit',
-    allocation: EQ_WEIGHT,
     fallbackApy: 7.5,
-    historicalApy12m: null, // Trop volatile avec incentives — 12m non représentatif
     llamaConfig: {
       fullPoolId: '43641cf5-a92e-416b-bce9-27113d3c0db6',
       project: 'maple',
       chain: 'Ethereum',
       symbol: 'USDC',
     },
-    descFr: 'Prêts on-chain à des institutions crypto vérifiées. Rendement plus élevé en échange d\'un risque de crédit mesuré — les emprunteurs sont sélectionnés et suivis par Maple.',
-    descEn: 'On-chain loans to vetted crypto institutions. Higher yield in exchange for measured credit risk — borrowers are selected and monitored by Maple.',
+    descFr: 'Prêts on-chain à des institutions crypto vérifiées. Rendement plus élevé en échange d\'un risque de crédit mesuré. KYC requis (profil Dynamic uniquement).',
+    descEn: 'On-chain loans to vetted crypto institutions. Higher yield in exchange for measured credit risk. KYC required (Dynamic profile only).',
     risk: 2,
     link: 'https://maple.finance',
-  },
-  {
-    id: 'susde',
-    name: 'sUSDe (Ethena)',
-    category: 'Market Neutral',
-    allocation: EQ_WEIGHT,
-    fallbackApy: 5.5,
-    historicalApy12m: 8.5, // Moyenne 12 mois glissants vérifiée mars 2026
-    llamaConfig: {
-      fullPoolId: '66985a81-9c51-46ca-9977-42b4fe7bc6df',
-      project: 'ethena-usde',
-      chain: 'Ethereum',
-      symbol: 'SUSDE',
-    },
-    descFr: 'Stratégie delta-neutre sur ETH via positions couvertes : longue spot ETH + courte en perpétuel. Rendement issu des taux de financement et du staking ETH. Cooldown de retrait : 7 jours.',
-    descEn: 'ETH delta-neutral strategy via hedged positions: ETH spot long + perpetual short. Yield from funding rates and ETH staking. Withdrawal cooldown: 7 days.',
-    risk: 2,
-    link: 'https://ethena.fi',
-  },
-  {
-    id: 'reusd',
-    name: 'reUSD (Re Protocol)',
-    category: 'Reinsurance',
-    allocation: EQ_WEIGHT,
-    fallbackApy: 9.0,
-    historicalApy12m: null, // Moins de 12 mois d'existence
-    llamaConfig: {
-      project: 're-protocol',
-      chain: 'Ethereum',
-      symbol: 'reUSD',
-    },
-    descFr: 'Protocole de réassurance on-chain, version prudente. La majeure partie du capital est protégée ; seule une faible part est exposée aux risques de réassurance, absorbés en priorité par reUSDe.',
-    descEn: 'On-chain reinsurance protocol, conservative version. Most capital is protected; only a small portion is exposed to reinsurance risk, absorbed first by reUSDe.',
-    risk: 2,
-    link: 'https://re.xyz',
-  },
-  // ── Tier 3 — Nouveaux protocoles Dynamic ────────────────────────────────────
-  {
-    id: 'snusd',
-    name: 'sNUSD (Neutrl)',
-    category: 'Delta-Neutral',
-    allocation: EQ_WEIGHT,
-    fallbackApy: 8.7,
-    historicalApy12m: null, // Moins de 12 mois d'existence
-    llamaConfig: {
-      fullPoolId: null, // à confirmer via DeFiLlama
-      project: 'neutrl',
-      chain: 'Ethereum',
-      symbol: 'SNUSD',
-    },
-    descFr: 'Stratégie delta-neutre sur ETH : position longue spot compensée par une position courte en perp sur plusieurs exchanges. Dépôt USDC direct. Rendement issu des taux de financement perp (~16–17% APY).',
-    descEn: 'ETH delta-neutral strategy: spot long offset by perp short across multiple exchanges. Direct USDC deposit. Yield from perp funding rates (~16–17% APY).',
-    risk: 3,
-    link: 'https://neutrl.com',
   },
   {
     id: 'jrusde',
     name: 'jrUSDe (Strata)',
     category: 'Market Neutral',
-    allocation: EQ_WEIGHT,
     fallbackApy: 10.0,
-    historicalApy12m: null, // Moins de 12 mois d'existence
     llamaConfig: {
       fullPoolId: '8352355c-5ad7-45c5-aca2-628de224f8d8',
       project: 'strata-markets',
       chain: 'Ethereum',
       symbol: 'JRUSDE',
     },
-    descFr: 'Tranche junior de la stratégie USDe d\'Ethena via Strata Finance. Rendement amplifié (~8–20% variable) en échange d\'une absorption prioritaire des pertes. Swap adapter : USDC → USDe (Uniswap V3) → jrUSDe.',
-    descEn: 'Junior tranche of Ethena\'s USDe strategy via Strata Finance. Amplified yield (~8–20% variable) in exchange for first-loss absorption. Swap adapter: USDC → USDe (Uniswap V3) → jrUSDe.',
+    descFr: 'Tranche junior de la stratégie USDe d\'Ethena. Rendement amplifié en échange d\'une absorption prioritaire des pertes.',
+    descEn: 'Junior tranche of Ethena\'s USDe strategy. Amplified yield in exchange for first-loss absorption.',
     risk: 3,
     link: 'https://strata.finance',
   },
@@ -371,17 +266,15 @@ export const RETAINED_PROTOCOLS = [
     id: 'susd3',
     name: 'sUSD3 (3Jane)',
     category: 'Institutional Credit',
-    allocation: EQ_WEIGHT,
     fallbackApy: 10.0,
-    historicalApy12m: null, // Moins de 12 mois d'existence (~3 mois)
     llamaConfig: {
       fullPoolId: 'a99bb965-ebaa-4d98-9ed2-fa18de52c605',
       project: '3jane-lending',
       chain: 'Ethereum',
       symbol: 'SUSD3',
     },
-    descFr: 'Prêts institutionnels non-sécurisés vérifiés via zkTLS (preuve de solvabilité on-chain). Soutenu par Paradigm. Rendement estimé ~9–13%. Protocole récent (~3 mois). Cooldown : 1 mois.',
-    descEn: 'Unsecured institutional lending verified via zkTLS (on-chain solvency proof). Backed by Paradigm. Estimated yield ~9–13%. Recent protocol (~3 months). Cooldown: 1 month.',
+    descFr: 'Prêts institutionnels non-sécurisés vérifiés via zkTLS. Soutenu par Paradigm. Cooldown : 1 mois.',
+    descEn: 'Unsecured institutional lending verified via zkTLS. Backed by Paradigm. Cooldown: 1 month.',
     risk: 3,
     link: 'https://3jane.xyz',
   },
@@ -389,76 +282,138 @@ export const RETAINED_PROTOCOLS = [
     id: 'imusd',
     name: 'mPT-sUSDe (mStable)',
     category: 'Fixed Rate',
-    allocation: EQ_WEIGHT,
     fallbackApy: 12.0,
-    historicalApy12m: null, // Moins de 12 mois d'existence
     llamaConfig: {
       fullPoolId: '6d177bd3-fafa-4d2e-b86f-4fb14ea73c7c',
       project: 'mstable-v2',
       chain: 'Ethereum',
       symbol: 'MPT-SUSDE',
     },
-    descFr: 'Stratégie leviérisée combinant sUSDe (Ethena), un PT à taux fixe via Pendle et un borrow loop sur Aave. mStable gère la boucle automatiquement — l\'utilisateur dépose des USDC et reçoit un rendement amplifié (~15–35% APY selon les conditions de marché).',
-    descEn: 'Leveraged strategy combining sUSDe (Ethena), a fixed-rate PT via Pendle, and a borrow loop on Aave. mStable manages the loop automatically — users deposit USDC and receive amplified yield (~15–35% APY depending on market conditions).',
+    descFr: 'Stratégie leviérisée : sUSDe (Ethena) + taux fixe Pendle + borrow loop Aave. Rendement amplifié, risque élevé.',
+    descEn: 'Leveraged strategy: sUSDe (Ethena) + Pendle fixed rate + Aave borrow loop. Amplified yield, high risk.',
     risk: 3,
     link: 'https://www.mstable.com',
-  },
-  {
-    id: 'stkusdc',
-    name: 'stkUSDC (Aave Umbrella)',
-    category: 'Safety Module',
-    allocation: EQ_WEIGHT,
-    fallbackApy: 6.0,
-    historicalApy12m: null, // Moins de 12 mois d'existence
-    llamaConfig: {
-      fullPoolId: null, // à confirmer via DeFiLlama
-      project: 'aave-umbrella',
-      chain: 'Ethereum',
-      symbol: 'STKUSDC',
-    },
-    descFr: 'Module de sécurité du protocole Aave v3 (Umbrella). Les USDC sont convertis en aUSDC puis stakés pour couvrir les déficits de bad debt d\'Aave. Récompenses de sécurité ~3–5% APY en échange d\'une exposition aux risques de liquidation d\'Aave.',
-    descEn: 'Aave v3 safety module (Umbrella). USDC is converted to aUSDC then staked to cover Aave bad debt shortfalls. Safety rewards ~3–5% APY in exchange for exposure to Aave liquidation risk.',
-    risk: 3,
-    link: 'https://aave.com',
   },
   {
     id: 'reusde',
     name: 'reUSDe (Re Protocol)',
     category: 'Reinsurance',
-    allocation: EQ_WEIGHT,
     fallbackApy: 15.0,
-    historicalApy12m: null, // Moins de 12 mois d'existence
     llamaConfig: {
-      fullPoolId: null, // à confirmer via DeFiLlama
+      fullPoolId: null,
       project: 're-protocol',
       chain: 'Ethereum',
       symbol: 'reUSDe',
     },
-    descFr: 'Tranche junior de réassurance on-chain Re Protocol. Contrairement à reUSD (tranche senior protégée), reUSDe absorbe les pertes en premier si la stratégie Ethena sous-performe — en échange d\'un rendement supérieur (~8–12% APY). Réservé au profil Dynamique.',
-    descEn: 'Re Protocol on-chain reinsurance junior tranche. Unlike reUSD (protected senior tranche), reUSDe absorbs losses first if the Ethena strategy underperforms — in exchange for higher yield (~8–12% APY). Reserved for the Dynamic profile.',
+    descFr: 'Tranche junior de réassurance Re Protocol. Absorbe les pertes en premier si la stratégie Ethena sous-performe — rendement supérieur en échange.',
+    descEn: 'Re Protocol reinsurance junior tranche. Absorbs losses first if Ethena strategy underperforms — higher yield in exchange.',
     risk: 3,
     link: 'https://re.xyz',
   },
-  // ── Airdrop Hunter ───────────────────────────────────────────────────────────
+  {
+    id: 'stkusdc',
+    name: 'stkUSDC (Aave Umbrella)',
+    category: 'Safety Module',
+    fallbackApy: 6.0,
+    llamaConfig: {
+      fullPoolId: null,
+      project: 'aave-umbrella',
+      chain: 'Ethereum',
+      symbol: 'STKUSDC',
+    },
+    descFr: 'Module de sécurité Aave v3 (Umbrella). USDC stakés pour couvrir les déficits de bad debt d\'Aave. Récompenses en échange d\'une exposition au risque de liquidation.',
+    descEn: 'Aave v3 safety module (Umbrella). USDC staked to cover Aave bad debt shortfalls. Rewards in exchange for liquidation risk exposure.',
+    risk: 3,
+    link: 'https://aave.com',
+  },
+  {
+    id: 'susdai',
+    name: 'sUSDai (USD.AI)',
+    category: 'RWA / AI Credit',
+    fallbackApy: 13.0,
+    llamaConfig: {
+      fullPoolId: '712ce948-bd9e-4f4a-8916-b72c447f7578',
+      project: 'usd-ai',
+      chain: 'Arbitrum', // Note: sUSDai natif Arbitrum, pas encore sur ETH mainnet
+      symbol: 'SUSDAI',
+    },
+    descFr: 'Prêts collatéralisés par des GPUs NVIDIA pour des data centers IA. Rendement 13–17% issu des remboursements des opérateurs GPU. Token CHIP prévu Q1 2026. Partenariat PayPal.',
+    descEn: 'Loans collateralized by NVIDIA GPUs for AI data centers. 13–17% yield from GPU operator repayments. CHIP token expected Q1 2026. PayPal partnership.',
+    risk: 3,
+    link: 'https://usd.ai',
+    airdropPotential: true,
+  },
+
+  // ── Balanced propres ⚖️ ────────────────────────────────────────────────────
+  {
+    id: 'infinifi',
+    name: 'InfiniFI (siUSD)',
+    category: 'Fractional Reserve',
+    fallbackApy: 5.3,
+    llamaConfig: {
+      fullPoolId: '8fa2e60e-365a-41fc-8d50-fadde5041f94',
+      project: 'infinifi',
+      chain: 'Ethereum',
+      symbol: 'SIUSD',
+    },
+    descFr: 'Banque fractionnaire on-chain. Tranche liquide (siUSD) déployée sur Aave/Fluid. Waterfall de pertes documenté : liUSD → siUSD → iUSD. Certora (vérification formelle). TGE début 2026.',
+    descEn: 'On-chain fractional reserve banking. Liquid tranche (siUSD) deployed to Aave/Fluid. Documented loss waterfall: liUSD → siUSD → iUSD. Certora formal verification. TGE early 2026.',
+    risk: 2,
+    link: 'https://infinifi.xyz',
+  },
+  {
+    id: 'reservoir',
+    name: 'Reservoir (srUSD)',
+    category: 'CDP Stablecoin',
+    fallbackApy: 4.75,
+    llamaConfig: {
+      fullPoolId: 'd646f32f-d5af-4e34-a29f-8ebeea6a8520',
+      project: 'reservoir-protocol',
+      chain: 'Ethereum',
+      symbol: 'WSRUSD',
+    },
+    descFr: 'Stablecoin CDP + taux d\'épargne (srUSD). Rendement des intérêts sur emprunts rUSD. Audité par Halborn + 4 audits spécialisés. Token DAM. TVL $526M.',
+    descEn: 'CDP stablecoin + savings rate (srUSD). Yield from rUSD borrowing interest. Audited by Halborn + 4 specialized audits. DAM token. $526M TVL.',
+    risk: 2,
+    link: 'https://app.reservoir.xyz',
+  },
+
+  // ── Airdrop Hunter 🪂 ──────────────────────────────────────────────────────
   {
     id: 'sierra',
     name: 'Sierra Money',
     category: 'Liquid Yield Token',
-    allocation: EQ_WEIGHT,
     fallbackApy: 4.78,
-    historicalApy12m: null, // Lancé nov. 2025 — moins de 12 mois d'existence
     llamaConfig: {
-      fullPoolId: null, // à confirmer via DeFiLlama (protocole récent)
+      fullPoolId: null,
       project: 'sierra-money',
       chain: 'Avalanche',
       symbol: 'SIERRA',
     },
-    descFr: 'Protocole hybride RWA + DeFi. Vos USDC génèrent du rendement via des fonds monétaires US (T-bills) et des protocoles DeFi (Aave, Morpho, Euler, Pendle). Natif Avalanche, accessible sur Ethereum via bridge LayerZero. Protocole lancé en novembre 2025 — early adopters potentiellement bien positionnés en vue d\'une future émission tokenomique.',
-    descEn: 'Hybrid RWA + DeFi protocol. Your USDC earns yield through US money market funds (T-bills) and DeFi protocols (Aave, Morpho, Euler, Pendle). Native to Avalanche, accessible on Ethereum via LayerZero bridge. Launched November 2025 — early adopters may be well positioned for a potential future token emission.',
+    descFr: 'Protocole hybride RWA + DeFi. Rendement via fonds monétaires US (T-bills) et protocoles DeFi. Natif Avalanche, accessible sur Ethereum via LayerZero. Early adopters positionnés pour un potentiel airdrop.',
+    descEn: 'Hybrid RWA + DeFi protocol. Yield through US money market funds and DeFi protocols. Native Avalanche, accessible on Ethereum via LayerZero. Early adopters positioned for potential airdrop.',
     risk: 2,
     link: 'https://app.sierra.money',
-    airdropPotential: true, // marqueur Airdrop Hunter
+    airdropPotential: true,
   },
+  {
+    id: 'cap',
+    name: 'stcUSD (Cap)',
+    category: 'Institutional Credit',
+    fallbackApy: 5.6,
+    llamaConfig: {
+      fullPoolId: 'bf6ca887-e357-49ec-8031-0d1a6141c455',
+      project: 'cap',
+      chain: 'Ethereum',
+      symbol: 'STCUSD',
+    },
+    descFr: 'Crédit privé institutionnel. Des opérateurs (banques, HFT, market makers) empruntent au Cap Credit Engine et génèrent du rendement. Contrats immutables. Oracle RedStone. TVL $500M. Pas de token → TGE probable.',
+    descEn: 'Institutional private credit. Operators (banks, HFT firms, market makers) borrow from Cap Credit Engine and generate yield. Immutable contracts. RedStone oracle. $500M TVL. No token yet → TGE likely.',
+    risk: 2,
+    link: 'https://cap.app',
+    airdropPotential: true,
+  },
+  // thbill et susdai sont aussi dans Airdrop Hunter (défini dans profiles.js)
 ]
 
 // ── Les protocoles EN ÉVALUATION (coming soon) ────────────────────────────────
@@ -469,12 +424,5 @@ export const COMING_SOON_PROTOCOLS = [
     category: 'Fixed Rate',
     descFr: 'Taux fixe garanti via la séparation du principal et du rendement. Complexité de gestion des dates d\'expiration.',
     descEn: 'Guaranteed fixed rate via principal/yield separation. Complexity in managing expiration dates.',
-  },
-  {
-    id: 'venus-core',
-    name: 'Venus Core',
-    category: 'Lending',
-    descFr: 'Protocole de lending leader sur BNB Chain. En cours d\'analyse — compatibilité avec notre architecture Ethereum mainnet à confirmer.',
-    descEn: 'Leading lending protocol on BNB Chain. Under analysis — compatibility with our Ethereum mainnet architecture to be confirmed.',
   },
 ]

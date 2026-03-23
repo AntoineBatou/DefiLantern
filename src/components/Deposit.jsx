@@ -8,17 +8,11 @@
 
 import { useState } from 'react'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
-import { useAccount, useBalance } from 'wagmi'
+import { useAccount, useChainId } from 'wagmi'
 import { useLang } from '../context/LangContext'
 import { useRiskProfile } from '../context/RiskProfileContext'
 import { PROFILES, PROFILE_PILL_COLORS } from '../data/profiles'
-
-// Adresses USDC selon la chaîne (pour lire le solde on-chain)
-const USDC_ADDRESSES = {
-  1:        '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', // Ethereum mainnet
-  11155111: '0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238', // Sepolia
-  137:      '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359', // Polygon PoS
-}
+import { useVault } from '../hooks/useVault'
 
 // ── Icônes SVG simples ────────────────────────────────────────────────────────
 function UsdcIcon() {
@@ -47,40 +41,70 @@ export default function Deposit({ averageApy }) {
   const shareToken = profileConfig.shareToken
 
   // ── Wagmi : état du wallet réel ──────────────────────────────────────────
-  const { address, isConnected, chain } = useAccount()
+  const { address, isConnected } = useAccount()
+  const chainId = useChainId()
+  const isSepolia = chainId === 11155111
 
-  // Solde USDC on-chain sur la chaîne active
-  const usdcAddress = chain ? USDC_ADDRESSES[chain.id] : undefined
-  const { data: usdcBalance } = useBalance({
-    address,
-    token: usdcAddress,
-    query: { enabled: isConnected && !!usdcAddress },
-  })
+  // ── Hook vault : lecture + écriture on-chain ─────────────────────────────
+  const {
+    deposit,
+    faucet,
+    isPending,
+    error: vaultError,
+    mockUsdcBalance,
+    sharesBalance,
+    isSepoliaSupported,
+  } = useVault()
 
   // Actif sélectionné : 'USDC' ou 'EURC'
   const [asset, setAsset] = useState('USDC')
 
   // Montant saisi par l'utilisateur
   const [amount, setAmount] = useState('')
+  const [txStep, setTxStep] = useState('') // message d'étape pendant la tx
 
   // ── Calculs ────────────────────────────────────────────────────────────────
   const numAmount = parseFloat(amount) || 0
   const glUsdcReceived = numAmount
   const estimatedYield = numAmount * ((averageApy ?? 0) / 100)
 
-  // Solde USDC formaté (on-chain si connecté, — sinon)
-  const usdcBalanceFormatted = usdcBalance
-    ? parseFloat(usdcBalance.formatted).toLocaleString('fr-FR', { maximumFractionDigits: 2 })
+  // Solde affiché : MockUSDC sur Sepolia, sinon '—'
+  const usdcBalanceFormatted = isSepolia && isSepoliaSupported
+    ? parseFloat(mockUsdcBalance).toLocaleString('fr-FR', { maximumFractionDigits: 2 })
     : '—'
 
   // ── Handlers ───────────────────────────────────────────────────────────────
   const handleMax = () => {
-    if (usdcBalance) setAmount(usdcBalance.formatted)
+    if (isSepolia && mockUsdcBalance) setAmount(mockUsdcBalance)
   }
 
-  const handleDeposit = () => {
-    // Mock : aucun contrat déployé en v1 académique
-    alert(`[Démo académique] Dépôt simulé : ${numAmount} ${asset} → ${glUsdcReceived.toFixed(2)} ${shareToken}\n\nCette interface est un prototype — aucun vrai fonds n'est déplacé.`)
+  const handleFaucet = async () => {
+    try {
+      setTxStep('Demande de 1 000 USDC de test...')
+      await faucet()
+      setTxStep('1 000 USDC reçus !')
+      setTimeout(() => setTxStep(''), 3000)
+    } catch (e) {
+      setTxStep('Erreur faucet (cooldown 24h ?)')
+      setTimeout(() => setTxStep(''), 3000)
+    }
+  }
+
+  const handleDeposit = async () => {
+    if (!isSepolia || !isSepoliaSupported) {
+      alert('Connecte-toi au réseau Sepolia pour utiliser la démo on-chain.')
+      return
+    }
+    try {
+      setTxStep('Étape 1/2 — Autorisation USDC...')
+      await deposit(numAmount)
+      setTxStep(`Dépôt réussi ! Tu as reçu ${glUsdcReceived.toFixed(2)} glUSDC-P`)
+      setAmount('')
+      setTimeout(() => setTxStep(''), 5000)
+    } catch (e) {
+      setTxStep('Transaction annulée ou échouée.')
+      setTimeout(() => setTxStep(''), 3000)
+    }
   }
 
   const apyColor =
@@ -123,6 +147,27 @@ export default function Deposit({ averageApy }) {
                 </div>
               )}
             </div>
+
+            {/* Faucet Sepolia + solde shares */}
+            {isConnected && isSepolia && isSepoliaSupported && (
+              <div className="bg-amber-50 border border-amber-200 rounded-2xl p-3 flex flex-col gap-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-semibold text-amber-800">Réseau Sepolia (test)</span>
+                  <button
+                    onClick={handleFaucet}
+                    disabled={isPending}
+                    className="text-xs font-bold text-amber-700 bg-amber-100 hover:bg-amber-200 px-3 py-1 rounded-full transition-colors disabled:opacity-50"
+                  >
+                    + 1 000 USDC de test
+                  </button>
+                </div>
+                {parseFloat(sharesBalance) > 0 && (
+                  <div className="text-xs text-amber-700">
+                    Ton solde glUSDC-P : <span className="font-bold">{sharesBalance}</span>
+                  </div>
+                )}
+              </div>
+            )}
 
             {/* Toggle USDC / EURC */}
             <div>
@@ -211,7 +256,7 @@ export default function Deposit({ averageApy }) {
                 <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2">
                   <button
                     onClick={handleMax}
-                    disabled={!isConnected || !usdcBalance}
+                    disabled={!isConnected || !mockUsdcBalance}
                     className="text-xs font-bold text-[#2ABFAB] hover:text-[#22A898] disabled:text-navy/30 transition-colors"
                   >
                     {t('deposit.maxBtn')}
@@ -251,14 +296,24 @@ export default function Deposit({ averageApy }) {
               </div>
             )}
 
+            {/* Feedback transaction */}
+            {txStep && (
+              <div className="text-center text-sm font-medium text-[#2ABFAB] bg-[#2ABFAB]/10 rounded-2xl py-3 px-4">
+                {txStep}
+              </div>
+            )}
+
             {/* Bouton dépôt */}
             {isConnected ? (
               <button
                 onClick={handleDeposit}
-                disabled={numAmount <= 0}
+                disabled={numAmount <= 0 || isPending}
                 className="btn-primary disabled:opacity-40 disabled:cursor-not-allowed"
               >
-                {t('deposit.depositBtn')} {numAmount > 0 ? `${numAmount.toLocaleString()} ${asset}` : ''}
+                {isPending
+                  ? 'Transaction en cours...'
+                  : `${t('deposit.depositBtn')} ${numAmount > 0 ? `${numAmount.toLocaleString()} ${asset}` : ''}`
+                }
               </button>
             ) : (
               <div className="text-center text-sm text-navy/40 border-2 border-dashed border-lgrey rounded-2xl p-4">

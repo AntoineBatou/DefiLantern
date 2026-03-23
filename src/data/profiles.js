@@ -3,76 +3,101 @@
 // Architecture : chaque profil définit une liste explicite de protocoles
 // et leurs poids d'allocation (sum = 1.0 = 100%).
 //
-// Prudent       : 8 protocoles (tier 1 + sUSDe + reUSD)
-// Dynamic       : 7 protocoles à rendement élevé (tranches junior incluses)
-// Balanced      : 50% capital Prudent + 50% capital Dynamic (17 protocoles)
-// AirdropHunter : protocoles innovants avec potentiel airdrop (Sierra Money en premier)
+// Prudent       : 10 protocoles (lending, savings, RWA, delta-neutral audité)
+// Dynamic       : 10 protocoles (fractional reserve, crédit institutionnel, tranches junior)
+// Balanced      : 50% capital Prudent + 50% capital Dynamic (20 protocoles, aucun exclusif)
+// AirdropHunter : 4 protocoles innovants avec potentiel tokenomics
 //
-// isDark = true pour les profils avec theme !== 'light' (dynamic et airdropHunter).
+// Note : la répartition par profil est basée sur le RISQUE de la stratégie
+// (levier, collatéral, ancienneté, mécanisme) et NON sur le yield.
+//
+// Règle de pondération :
+//   - Poids égaux pour tous les protocoles standard (≤ 15% max)
+//   - Exceptions (score < 8/12 ou TVL insuffisante) → allocation réduite à 5%
+//   - AirdropHunter : 25% par protocole (répartition équitable)
 
 // ── Listes de protocoles par profil ────────────────────────────────────────
 // Les IDs correspondent au champ `id` dans protocols.js
-// Airdrop Hunter : liste évolutive — Sierra Money est le premier protocole intégré
 
 const PRUDENT_PROTOCOL_IDS = [
   'aave-v3',
-  'morpho-gauntlet',
+  'morpho-gauntlet',   // Gauntlet Prime (blue-chip only)
   'morpho-steakhouse',
-  'compound-v3',
-  'sparklend',
   'susds',
-  'susde',  // delta-neutre audité, tire l'APY vers le haut
-  'reusd',  // tranche senior protégée Re Protocol
+  'susde',
+  'cusdo',
+  'sbold',             // Liquity v2, immutable, 3 audits Tier-1
+  'scrvusd',           // Curve savings rate, ERC-4626
+  'fxsave',            // Exception TVL ($53M) : 16 audits + ERC-4626 + Aladdin DAO 2021
+  'thbill',            // Exception score : T-bills AAA, Standard Chartered, cap 5%
 ]
 
 const DYNAMIC_PROTOCOL_IDS = [
   'snusd',
-  'syrupusdc',
+  'syrupusdc',         // KYC requis — accepté en Dynamic
   'jrusde',
   'susd3',
   'imusd',
-  'reusde',  // tranche junior Re Protocol
+  'reusde',
   'stkusdc',
+  'susdai',            // Aussi dans Airdrop Hunter (CHIP token)
+  'infinifi',          // siUSD fractional reserve — TGE 2026
+  'reservoir',         // srUSD CDP stablecoin — token DAM lancé
 ]
-
-// Poids d'allocation pour Prudent (sum = 1.0)
-// Règle : aucun protocole ne dépasse 15% (cap structurel, cohérent avec le whitepaper)
-const PRUDENT_WEIGHTS = {
-  'aave-v3':           0.16,
-  'morpho-gauntlet':   0.16,
-  'morpho-steakhouse': 0.15,
-  'compound-v3':       0.14,
-  'sparklend':         0.13,
-  'susds':             0.12,
-  'susde':             0.08,
-  'reusd':             0.06,
-}
-
-// Poids d'allocation pour Dynamic (sum = 1.0)
-const DYNAMIC_WEIGHTS = {
-  'snusd':     0.18,
-  'syrupusdc': 0.17,
-  'jrusde':    0.16,
-  'susd3':     0.14,
-  'imusd':     0.13,
-  'reusde':    0.12,
-  'stkusdc':   0.10,
-}
-
-// Poids Balanced = 50% Prudent + 50% Dynamic (sum = 1.0)
-const BALANCED_WEIGHTS = Object.fromEntries([
-  ...Object.entries(PRUDENT_WEIGHTS).map(([id, w]) => [id, w * 0.5]),
-  ...Object.entries(DYNAMIC_WEIGHTS).map(([id, w]) => [id, w * 0.5]),
-])
 
 const AIRDROP_HUNTER_PROTOCOL_IDS = [
-  'sierra', // premier protocole — liste à compléter au fil des sélections
+  'sierra',
+  'cap',               // stcUSD, pas de token → TGE probable
+  'thbill',            // Aussi en Prudent — potentiel tokenomics Theo
+  'susdai',            // Aussi en Dynamic — CHIP ICO avril 2026
 ]
 
-// Poids d'allocation pour Airdrop Hunter (sum = 1.0)
-// Sierra = 100% tant qu'il est seul dans le vault
+// ── Poids d'allocation ────────────────────────────────────────────────────
+
+// Prudent (sum = 1.0)
+// 8 protocoles standard × 11.25% + fxSAVE 5% (exception TVL) + thBILL 5% (exception score)
+// = 0.90 + 0.05 + 0.05 = 1.00 ✓
+const PRUDENT_WEIGHTS = {
+  'aave-v3':           0.1125,
+  'morpho-gauntlet':   0.1125,
+  'morpho-steakhouse': 0.1125,
+  'susds':             0.1125,
+  'susde':             0.1125,
+  'cusdo':             0.1125,
+  'sbold':             0.1125,
+  'scrvusd':           0.1125,
+  'fxsave':            0.05,   // exception TVL — allocation réduite
+  'thbill':            0.05,   // exception score — cap 5%
+}
+
+// Dynamic (sum = 1.0)
+// 10 protocoles × 10% chacun = 1.00 ✓
+const DYNAMIC_WEIGHTS = {
+  'snusd':     0.10,
+  'syrupusdc': 0.10,
+  'jrusde':    0.10,
+  'susd3':     0.10,
+  'imusd':     0.10,
+  'reusde':    0.10,
+  'stkusdc':   0.10,
+  'susdai':    0.10,
+  'infinifi':  0.10,
+  'reservoir': 0.10,
+}
+
+// Balanced = 50% Prudent + 50% Dynamic (sum = 1.0)
+// Aucun protocole exclusif — mix pur des deux profils
+const BALANCED_WEIGHTS = Object.fromEntries([
+  ...Object.entries(PRUDENT_WEIGHTS).map(([id, w]) => [id, w * 0.50]),
+  ...Object.entries(DYNAMIC_WEIGHTS).map(([id, w]) => [id, w * 0.50]),
+])
+
+// Airdrop Hunter (sum = 1.0) — répartition équitable
 const AIRDROP_HUNTER_WEIGHTS = {
-  'sierra': 1.0,
+  'sierra': 0.25,
+  'cap':    0.25,
+  'thbill': 0.25,
+  'susdai': 0.25,
 }
 
 // ── Définition des profils ──────────────────────────────────────────────────
@@ -103,7 +128,7 @@ export const PROFILES = {
     protocolIds: DYNAMIC_PROTOCOL_IDS,
     weights: DYNAMIC_WEIGHTS,
     apyRange: '8–15%',
-    theme: 'dark', // ← déclenche le mode Cyber/Neon
+    theme: 'dark',
   },
   airdropHunter: {
     id: 'airdropHunter',
@@ -112,7 +137,7 @@ export const PROFILES = {
     protocolIds: AIRDROP_HUNTER_PROTOCOL_IDS,
     weights: AIRDROP_HUNTER_WEIGHTS,
     apyRange: 'Variable',
-    theme: 'christmas', // ← fond sombre rouge & or (#C0392B + #FFD700)
+    theme: 'christmas',
   },
 }
 

@@ -91,23 +91,27 @@ function WhitepaperFR() {
       {/* RÉSUMÉ */}
       <Section id="abstract" title="Résumé">
         <p className="text-navy/70 leading-relaxed">
-          DeFi Lantern est un agrégateur de rendement non-custodial et multi-protocoles pour stablecoins,
-          déployé sur Ethereum mainnet. Les utilisateurs déposent des USDC et reçoivent des parts ERC-4626 —
+          DeFi Lantern est un agrégateur de rendement pour stablecoins déployé sur Ethereum mainnet.
+          Il est <strong>non-custodial</strong> : vos fonds ne transitent jamais par nos mains — ils restent
+          dans les protocoles sous-jacents à tout moment.
+          Les utilisateurs déposent des USDC et reçoivent en échange des parts —
           <strong>glUSDC-P</strong>, <strong>glUSDC-B</strong>, <strong>glUSDC-D</strong> ou <strong>glUSDC-AH</strong> selon le profil
           de risque choisi — dont la valeur augmente au fil du temps à mesure que le protocole
-          collecte les rendements d'un ensemble sélectionné de protocoles DeFi éprouvés.
+          collecte les rendements d'une sélection de protocoles DeFi éprouvés.
         </p>
         <p className="text-navy/70 leading-relaxed mt-3">
-          DeFi Lantern cible les détenteurs de stablecoins cherchant un rendement optimisé et passif,
-          sans gestion active de portefeuille, sans exposition marché et sans risque de garde.
-          Le capital est alloué entre seize protocoles sous-jacents couvrant les marchés de prêt,
-          les instruments d'épargne en actifs réels (RWA), les stratégies delta-neutres,
-          les pools de stabilité et le crédit institutionnel.
+          DeFi Lantern cible les détenteurs de stablecoins cherchant un rendement passif,
+          sans gestion active de portefeuille et sans exposition aux variations du marché.
+          Le capital est réparti entre jusqu'à vingt protocoles sous-jacents couvrant les marchés de prêt,
+          les produits adossés à des actifs réels (obligations d'État tokenisées, T-bills),
+          les stratégies delta-neutres (couvertes contre les variations de prix)
+          et le crédit institutionnel.
         </p>
         <p className="text-navy/70 leading-relaxed mt-3">
-          La gouvernance est conduite on-chain via le token <strong>GLOW</strong> à travers une
-          architecture Governor + Timelock, avec un multisig Guardian conservant uniquement
-          des pouvoirs d'urgence (pause).
+          Les décisions de gouvernance sont conduites via le token <strong>GLOW</strong> : les détenteurs
+          votent on-chain, et toute décision adoptée entre en vigueur après un délai obligatoire de
+          48 heures (Timelock). Un comité d'urgence (multisig 2-sur-3) peut uniquement suspendre
+          les nouveaux dépôts — jamais accéder aux fonds.
         </p>
       </Section>
 
@@ -116,9 +120,9 @@ function WhitepaperFR() {
         <SubSection title="1.1 Le problème du rendement stablecoin">
           <p className="text-navy/70 leading-relaxed mb-3">
             Les détenteurs de stablecoins font face à un paysage de rendement fragmenté.
-            Des dizaines de protocoles proposent des APY compétitifs, chacun avec des profils
-            de risque distincts, des fenêtres de liquidité, des périodes de cooldown et
-            une complexité d'intégration différentes. Un investisseur classique doit :
+            Des dizaines de protocoles proposent des APY (rendements annuels) compétitifs, chacun avec
+            des profils de risque distincts, des fenêtres de liquidité, des périodes de blocage avant retrait
+            et une complexité technique différente. Un investisseur doit :
           </p>
           <ul className="list-disc list-inside text-navy/70 space-y-1 text-sm mb-3">
             <li>Surveiller les taux sur plusieurs protocoles simultanément</li>
@@ -156,8 +160,8 @@ function WhitepaperFR() {
             rows={[
               ['Blockchain', 'Ethereum mainnet'],
               ['Actif de dépôt', 'USDC'],
-              ['Tokens de part', 'glUSDC-P / glUSDC-B / glUSDC-D (ERC-4626, un vault par profil)'],
-              ['Token de gouvernance', 'GLOW (ERC-20Votes)'],
+              ['Tokens de part', 'glUSDC-P / glUSDC-B / glUSDC-D / glUSDC-AH — un vault ERC-4626 par profil (standard de vault Ethereum)'],
+              ['Token de gouvernance', 'GLOW — permet de voter les décisions du protocole'],
               ['Frais', '5% de frais de performance sur les gains nets'],
               ['Garde', 'Non-custodial'],
               ['Retraits', 'Non-custodial, initiés par l\'utilisateur'],
@@ -168,10 +172,10 @@ function WhitepaperFR() {
 
         <SubSection title="2.2 Caractéristiques clés">
           <p className="text-navy/70 text-sm mb-2"><strong className="text-navy">Rendement à entrée unique.</strong> Un seul dépôt USDC donne accès à jusqu'à seize stratégies de rendement simultanées.</p>
-          <p className="text-navy/70 text-sm mb-2"><strong className="text-navy">Conforme ERC-4626.</strong> glUSDC-P, glUSDC-B, glUSDC-D et glUSDC-AH sont des tokens de vault pleinement standardisés ERC-4626, composables avec tout protocole supportant ce standard. Chaque token est pleinement fongible au sein de son vault — un acheteur sur le marché secondaire connaît immédiatement son exposition.</p>
-          <p className="text-navy/70 text-sm mb-2"><strong className="text-navy">Non-custodial par conception.</strong> Aucune clé admin ne peut déplacer les fonds des utilisateurs. Le multisig Guardian peut uniquement mettre en pause les nouveaux dépôts — les retraits restent ouverts en permanence.</p>
-          <p className="text-navy/70 text-sm mb-2"><strong className="text-navy">Allocation transparente.</strong> Les poids cibles par protocole sont stockés on-chain en points de base (somme = 10 000). Tout détenteur de GLOW peut vérifier la stratégie à tout moment.</p>
-          <p className="text-navy/70 text-sm"><strong className="text-navy">Gouvernance on-chain.</strong> Tous les changements de paramètres passent par un contrat Governor avec un Timelock de 48 heures.</p>
+          <p className="text-navy/70 text-sm mb-2"><strong className="text-navy">Standard ERC-4626.</strong> glUSDC-P, glUSDC-B, glUSDC-D et glUSDC-AH suivent le standard de vault Ethereum ERC-4626 — compatibles avec tout protocole DeFi supportant ce format. Chaque token est interchangeable au sein de son vault : acheter du glUSDC-P sur le marché secondaire, c'est s'exposer exactement aux mêmes protocoles Prudent que le déposant initial.</p>
+          <p className="text-navy/70 text-sm mb-2"><strong className="text-navy">Non-custodial.</strong> Aucune clé admin ne peut déplacer les fonds des utilisateurs. Le comité d'urgence peut uniquement suspendre les nouveaux dépôts — les retraits restent possibles en permanence.</p>
+          <p className="text-navy/70 text-sm mb-2"><strong className="text-navy">Stratégie transparente.</strong> Les poids d'allocation par protocole sont inscrits sur la blockchain (en points de base : 100 bp = 1%, somme = 10 000 bp = 100%). Tout détenteur de GLOW peut les vérifier à tout moment.</p>
+          <p className="text-navy/70 text-sm"><strong className="text-navy">Gouvernance on-chain.</strong> Tous les changements de paramètres passent par un vote communautaire suivi d'un délai obligatoire de 48 heures avant exécution.</p>
         </SubSection>
 
         <SubSection title="2.3 Utilisateurs cibles">
@@ -185,16 +189,16 @@ function WhitepaperFR() {
 
         <SubSection title="2.4 DeFi Lantern vs vaults concurrents">
           <p className="text-navy/70 text-sm mb-3">
-            Le marché des vaults de rendement propose des dizaines d'options — agrégateurs, curators Morpho, vaults Lagoon. Choisir parmi eux demande des compétences d'analyse avancées, une connaissance des risques sous-jacents et une surveillance continue. DeFi Lantern est conçu pour répondre structurellement à ces limites.
+            Le marché des vaults de rendement propose des dizaines d'options — agrégateurs, gestionnaires Morpho (curators), vaults Lagoon. Choisir parmi eux demande des compétences d'analyse avancées et une surveillance continue. DeFi Lantern est conçu pour répondre à ces limites.
           </p>
           <WpTable
             headers={['Critère', 'Vaults concurrents', 'DeFi Lantern']}
             rows={[
-              ['Gouvernance de la stratégie', 'Curator libre de modifier les allocations sans vote', 'DAO uniquement (vote on-chain + Timelock 48h)'],
+              ['Gouvernance de la stratégie', 'Gestionnaire libre de modifier les allocations sans vote communautaire', 'DAO uniquement (vote on-chain + délai 48h obligatoire)'],
               ['Transparence', 'Allocations et décisions rarement traçables en temps réel', 'Tous les paramètres on-chain, vérifiables à tout moment'],
               ['Cap par protocole', 'Concentration possible sur une seule stratégie', 'Aucun protocole ne dépasse 15% du TVL'],
               ['Frais de performance', '10% en moyenne sur le marché', '5% — aligné sur les gains effectifs des déposants'],
-              ['Changement de stratégie', 'Possible sans préavis ni délai par le curator', 'Impossible sans vote DAO et délai Timelock 48h'],
+              ['Changement de stratégie', 'Possible sans préavis ni délai par le gestionnaire', 'Impossible sans vote DAO et délai obligatoire de 48h'],
               ['Diversification', 'Variable selon le vault choisi', '9 à 17 protocoles selon le profil, revus par gouvernance'],
             ]}
           />
@@ -208,11 +212,11 @@ function WhitepaperFR() {
       <Section id="architecture" title="3. Architecture">
         <SubSection title="3.1 Quatre vaults ERC-4626 — glUSDC-P / glUSDC-B / glUSDC-D / glUSDC-AH">
           <p className="text-navy/70 leading-relaxed mb-3">
-            DeFi Lantern déploie <strong>quatre instances du même contrat</strong>{' '}
-            <code className="bg-navy/10 px-1 rounded">DeFiLanternVault.sol</code>, chacune avec
-            ses propres adapters et poids d'allocation. Chaque vault émet un token distinct
-            (glUSDC-P, glUSDC-B, glUSDC-D, glUSDC-AH), pleinement fongible au sein de son vault.
-            L'utilisateur choisit son profil puis interagit avec le vault correspondant.
+            DeFi Lantern déploie <strong>quatre vaults distincts</strong>, un par profil de risque,
+            chacun avec ses propres protocoles et poids d'allocation. Chaque vault émet un token distinct
+            (glUSDC-P, glUSDC-B, glUSDC-D, glUSDC-AH) représentant une part du capital déposé.
+            L'utilisateur choisit son profil, dépose ses USDC dans le vault correspondant
+            et reçoit des parts dont la valeur augmente avec les rendements accumulés.
           </p>
           <p className="text-navy/70 text-sm mb-2"><strong className="text-navy">Flux de dépôt :</strong></p>
           <ol className="list-decimal list-inside text-navy/70 text-sm space-y-1 mb-3">
@@ -238,67 +242,35 @@ function WhitepaperFR() {
 
         <SubSection title="3.2 Pattern Adapter">
           <p className="text-navy/70 leading-relaxed mb-3">
-            Chaque protocole sous-jacent est intégré via un contrat adapter dédié implémentant
-            l'interface <code className="bg-navy/10 px-1 rounded">IAdapter</code> :
+            Chaque protocole sous-jacent est intégré via un contrat adapter dédié. Tous les adapters
+            partagent la même interface — le vault central ne connaît que trois opérations :
+            <strong> déposer</strong>, <strong>retirer</strong> et <strong>lire la valeur actuelle</strong>.
+            Ajouter ou retirer un protocole ne nécessite que de déployer un nouvel adapter
+            et de voter en gouvernance — le vault central n'est jamais modifié.
           </p>
-          <CodeBlock>{`interface IAdapter {
-    function deposit(uint256 amount) external;
-    function withdraw(uint256 amount) external;
-    function totalAssets() external view returns (uint256);
-    function hasCooldown() external view returns (bool);
-    function cooldownRemaining() external view returns (uint256);
-}`}</CodeBlock>
-          <p className="text-navy/70 leading-relaxed text-sm mb-4">
-            Ce pattern isole la logique spécifique à chaque protocole du cœur du vault.
-            Ajouter ou supprimer un protocole nécessite uniquement de déployer un nouvel adapter
-            et de voter en gouvernance — le vault lui-même n'est jamais redéployé.
+          <p className="text-navy/70 text-sm">
+            Certains protocoles n'acceptent pas directement les USDC. Dans ce cas, l'adapter intègre
+            automatiquement un échange via Uniswap V3 : les USDC déposés sont convertis au moment du dépôt,
+            et reconvertis en USDC au moment du retrait. L'utilisateur ne voit que des USDC à tout moment.
           </p>
-          <InfoBox>
-            <strong>Swap Adapters — protocoles non-USDC</strong><br />
-            Certains protocoles n'acceptent pas directement les USDC. Le pattern <em>swap adapter</em> résout
-            cela en intégrant un swap Uniswap V3 inline dans chaque adapter :
-            <CodeBlock>{`deposit() : USDC → swap DEX → token requis → dépôt protocole → shares
-withdraw() : shares → retrait protocole → token requis → swap DEX → USDC
-totalAssets() : shares × pricePerShare (oracle Chainlink) → USDC équivalent`}</CodeBlock>
-            Exemples concrets :
-            <ul className="list-disc list-inside mt-2 space-y-1">
-              <li><strong>jrUSDe (Strata) :</strong> USDC → USDe (pool Uniswap V3 USDe/USDC) → jrUSDe</li>
-              <li><strong>mPT-sUSDe (mStable) :</strong> USDC → USDe (Uniswap V3) → sUSDe (Ethena) → PT-sUSDe (Pendle) → vault mStable</li>
-              <li><strong>sBOLD (Liquity v2) :</strong> USDC → BOLD (pool Uniswap V3 BOLD/USDC) → sBOLD</li>
-            </ul>
-            Coûts additionnels : ~150–200k gas pour le swap + slippage 0,1–0,5% selon la liquidité du pool.
-            L'oracle <code className="bg-navy/10 px-1 rounded">totalAssets()</code> utilise Chainlink pour ramener
-            la valeur des shares en USDC sans dépendre du prix spot instantané.
-          </InfoBox>
         </SubSection>
 
         <SubSection title="3.3 Structure des contrats">
-          <CodeBlock>{`contracts/
-├── DeFiLanternVault.sol       ← ERC-4626, logique centrale
-├── interfaces/
-│   └── IAdapter.sol           ← Interface adapter commune
-├── adapters/
-│   ├── AaveAdapter.sol
-│   ├── MorphoGauntletAdapter.sol
-│   ├── MorphoSteakhouseAdapter.sol
-│   ├── CompoundV3Adapter.sol
-│   ├── SparkLendAdapter.sol
-│   ├── FluxFinanceAdapter.sol
-│   ├── EulerV2Adapter.sol
-│   ├── sUSDSAdapter.sol
-│   ├── fxSAVEAdapter.sol
-│   ├── USDYAdapter.sol
-│   ├── scrvUSDAdapter.sol
-│   ├── sBOLDAdapter.sol
-│   ├── cUSDOAdapter.sol
-│   ├── syrupUSDCAdapter.sol
-│   └── reUSDAdapter.sol
-├── governance/
-│   ├── GlowToken.sol          ← ERC-20Votes (GLOW)
-│   ├── DeFiLanternGovernor.sol← OZ Governor
-│   └── TimelockController.sol
-└── utils/
-    └── FeeManager.sol`}</CodeBlock>
+          <p className="text-navy/70 text-sm mb-3">
+            L'architecture repose sur 4 vaults ERC-4626 indépendants, un par profil, et 15 adapters
+            (un par protocole sous-jacent). La gouvernance et les frais sont gérés par des contrats dédiés.
+          </p>
+          <WpTable
+            headers={['Contrat', 'Rôle']}
+            rows={[
+              ['DeFiLanternVaultPrudent/Balanced/Dynamic/AH', 'Vault ERC-4626 — reçoit les dépôts, émet les parts, orchestre les adapters'],
+              ['IAdapter + 15 adapters', 'Un adapter par protocole sous-jacent — isole la logique propre à chaque intégration'],
+              ['GlowToken.sol', 'Token de gouvernance GLOW (ERC-20Votes, 100M supply fixe)'],
+              ['DeFiLanternGovernor.sol', 'Contrat de vote on-chain (OZ Governor)'],
+              ['TimelockController.sol', 'Délai obligatoire de 48h avant exécution de toute décision'],
+              ['FeeManager.sol', 'Calcul et application des frais de performance (5%)'],
+            ]}
+          />
         </SubSection>
 
         <SubSection title="3.4 Allocation du capital et poids">
@@ -307,28 +279,87 @@ totalAssets() : shares × pricePerShare (oracle Chainlink) → USDC équivalent`
             La fonction <code className="bg-navy/10 px-1 rounded">rebalance()</code> déplace le capital entre les adapters
             pour correspondre aux poids cibles. Le rééquilibrage est déclenché par vote de gouvernance.
           </p>
+          <p className="text-navy/70 text-sm font-semibold mb-2">🛡️ glUSDC-P — Vault Prudent (10 protocoles) :</p>
           <WpTable
-            headers={['Protocole', 'Tier', 'Catégorie', 'Poids cible']}
+            headers={['Protocole', 'Catégorie', 'Poids', 'Propriété clé']}
             rows={[
-              ['Aave v3', '1 — Core', 'Lending', '15%'],
-              ['Morpho (Gauntlet USDC Core)', '1 — Core', 'Lending', '12%'],
-              ['Morpho (Steakhouse USDC)', '1 — Core', 'Lending', '10%'],
-              ['Compound v3', '2 — Standard', 'Lending', '7%'],
-              ['SparkLend (Sky)', '2 — Standard', 'Lending', '7%'],
-              ['sUSDS (Sky)', '2 — Standard', 'Savings Rate', '8%'],
-              ['USDY (Ondo)', '2 — Standard', 'RWA T-bills', '6%'],
-              ['scrvUSD (Curve)', '2 — Standard', 'Savings Rate', '6%'],
-              ['sBOLD (Liquity v2)', '2 — Standard', 'Stability Pool', '6%'],
-              ['Euler v2', '2 — Standard', 'Lending', '5%'],
-              ['cUSDO (OpenEden)', '3 — Satellite', 'RWA T-bills', '4%'],
-              ['fxSAVE (f(x) Protocol)', '3 — Satellite', 'Stability Pool', '4%'],
-              ['Flux Finance', '3 — Satellite', 'Lending', '3%'],
-              ['syrupUSDC (Maple)', '3 — Satellite', 'Institutional Credit', '2%'],
-              ['reUSD (Re Protocol)', '3 — Satellite', 'Reinsurance', '1%'],
+              ['Buffer de liquidité (Aave v3)', 'Retraits instantanés', '10%', 'Obligatoire — pas une allocation de rendement'],
+              ['Aave v3 USDC', 'Lending', '15%', 'Allocation rendement (séparée du buffer)'],
+              ['Morpho Gauntlet USDC Prime', 'Lending', '15%', 'Collatéral blue-chip uniquement, $0 bad debt'],
+              ['Morpho Steakhouse USDC', 'Lending', '13%', 'Curator ultra-conservateur'],
+              ['sUSDS (Sky)', 'Savings Rate', '12%', 'Infrastructure MakerDAO depuis 2017'],
+              ['sBOLD (Liquity v2)', 'Stability Pool', '10%', 'Code immuable, zéro admin key'],
+              ['scrvUSD (Curve)', 'Savings Rate', '9%', 'Timelock 7j (Curve DAO)'],
+              ['sUSDe (Ethena)', 'Delta-Neutral', '7%', 'Cooldown 7j, géré par le buffer'],
+              ['cUSDO (OpenEden)', 'RWA T-bills', '5%', 'Oracle Chainlink, audit ChainSecurity'],
+              ['fxSAVE (f(x) Protocol)', 'Stability Pool', '3%', 'Exception : 16 audits, ERC-4626 natif'],
+              ['thBill (Theo Network)', 'RWA T-bills', '1%', 'Exception : cappé, marché secondaire uniquement'],
             ]}
           />
           <InfoBox>
-            <strong>Note sur la liquidité :</strong> En parallèle de ces allocations, DeFi Lantern maintient une <strong>réserve de liquidité séparée de 10% du TVL</strong>, déposée sur Aave v3 (retrait instantané). Cette réserve est distincte du poids d'allocation d'Aave dans le tableau ci-dessus — elle s'y ajoute. En cas de retrait supérieur à cette réserve, une file de priorité s'active : Morpho → autres protocoles sans cooldown → file d'attente (max 7 jours). Les poids cibles ci-dessus sont indicatifs (v0.2) et seront affinés par la gouvernance au lancement.
+            <strong>Buffer de liquidité :</strong> Le buffer de 10% est placé sur Aave v3 et sert en premier lors des retraits. Il appartient au vault dans son ensemble — ce n'est pas une allocation individuelle par utilisateur et ne touche pas aux positions des autres déposants. L'allocation rendement d'Aave (15%) est une ligne distincte et séparée.
+          </InfoBox>
+          <p className="text-navy/70 text-sm font-semibold mb-2 mt-4">⚡ glUSDC-D — Vault Dynamic (10 protocoles) :</p>
+          <WpTable
+            headers={['Protocole', 'Catégorie', 'Poids']}
+            rows={[
+              ['syrupUSDC (Maple)', 'Institutional Credit', '15%'],
+              ['sNUSD (Neutrl)', 'Delta-Neutral', '15%'],
+              ['jrUSDe (Strata)', 'Market Neutral', '13%'],
+              ['sUSD3 (3Jane)', 'Institutional Credit', '12%'],
+              ['sUSDai (USD.AI)', 'RWA / AI Credit', '12%'],
+              ['InfiniFI (siUSD)', 'Fractional Reserve', '10%'],
+              ['Reservoir (srUSD)', 'CDP Savings Rate', '8%'],
+              ['stkUSDC (Aave Umbrella)', 'Safety Module', '7%'],
+              ['imUSD (mStable)', 'Fixed Rate', '5%'],
+              ['reUSDe (Re Protocol)', 'Reinsurance', '3%'],
+            ]}
+          />
+          <p className="text-navy/70 text-sm font-semibold mb-2 mt-4">⚖️ glUSDC-B — Vault Balanced (20 protocoles) :</p>
+          <p className="text-navy/70 text-sm mb-3">
+            50% des allocations Prudent + 50% des allocations Dynamic — aucun protocole exclusif. Poids blendés recalculés :
+          </p>
+          <WpTable
+            headers={['Protocole', 'Origine', 'Poids blendé']}
+            rows={[
+              ['Buffer de liquidité (Aave v3)', 'Prudent', '5.0%'],
+              ['Aave v3 USDC', 'Prudent', '7.5%'],
+              ['Morpho Gauntlet USDC Prime', 'Prudent', '7.5%'],
+              ['syrupUSDC (Maple)', 'Dynamic', '7.5%'],
+              ['sNUSD (Neutrl)', 'Dynamic', '7.5%'],
+              ['jrUSDe (Strata)', 'Dynamic', '6.5%'],
+              ['Morpho Steakhouse USDC', 'Prudent', '6.5%'],
+              ['sUSD3 (3Jane)', 'Dynamic', '6.0%'],
+              ['sUSDai (USD.AI)', 'Dynamic', '6.0%'],
+              ['sUSDS (Sky)', 'Prudent', '6.0%'],
+              ['sBOLD (Liquity v2)', 'Prudent', '5.0%'],
+              ['InfiniFI (siUSD)', 'Dynamic', '5.0%'],
+              ['scrvUSD (Curve)', 'Prudent', '4.5%'],
+              ['Reservoir (srUSD)', 'Dynamic', '4.0%'],
+              ['stkUSDC (Aave Umbrella)', 'Dynamic', '3.5%'],
+              ['sUSDe (Ethena)', 'Prudent', '3.5%'],
+              ['cUSDO (OpenEden)', 'Prudent', '2.5%'],
+              ['imUSD (mStable)', 'Dynamic', '2.5%'],
+              ['fxSAVE (f(x) Protocol)', 'Prudent', '1.5%'],
+              ['reUSDe (Re Protocol)', 'Dynamic', '1.5%'],
+              ['thBill (Theo Network)', 'Prudent', '0.5%'],
+            ]}
+          />
+          <p className="text-navy/70 text-sm mt-3 mb-4">
+            <em>La moitié Prudent contribue un buffer de liquidité de 5% (Aave v3) au vault Balanced pour des retraits instantanés proportionnels.</em>
+          </p>
+          <p className="text-navy/70 text-sm font-semibold mb-2 mt-4">🪂 glUSDC-AH — Vault Airdrop Hunter (4 protocoles) :</p>
+          <WpTable
+            headers={['Protocole', 'Catégorie', 'Poids', 'Thèse tokenomics']}
+            rows={[
+              ['Sierra Money', 'LYT (RWA+DeFi)', '25%', 'Pas de token — backing institutionnel fort (LayerZero OFT sur ETH), TGE probable'],
+              ['stcUSD (Cap)', 'Institutional Credit', '25%', 'Pas de token — $500M TVL, contrats immutables, TGE très probable'],
+              ['sUSDai (USD.AI)', 'RWA / AI Credit', '25%', 'CHIP token ICO Q1 2026 — partenariat PayPal, collatéral GPU'],
+              ['thBill (Theo Network)', 'RWA T-bills', '25%', 'Pas de token — backing institutionnel (Standard Chartered + Wellington), TGE probable'],
+            ]}
+          />
+          <InfoBox>
+            ⚠️ <strong>Les airdrops sont un bonus potentiel — jamais un rendement promis.</strong> Les rendements ci-dessus sont viables indépendamment. Revue trimestrielle obligatoire — sortie si l'événement tokenomics est passé sans rationale supplémentaire.
           </InfoBox>
         </SubSection>
 
@@ -342,12 +373,12 @@ totalAssets() : shares × pricePerShare (oracle Chainlink) → USDC équivalent`
             tier 1, glUSDC-D = uniquement des protocoles tier 3.
           </p>
           <WpTable
-            headers={['Profil', 'Protocoles', 'APY cible', 'Allocation']}
+            headers={['Profil', 'Protocoles', 'APY cible', 'Logique de sélection']}
             rows={[
-              ['🛡️ Prudent', '8 protocoles — tier 1 + sUSDe (delta-neutre audité) + reUSD (tranche senior Re Protocol)', '~4–6%', 'Poids max 16% par protocole — concentrés sur les protocoles les plus audités et liquides'],
-              ['⚖️ Équilibré', '15 protocoles — 50% capital Prudent + 50% capital Dynamique', '~6–9%', 'Mix équipondéré entre les deux pools (poids × 0,5)'],
-              ['⚡ Dynamique', '7 protocoles — tier 3 (sNUSD, syrupUSDC, jrUSDe, sUSD3, imUSD, reUSDe, stkUSDC)', '~9–15%', 'Poids concentrés sur les protocoles à rendement élevé, y compris tranches juniors'],
-              ['🪂 Airdrop Hunter', '1+ protocole(s) — Sierra Money (hybride RWA+DeFi, T-bills + Aave/Morpho, natif Avalanche bridgé LayerZero). Liste évolutive par vote de gouvernance.', 'Variable (~4–8%+)', 'Protocoles innovants sélectionnés pour vision, exécution technique et potentiel d\'airdrop. Poids 100% Sierra Money en v1.'],
+              ['🛡️ Prudent', '10 protocoles — lending simple, savings rates, RWA T-bills, delta-neutre audité. Pas de levier.', '3–7%', 'TVL >$100M, ancienneté >1 an, ≥1 audit reconnu. Exceptions documentées (thBill 1%, fxSAVE 3%).'],
+              ['⚖️ Équilibré', '20 protocoles — 50% Prudent + 50% Dynamic. Aucun protocole exclusif.', '5–10%', 'Mix des deux profils. Poids proportionnels, max 15% par protocole.'],
+              ['⚡ Dynamique', '10 protocoles — tranches junior, crédit institutionnel (KYC accepté), AI credit, fractional reserve', '8–15%', 'TVL >$5M, ≥1 audit ou code public. Risque assumé, max 15% par protocole.'],
+              ['🪂 Airdrop Hunter', '4 protocoles — Sierra Money, Cap stcUSD, thBill, sUSDai. Liste évolutive par gouvernance.', 'Variable', 'Protocoles innovants avec potentiel tokenomics (airdrop, TGE). 25% chacun. Airdrops = bonus non garanti.'],
             ]}
           />
           <InfoBox>
@@ -366,195 +397,71 @@ totalAssets() : shares × pricePerShare (oracle Chainlink) → USDC équivalent`
           </InfoBox>
           <p className="text-navy/70 text-sm">
             Les poids d'allocation de chaque profil sont stockés on-chain et modifiables
-            par vote de gouvernance, dans les limites fixées par les tiers de risque (§7.2).
+            par vote de gouvernance.
           </p>
         </SubSection>
         </div>
 
-        <SubSection title="3.6 Architecture cross-chain (Dynamic et Airdrop Hunter)">
+        <SubSection title="3.6 Protocoles non-natifs : marché secondaire et cross-chain">
           <p className="text-navy/70 leading-relaxed mb-3">
-            Les profils Prudent et Balanced s'appuient exclusivement sur des protocoles natifs Ethereum.
-            Pour les profils Dynamic et Airdrop Hunter, DeFi Lantern accède à des protocoles
-            sur d'autres chaînes tout en maintenant l'invariant fondamental : <strong>l'utilisateur
-            dépose et retire uniquement en USDC sur Ethereum mainnet</strong>.
+            Quel que soit le profil, <strong>l'utilisateur dépose et retire uniquement en USDC sur Ethereum mainnet</strong>.
+            Certains protocoles retenus ne sont pas accessibles directement en USDC — le vault gère
+            ces cas via deux mécanismes :
           </p>
-          <SubSection title="Problème fondamental">
-            <p className="text-navy/70 text-sm mb-3">
-              L'ERC-4626 suppose que <code className="bg-navy/10 px-1 rounded">totalAssets()</code> est
-              synchrone et observable on-chain. En contexte cross-chain, cette valeur dépend
-              d'actifs déposés sur d'autres chaînes, introduisant des délais et des risques d'oracle.
-            </p>
-          </SubSection>
-          <SubSection title="Quatre architectures possibles">
-            <WpTable
-              headers={['Architecture', 'Principe', 'Décentralisation', 'Complexité', 'Réalisme MVP']}
-              rows={[
-                ['0 — Token bridgé sur ETH', 'Le protocole cible émet un token représentatif sur ETH (ex. Sierra Money via LayerZero OFT). Le vault achète ce token directement.', '✅ Complète', 'Faible', '⭐⭐⭐⭐⭐'],
-                ['1 — Keeper + bridge natif', 'Un keeper off-chain exécute les bridges via Stargate V2 et pousse un oracle de balance toutes les ~1h.', '❌ Keeper central', 'Moyenne', '⭐⭐⭐'],
-                ['2 — Satellites + LayerZero', 'Contrats satellites déployés sur chaque chaîne cible ; le vault ETH coordonne via messages LZ. Architecture cible v2.', '✅ On-chain', 'Très haute', '⭐'],
-                ['3 — Chainlink CCIP', 'Identique à l\'Arch. 2 avec CCIP. Latence 5–15 min. Standard institutionnel (Sommelier, Synthetix v3).', '✅ On-chain', 'Extrême', '⭐'],
-              ]}
-            />
-          </SubSection>
+          <WpTable
+            headers={['Mécanisme', 'Exemple', 'Fonctionnement']}
+            rows={[
+              ['Marché secondaire (DEX)', 'thBILL (Theo Network)', 'Le vault achète thBILL via Uniswap V3. Protection : TWAP 30 min + slippage max 0,5%. L\'adapter gère l\'achat et la revente automatiquement.'],
+              ['Token bridgé sur ETH', 'Sierra Money (Avalanche)', 'Sierra émet un token représentatif sur ETH via LayerZero OFT. Le vault achète ce token directement, sans bridge actif côté vault. Risque : liquidité du token + tail risk bridge.'],
+            ]}
+          />
           <InfoBox>
-            <strong>Choix MVP — Architecture 0 (token bridgé sur ETH) :</strong> en v1,
-            DeFi Lantern n'intègre que des protocoles disposant d'un token représentatif sur
-            Ethereum mainnet (OFT LayerZero ou équivalent). Sierra Money en est l'exemple
-            fondateur. Cette approche maintient le vault 100% on-chain sur ETH,
-            avec <code className="bg-navy/10 px-1 rounded">totalAssets()</code> synchrone et les retraits
-            instantanés. L'Architecture 2 (satellites) constitue la roadmap v2 pour les
-            protocoles sans représentation sur ETH.
+            <strong>Vers l'asynchrone — ERC-7540 (v2) :</strong> certains protocoles imposent un délai avant retrait
+            (sUSDe : 7 jours). En v1, le buffer de liquidité de 10% TVL couvre ces cas.
+            En v2, DeFi Lantern envisage d'adopter <strong>ERC-7540</strong> — extension d'ERC-4626 introduisant
+            un système de file de demandes (<code className="bg-navy/10 px-1 rounded">requestRedeem()</code> →
+            attente → <code className="bg-navy/10 px-1 rounded">redeem()</code>) qui gèrerait nativement
+            les cooldowns et les flux cross-chain asynchrones. Ce standard est complémentaire d'<strong>ERC-7575</strong>,
+            qui sépare le token de part du contrat vault pour plus de composabilité — aligné avec
+            notre architecture multi-vaults.
           </InfoBox>
-          <SubSection title="Protocoles cross-chain étudiés">
-            <WpTable
-              headers={['Protocole', 'Chaîne native', 'Type', 'APY', 'Bridge ETH', 'Intégration']}
-              rows={[
-                ['Sierra Money', 'Avalanche', 'LYT hybride RWA+DeFi', '~4,78%', '✅ LayerZero OFT', '★★☆ — Arch. 0, SierraAdapter.sol requis'],
-                ['sUSDai (USD.AI)', 'ETH mainnet + L2s', 'Stablecoin adossé à des GPU IA (~13–17%)', '~13–17%', 'À confirmer (natif ETH probable)', '★★☆ — Arch. 0 si disponible sur ETH mainnet'],
-                ['yzPP — Yuzu Money', 'Plasma L1 (Tether)', 'Junior tranche (first-loss buffer)', '14–40% variable', '❌ Aucun bridge ETH connu', '★☆☆ — Arch. 1 ou 2 requise'],
-              ]}
-            />
-          </SubSection>
-          <SubSection title="Gestion des risques cross-chain">
-            <WpTable
-              headers={['Risque', 'Impact', 'Mitigation']}
-              rows={[
-                ['Oracle stale (délai de mise à jour)', 'NAV potentiellement incorrecte', 'TWAP + circuit breaker + MAX_STALENESS on-chain'],
-                ['Bridge hors service', 'Fonds temporairement inaccessibles', 'Buffer 10% TVL sur Aave v3 (ETH) toujours accessible'],
-                ['Slippage bridge', 'Drag sur le rendement net', 'Harvest hebdomadaire, Stargate Bus (réduction coûts >90%)'],
-                ['Exploit bridge', 'Perte partielle cross-chain', 'Cap 15% par protocole applicable aux positions cross-chain'],
-              ]}
-            />
-          </SubSection>
         </SubSection>
       </Section>
 
       {/* 4. PROTOCOLES SOUS-JACENTS */}
       <Section id="protocols" title="4. Protocoles sous-jacents">
         <SubSection title="4.1 Méthodologie de sélection">
+          <p className="text-navy/70 text-sm mb-3">
+            <strong>4 filtres universels</strong> (tous profils) : EVM-compatible, pas de hack non résolu {'>'}$1M, protocole actif, code vérifiable.
+            Chaque profil applique ensuite ses propres seuils. La répartition est basée sur le <strong>risque de la stratégie</strong> (levier, collatéral, ancienneté, mécanisme) — pas sur le rendement.
+          </p>
           <WpTable
-            headers={['Critère', 'Exigence']}
+            headers={['Critère', '🛡️ Prudent', '⚖️ Balanced', '⚡ Dynamic', '🪂 AH']}
             rows={[
-              ['Qualité des audits', 'Minimum 2 audits par des firmes reconnues'],
-              ['TVL', '> 100M$ (ou < 100M$ avec profil de risque exceptionnel)'],
-              ['Oracle', 'Chainlink ou flux décentralisé équivalent'],
-              ['Permissionné', 'Pas d\'exigence KYC au niveau smart contract (exception : syrupUSDC — les emprunteurs institutionnels sont KYC, mais le dépôt dans le vault reste permissionless)'],
-              ['Cooldown', 'Documenté et géré via le buffer de liquidité 10% + file d\'attente (voir §5.3)'],
-              ['Blockchain', 'Ethereum mainnet (déploiement natif)'],
-              ['Équipe', 'Publique ou avec un track record avéré'],
-              ['Proof of Reserve', 'Pour les protocoles RWA'],
+              ['TVL min', '>$100M', '>$20M', '>$5M', 'Aucun'],
+              ['Ancienneté', '>1 an (protocole ou équipe)', '>3 mois', '>1 mois', 'Aucune'],
+              ['Audits', '≥1 firme reconnue (Tier-1 préféré)', '≥1 (tout niveau)', '≥1 ou code public', 'Recommandé'],
+              ['KYC', 'Non (ou secondaire liquide)', 'Non (ou secondaire)', 'Acceptable', 'Acceptable'],
+              ['Timelock', 'Fortement recommandé', 'Optionnel', 'Non requis', 'Non requis'],
+              ['Max alloc/protocole', '15%', '15%', '15%', '25%'],
             ]}
           />
         </SubSection>
 
         <SubSection title="4.2 Protocoles retenus">
-          <div className="space-y-4">
+          <p className="text-navy/70 text-sm mb-3 font-semibold">🛡️ Prudent — 10 protocoles</p>
+          <div className="space-y-4 mb-6">
             {[
-              {
-                name: 'Aave v3',
-                cat: 'Lending',
-                desc: 'Le protocole de lending de référence avec ~28Md$ TVL. Vos USDC sont prêtés à des emprunteurs qui déposent un collatéral en garantie. Audité par Trail of Bits, OpenZeppelin, Certora (vérification formelle), PeckShield et ABDK. Oracle : Chainlink. Timelock : 1 jour / 7 jours. Pas de cooldown.',
-              },
-              {
-                name: 'Morpho (Gauntlet USDC Core)',
-                cat: 'Lending',
-                desc: 'Vault Morpho géré par Gauntlet avec ~5Md$ TVL sur Ethereum. Marchés de risque isolés — chaque vault n\'expose les prêteurs qu\'à son ensemble spécifique de collatéraux. Audité par Trail of Bits, Dedaub, Spearbit et Cantina. Pas de cooldown.',
-              },
-              {
-                name: 'Morpho (Steakhouse USDC)',
-                cat: 'Lending',
-                desc: 'Vault Morpho ultra-conservateur géré par Steakhouse Financial. Collatéraux de haute qualité finement sélectionnés (ETH, wstETH, WBTC), exposition minimale au risque. Pas de cooldown.',
-              },
-              {
-                name: 'Compound v3',
-                cat: 'Lending',
-                desc: 'Protocole de lending historique de la DeFi. Le marché USDC v3 sur Ethereum est l\'un des plus audités et des plus liquides de l\'écosystème. Audité par OpenZeppelin, Trail of Bits. Oracle : Chainlink. Pas de cooldown.',
-              },
-              {
-                name: 'SparkLend (Sky)',
-                cat: 'Lending',
-                desc: 'Fork Aave v3 développé par Sky (ex-MakerDAO). Bénéficie de l\'infrastructure et de l\'expérience de l\'un des protocoles DeFi les plus éprouvés. Audits complets et timelock robuste hérité de MakerDAO.',
-              },
-              {
-                name: 'Flux Finance',
-                cat: 'Lending',
-                desc: 'Fork Compound v2 spécialisé supportant OUSG (T-bills Ondo) comme collatéral. Permet aux détenteurs de RWA institutionnels d\'emprunter contre leurs actifs. Deux audits réalisés. Pas de cooldown.',
-              },
-              {
-                name: 'Euler v2',
-                cat: 'Lending',
-                desc: 'Protocole de lending modulaire relancé après l\'incident de 2023 (remboursement intégral des ~200M$ perdus). Architecture entièrement repensée avec des vaults isolés, une sécurité renforcée et un programme de bug bounty actif.',
-              },
-              {
-                name: 'sUSDS (Sky)',
-                cat: 'Savings Rate',
-                desc: '~8Md$ TVL. Taux d\'épargne officiel de Sky (ex-MakerDAO). Les USDC sont convertis en USDS via le PSM de Sky (sans slippage, 1:1) puis déposés dans le contrat Sky Savings Rate. Rendement issu des intérêts des emprunteurs USDS. Double timelock : 18h et 48h. Pas de cooldown.',
-              },
-              {
-                name: 'fxSAVE (f(x) Protocol)',
-                cat: 'Stability Pool',
-                desc: 'Pool de stabilité ERC-4626 du protocole f(x). Architecture innovante à deux tokens (fxUSD et xETH) : fxSAVE absorbe les liquidations de xETH et perçoit les intérêts des emprunteurs fxUSD. Rendement plus élevé en échange d\'une légère exposition aux liquidations.',
-              },
-              {
-                name: 'USDY (Ondo Finance)',
-                cat: 'RWA T-bills',
-                desc: '~650M$ TVL. USDC achète USDY, un token porteur de rendement adossé à des bons du Trésor américains à court terme et des obligations de qualité investment grade (BlackRock, Franklin Templeton). APY : 4,3–5,3%. Sans permission (Reg S — résidents US exclus). Oracle : Chainlink. Pas de cooldown.',
-              },
-              {
-                name: 'scrvUSD (Curve Finance)',
-                cat: 'Savings Rate',
-                desc: 'ERC-4626 natif. Le rendement provient des intérêts versés par les emprunteurs crvUSD (marchés LLAMMA). APY variable (~9% sept. 2025). Audité par Trail of Bits, MixBytes, Quantstamp. Timelock : 7 jours (vote Curve DAO). Pas de cooldown.',
-              },
-              {
-                name: 'sBOLD (Liquity v2)',
-                cat: 'Stability Pool',
-                desc: 'ERC-4626 natif. Le rendement provient de 75% des intérêts des emprunteurs BOLD, distribués aux déposants de la Pool de Stabilité. Le cœur de Liquity v2 est immuable (pas de clés admin). Audité par ChainSecurity, Dedaub et Certora. Pas de cooldown.',
-              },
-              {
-                name: 'cUSDO (OpenEden)',
-                cat: 'RWA T-bills',
-                desc: '~100-150M$ TVL. 100% bons du Trésor américains + repo. Le seul produit T-bills pur natif sur Ethereum mainnet. Oracle Chainlink (cUSDO/USD). Audité par Certik et ChainSecurity. Pas de cooldown.',
-              },
-              {
-                name: 'syrupUSDC (Maple Finance)',
-                cat: 'Institutional Credit',
-                desc: '~2,66Md$ TVL. Rendement issu des intérêts sur des prêts à des institutions crypto vérifiées (market makers, hedge funds). APY : 8–12%. ERC-4626. Audité par Spearbit et Sherlock. Incident historique : défaut d\'Orthogonal Trading déc. 2022 (perte 36M$). Protocole sans incident depuis Maple 2.0 (2023).',
-              },
-              {
-                name: 'reUSD (Re Protocol)',
-                cat: 'Reinsurance',
-                desc: 'Token de rendement à capital protégé. Taux = max(taux sans risque + 250 bps, rendement Ethena + 250 bps). reUSDe (tranche junior) absorbe les pertes avant que reUSD ne soit affecté. DeFi Lantern intègre uniquement reUSD.',
-              },
-              {
-                name: 'sNUSD (Neutrl)',
-                cat: 'Delta-Neutral',
-                desc: '~16–17% APY. Stratégie delta-neutre sur ETH via positions couvertes sur plusieurs CEX/DEX. Dépôt USDC direct. Rendement issu des taux de financement des positions courtes en perp. Audits en cours.',
-              },
-              {
-                name: 'jrUSDe (Strata Finance)',
-                cat: 'Market Neutral',
-                desc: '~12–20% APY variable. Tranche junior de la stratégie USDe d\'Ethena. Rendement amplifié en échange d\'une absorption prioritaire des pertes si les taux de financement deviennent négatifs. Swap adapter : USDC → USDe (Uniswap V3) → jrUSDe.',
-              },
-              {
-                name: 'sUSD3 (3Jane)',
-                cat: 'Institutional Credit',
-                desc: '~8–12% APY. Protocole de prêts institutionnels non-sécurisés vérifiés via zkTLS (preuve de solvabilité on-chain). Soutenu par Paradigm. Protocole récent (~3 mois). Cooldown : 1 mois. DeFi Lantern suit son évolution de près.',
-              },
-              {
-                name: 'mPT-sUSDe (mStable)',
-                cat: 'Fixed Rate',
-                desc: '~15–35% APY. Stratégie leviérisée combinant sUSDe (Ethena), un PT à taux fixe via Pendle et un borrow loop sur Aave. mStable gère la boucle automatiquement. Swap adapter : USDC → USDe (Uniswap V3) → sUSDe → PT-sUSDe (Pendle) → vault mStable.',
-              },
-              {
-                name: 'stkUSDC (Aave Umbrella)',
-                cat: 'Safety Module',
-                desc: '~3–5% APY. Module de sécurité Aave v3 (Umbrella). USDC convertis en aUSDC puis stakés pour couvrir les déficits de bad debt d\'Aave en dernier recours. Récompenses de sécurité en compensation du risque. Flux : USDC → aUSDC → stake.',
-              },
-              {
-                name: 'reUSDe (Re Protocol)',
-                cat: 'Reinsurance',
-                desc: '~8–12% APY. Tranche junior du protocole Re, adossée à la stratégie sUSDe d\'Ethena. reUSDe absorbe les pertes en premier si Ethena sous-performe — en échange d\'un rendement amplifié. DeFi Lantern intègre reUSDe uniquement dans le profil Dynamique. Disponible sur Ethereum mainnet.',
-              },
+              { name: 'Aave v3', cat: 'Lending', desc: '~$28B TVL. Référence du lending DeFi. Audité par Trail of Bits, OpenZeppelin, Certora. Oracle Chainlink. Timelock 1–7j. Buffer liquidité 10% TVL.' },
+              { name: 'Morpho (Gauntlet USDC Prime)', cat: 'Lending', desc: 'Vault Prime — collatéral blue-chip uniquement (ETH, wstETH, WBTC). $0 bad debt durant le stress test nov. 2025. Trail of Bits, Spearbit.' },
+              { name: 'Morpho (Steakhouse USDC)', cat: 'Lending', desc: 'Vault ultra-conservateur par Steakhouse Financial. Collatéraux haute qualité, exposition minimale au risque.' },
+              { name: 'sUSDS (Sky)', cat: 'Savings Rate', desc: '~$8B TVL. Taux d\'épargne Sky (ex-MakerDAO). USDC → USDS (PSM 1:1) → sUSDS. Double timelock 18h/48h. Depuis 2017.' },
+              { name: 'sUSDe (Ethena)', cat: 'Delta-Neutral', desc: '~$6B TVL. Delta-neutre ETH (spot long + perp short). Funding rates + staking. Cooldown 7j géré par buffer.' },
+              { name: 'cUSDO (OpenEden)', cat: 'RWA T-bills', desc: '100% T-bills US. Oracle Chainlink. ChainSecurity audit. Seul produit T-bills pur natif Ethereum.' },
+              { name: 'sBOLD (Liquity v2)', cat: 'Stability Pool', desc: 'ERC-4626 natif. Code immuable (zéro admin key). 3 audits Tier-1 (ChainSecurity, Dedaub, Certora). Équipe depuis 2021.' },
+              { name: 'scrvUSD (Curve)', cat: 'Savings Rate', desc: 'ERC-4626 natif. Intérêts des emprunteurs crvUSD. Trail of Bits + MixBytes + Quantstamp. Timelock 7j. Curve depuis 2020.' },
+              { name: 'fxSAVE (f(x) Protocol)', cat: 'Stability Pool', desc: 'ERC-4626 natif. Delta-neutre auto-compounding. 16 audits (100% code). Aladdin DAO depuis 2021. Exception TVL ($53M).' },
+              { name: 'thBill (Theo Network)', cat: 'RWA T-bills', desc: 'T-bills US tokenisés. Standard Chartered + Wellington Management. ERC-4626. Exception — cap 1%. Marché secondaire uniquement (Uniswap V3, TWAP 30min). Revue trimestrielle.' },
             ].map((p) => (
               <div key={p.name} className="bg-bg rounded-xl p-4 border border-lgrey">
                 <div className="flex items-center gap-2 mb-2">
@@ -565,27 +472,66 @@ totalAssets() : shares × pricePerShare (oracle Chainlink) → USDC équivalent`
               </div>
             ))}
           </div>
+          <p className="text-navy/70 text-sm mb-3 font-semibold">⚡ Dynamic — 10 protocoles</p>
+          <div className="space-y-4 mb-6">
+            {[
+              { name: 'sNUSD (Neutrl)', cat: 'Delta-Neutral', desc: 'Delta-neutre multi-exchanges. Position longue spot ETH + courte perp. Rendement des funding rates.' },
+              { name: 'syrupUSDC (Maple)', cat: 'Institutional Credit', desc: 'Prêts on-chain à des institutions crypto vérifiées. KYC requis — accepté en Dynamic. ERC-4626. Spearbit + Sherlock.' },
+              { name: 'jrUSDe (Strata)', cat: 'Market Neutral', desc: 'Tranche junior Ethena. Rendement amplifié en échange d\'absorption prioritaire des pertes.' },
+              { name: 'sUSD3 (3Jane)', cat: 'Institutional Credit', desc: 'Prêts institutionnels vérifiés via zkTLS. Soutenu par Paradigm. Cooldown 1 mois.' },
+              { name: 'imUSD (mStable)', cat: 'Fixed Rate', desc: 'Stratégie taux fixe via Pendle PT. Rendement défini à l\'avance, risque de taux.' },
+              { name: 'reUSDe (Re Protocol)', cat: 'Reinsurance', desc: 'Tranche junior réassurance. Absorbe les pertes en premier si Ethena sous-performe.' },
+              { name: 'stkUSDC (Aave Umbrella)', cat: 'Safety Module', desc: 'Module de sécurité Aave v3. USDC stakés pour couvrir les déficits de bad debt. Risque de slashing.' },
+              { name: 'sUSDai (USD.AI)', cat: 'RWA / AI Credit', desc: 'Prêts collatéralisés par GPUs NVIDIA. 13–17% APY. CHIP token Q1 2026. Partenariat PayPal.' },
+              { name: 'InfiniFI (siUSD)', cat: 'Fractional Reserve', desc: 'Banque fractionnaire on-chain. Tranche liquide (siUSD) sur Aave/Fluid. Certora formal verification. TGE début 2026.' },
+              { name: 'Reservoir (srUSD)', cat: 'CDP Stablecoin', desc: 'CDP stablecoin + savings rate. $526M TVL. Halborn + 4 audits spécialisés. Token DAM.' },
+            ].map((p) => (
+              <div key={p.name} className="bg-bg rounded-xl p-4 border border-lgrey">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="font-semibold text-navy text-sm">{p.name}</span>
+                  <span className="text-xs bg-[#7C3AED]/10 text-[#7C3AED] rounded-full px-2 py-0.5">{p.cat}</span>
+                </div>
+                <p className="text-navy/70 text-sm leading-relaxed">{p.desc}</p>
+              </div>
+            ))}
+          </div>
+          <p className="text-navy/70 text-sm mb-3 font-semibold">⚖️ Balanced — 20 protocoles (50% Prudent + 50% Dynamic)</p>
+          <p className="text-navy/70 text-sm mb-6">
+            Le profil Balanced est un mix pur : 50% des allocations Prudent + 50% des allocations Dynamic.
+            Il ne contient aucun protocole exclusif — tous les protocoles sont partagés avec Prudent ou Dynamic.
+          </p>
+          <p className="text-navy/70 text-sm mb-3 font-semibold">🪂 Airdrop Hunter — 4 protocoles</p>
+          <div className="space-y-4">
+            {[
+              { name: 'Sierra Money', cat: 'Liquid Yield Token', desc: 'Hybride RWA + DeFi. T-bills + Aave/Morpho/Pendle. Natif Avalanche, ETH via LayerZero. TGE probable.' },
+              { name: 'stcUSD (Cap)', cat: 'Institutional Credit', desc: 'Crédit privé institutionnel. $500M TVL. RedStone oracle. Contrats immutables. Pas de token → TGE probable.' },
+              { name: 'thBill (Theo Network)', cat: 'RWA T-bills', desc: 'Aussi en Prudent (5% cap). Potentiel tokenomics Theo Network ($20M seed, backing institutionnel).' },
+              { name: 'sUSDai (USD.AI)', cat: 'RWA / AI Credit', desc: 'Aussi en Dynamic. CHIP token ICO attendu avril 2026. Partenariat PayPal + Quantum Solutions.' },
+            ].map((p) => (
+              <div key={p.name} className="bg-bg rounded-xl p-4 border border-lgrey">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="font-semibold text-navy text-sm">{p.name}</span>
+                  <span className="text-xs bg-[#C0392B]/10 text-[#C0392B] rounded-full px-2 py-0.5">{p.cat}</span>
+                </div>
+                <p className="text-navy/70 text-sm leading-relaxed">{p.desc}</p>
+              </div>
+            ))}
+          </div>
         </SubSection>
 
-        <SubSection title="4.3 Protocoles exclus — justification">
-          <p className="text-navy/70 text-sm mb-3">Les protocoles suivants ont été explicitement écartés :</p>
+        <SubSection title="4.3 Protocoles exclus">
           <WpTable
-            headers={['Protocole', 'Catégorie', 'Raison d\'exclusion']}
+            headers={['Protocole', 'Raison']}
             rows={[
-              ['sUSD (Synthetix)', 'Synthétique', 'Dépeg historique à $0,86 lors de la crise Synthetix (2023). Mécanisme de peg moins robuste que les stablecoins adossés à des collatéraux réels ou à des stratégies delta-neutres.'],
-              ['Resupply reUSD', 'Lending', 'Protocole hacké en juin 2025 (~$9,5M de pertes). Exclus définitivement de la v1.'],
-              ['syrupUSDC (KYC wall)', 'Credit', 'Inclus en tier 3. Note : les emprunteurs institutionnels sont KYC — le dépôt dans le vault reste permissionless.'],
-            ]}
-          />
-        </SubSection>
-
-        <SubSection title="4.4 Protocoles en évaluation">
-          <p className="text-navy/70 text-sm mb-3">Les protocoles suivants sont à l'étude pour une intégration future :</p>
-          <WpTable
-            headers={['Protocole', 'Catégorie', 'Point de discussion']}
-            rows={[
-              ['PT Pendle', 'Fixed Rate', 'Gestion des dates d\'expiration dans un agrégateur. Stratégie de rollover nécessaire.'],
-              ['Venus Core', 'Lending', 'Leader sur BNB Chain. Compatibilité avec l\'architecture Ethereum mainnet à confirmer.'],
+              ['Resupply reUSD', '⛔ Hacké juin 2025 — $9,5M. Dette remboursée mais exclu (CDP niche).'],
+              ['USR / RLP (Resolv)', '⛔ Hacké 22 mars 2026 — $80M exploit, USR dépeg -80%.'],
+              ['Mountain Protocol USDM', '⛔ Wind-down officiel — primary market fermé août 2025.'],
+              ['Moonwell', '⚠️ Oracle misconfiguration fév 2026 — $1,78M bad debt non résolu.'],
+              ['Elixir deUSD', 'Halté (contagion Stream Finance $93M).'],
+              ['Usual USD0++', 'Dépeg janv 2025, lock 4 ans, tokenomics inflationniste.'],
+              ['HLP / JLP / Liminal', 'Non-EVM (Hyperliquid / Solana).'],
+              ['GMX GLP/GM', 'Arbitrum uniquement → v2.'],
+              ['PT-Pendle', 'Gestion des dates d\'expiration complexe → v2.'],
             ]}
           />
         </SubSection>
@@ -595,9 +541,9 @@ totalAssets() : shares × pricePerShare (oracle Chainlink) → USDC équivalent`
       <Section id="yield" title="5. Rendement, frais et liquidité">
         <SubSection title="5.1 Harvest">
           <p className="text-navy/70 leading-relaxed">
-            La fonction <code className="bg-navy/10 px-1 rounded">harvest()</code> collecte les rendements
-            accumulés de tous les adapters, les compose dans le vault et applique les frais de performance.
-            Le harvest est déclenché périodiquement (manuellement en v1, potentiellement automatisé en v2).
+            La fonction <code className="bg-navy/10 px-1 rounded">harvest()</code> — appelée "collecte" — récupère
+            les rendements accumulés sur tous les protocoles, les ajoute au vault et applique les frais de performance.
+            Cette collecte est déclenchée manuellement en v1, potentiellement automatisée en v2.
           </p>
         </SubSection>
 
@@ -607,11 +553,11 @@ totalAssets() : shares × pricePerShare (oracle Chainlink) → USDC équivalent`
             appliqués au moment du harvest.
           </p>
           <InfoBox>
-            <strong>Implémentation :</strong> les frais ne sont jamais transférés en USDC.
-            À chaque harvest, le FeeManager mint de nouveaux tokens glUSDC-P/B/D/AH au treasury proportionnellement
-            au gain, diluant les actionnaires existants de 5% du rendement produit.
-            Ce mécanisme aligne les intérêts du treasury avec ceux des utilisateurs —
-            le treasury ne perçoit un revenu que lorsque les utilisateurs en perçoivent un.
+            <strong>Comment c'est implémenté :</strong> les frais ne sont jamais prélevés en USDC.
+            À chaque collecte, le protocole crée de nouvelles parts glUSDC au bénéfice du treasury
+            (le multisig de l'équipe), proportionnellement aux gains générés.
+            Ce mécanisme aligne les intérêts de l'équipe avec ceux des déposants :
+            le protocole ne perçoit un revenu que quand les utilisateurs en perçoivent un.
           </InfoBox>
           <CodeBlock>{`gain        = totalAssets_après_yield - totalAssets_avant_yield
 fee_en_usd  = gain × 5%
@@ -621,36 +567,20 @@ new_shares  = fee_en_usd / pricePerShare_après_yield`}</CodeBlock>
 
         <SubSection title="5.3 Buffer de liquidité et mécanisme de retrait">
           <p className="text-navy/70 leading-relaxed mb-3">
-            DeFi Lantern maintient une <strong>réserve de liquidité permanente de 10% du TVL</strong>,
-            déposée sur Aave v3 (retrait instantané). Cette réserve est distincte du poids
-            d'allocation d'Aave dans le tableau des poids — elle s'y ajoute en tant que coussin
-            liquide dédié. Elle couvre la grande majorité des demandes de retrait individuelles sans délai.
+            DeFi Lantern maintient une <strong>réserve de liquidité de 10% du TVL</strong> (total des actifs déposés),
+            placée sur Aave v3 pour un retrait instantané. Cette réserve est distincte et séparée
+            de l'allocation rendement Aave (15%) — c'est un coussin collectif dédié aux retraits.
+            Elle couvre la très grande majorité des demandes de retrait individuelles sans délai.
           </p>
-          <p className="text-navy/70 text-sm mb-2"><strong className="text-navy">File de priorité de retrait :</strong></p>
-          <ol className="list-decimal list-inside text-navy/70 text-sm space-y-1 mb-4">
-            <li><strong>Réserve de liquidité</strong> (10% du TVL, déposée sur Aave v3) — retrait instantané, servie en premier</li>
-            <li><strong>Morpho</strong> — quasi-instantané si le marché sous-jacent est liquide</li>
-            <li><strong>Autres protocoles sans cooldown</strong> (Compound, SparkLend, sUSDS…)</li>
-            <li><strong>File d'attente</strong> (max 7 jours) — un event <code className="bg-navy/10 px-1 rounded">WithdrawalQueued</code> est émis si les liquidités disponibles sont insuffisantes</li>
-          </ol>
           <p className="text-navy/70 text-sm mb-2"><strong className="text-navy">Flux de retrait :</strong></p>
-          <ol className="list-decimal list-inside text-navy/70 text-sm space-y-1 mb-3">
+          <ol className="list-decimal list-inside text-navy/70 text-sm space-y-1 mb-4">
             <li>L'utilisateur appelle <code className="bg-navy/10 px-1 rounded">redeem(shares)</code></li>
-            <li>Le vault brûle les parts glUSDC-P/B/D/AH et calcule le montant proportionnel dû depuis chaque adapter</li>
-            <li>Les fonds des protocoles sans cooldown sont reversés immédiatement à l'utilisateur</li>
-            <li>Pour les protocoles avec cooldown, l'utilisateur attend la fin du délai propre à chaque protocole</li>
+            <li>Le vault brûle les parts glUSDC et calcule le montant dû</li>
+            <li>Le vault utilise le buffer en premier (Aave v3) ; si le retrait dépasse le buffer, le solde est retiré proportionnellement de tous les adapters</li>
+            <li>Les USDC sont envoyés à l'utilisateur</li>
           </ol>
-          <p className="text-navy/70 text-sm mb-2"><strong className="text-navy">Option de retrait en tokens natifs (syrupUSDC) :</strong></p>
-          <p className="text-navy/70 text-sm mb-3">
-            Pour syrupUSDC (cooldown ~5 min), le vault peut proposer à l'utilisateur de recevoir
-            directement ses <em>syrupUSDC</em> au lieu d'attendre le rachat en USDC.
-            L'utilisateur conserve ainsi sa position et peut la gérer librement sur Maple Finance,
-            sans subir de délai d'attente dans la queue du vault.
-          </p>
           <InfoBox>
-            <strong>Pas de mutualisation :</strong> DeFi Lantern ne constitue pas de buffer de liquidité commun
-            en puisant dans les positions des autres déposants. Chaque retrait est strictement
-            proportionnel à la position de l'utilisateur concerné dans chaque protocole sous-jacent.
+            <strong>Buffer = réserve collective, pas individuelle :</strong> Le buffer appartient au vault dans son ensemble. Quand il couvre intégralement un retrait, aucune position d'un autre utilisateur dans aucun protocole n'est touchée. Si le retrait dépasse le buffer, le solde est retiré proportionnellement de tous les adapters — chaque utilisateur ne supporte que sa propre quote-part.
           </InfoBox>
         </SubSection>
       </Section>
@@ -659,8 +589,9 @@ new_shares  = fee_en_usd / pricePerShare_après_yield`}</CodeBlock>
       <Section id="governance" title="6. Gouvernance">
         <SubSection title="6.1 Token GLOW">
           <p className="text-navy/70 leading-relaxed mb-3">
-            GLOW est le token de gouvernance ERC-20Votes de DeFi Lantern. Les détenteurs de GLOW
-            peuvent proposer et voter sur tous les changements de paramètres du protocole.
+            GLOW est le token de gouvernance de DeFi Lantern. Les détenteurs de GLOW
+            peuvent soumettre des propositions et voter sur tous les changements de paramètres du protocole.
+            Supply fixe de 100 millions de tokens — pas de création supplémentaire possible.
           </p>
           <p className="text-navy/70 text-sm mb-2"><strong className="text-navy">Actions gouvernables :</strong></p>
           <ul className="list-disc list-inside text-navy/70 text-sm space-y-1">
@@ -687,15 +618,15 @@ new_shares  = fee_en_usd / pricePerShare_après_yield`}</CodeBlock>
 
         <SubSection title="6.3 Timelock">
           <p className="text-navy/70 leading-relaxed">
-            Toutes les décisions de gouvernance passent par un TimelockController de 48 heures
-            avant exécution. Cela donne aux utilisateurs le temps de quitter le protocole
-            s'ils désapprouvent une proposition adoptée.
+            Toutes les décisions adoptées par vote entrent en vigueur après un délai obligatoire de 48 heures.
+            Ce délai permet à tout utilisateur de retirer ses fonds s'il désapprouve une décision
+            avant qu'elle soit exécutée.
           </p>
         </SubSection>
 
         <SubSection title="6.4 Guardian">
           <p className="text-navy/70 leading-relaxed mb-2">
-            Un multisig 2-sur-3 contrôlé par l'équipe principale détient les droits Guardian. Le Guardian peut :
+            Un comité d'urgence (multisig 2-sur-3 : 3 membres de l'équipe, 2 signatures requises) détient des pouvoirs limités. Il peut uniquement :
           </p>
           <ul className="list-disc list-inside text-navy/70 text-sm space-y-1 mb-3">
             <li>Appeler <code className="bg-navy/10 px-1 rounded">pause()</code> — bloque les nouveaux dépôts et les rééquilibrages</li>
@@ -730,18 +661,7 @@ new_shares  = fee_en_usd / pricePerShare_après_yield`}</CodeBlock>
           </ul>
         </SubSection>
 
-        <SubSection title="7.2 Gestion du risque protocole">
-          <WpTable
-            headers={['Niveau', 'Allocation max.', 'Critères', 'Protocoles']}
-            rows={[
-              ['1 — Core', '20%', 'TVL > 1Md$, 3+ audits Tier-1, 2+ ans en production', 'Aave v3, Morpho (×2)'],
-              ['2 — Standard', '10%', 'TVL > 200M$, 2+ audits, 1+ an en production', 'Compound v3, SparkLend, Euler v2, sUSDS, USDY, scrvUSD, sBOLD'],
-              ['3 — Satellite', '5%', 'TVL < 200M$ ou < 1 an en production, audits solides', 'Flux Finance, fxSAVE, cUSDO, syrupUSDC, reUSD, reUSDe'],
-            ]}
-          />
-        </SubSection>
-
-        <SubSection title="7.3 Procédures d'urgence">
+        <SubSection title="7.2 Procédures d'urgence">
           <p className="text-navy/70 text-sm mb-2"><strong className="text-navy">Scénario 1 — Anomalie générale (pause) :</strong></p>
           <ol className="list-decimal list-inside text-navy/70 text-sm space-y-1 mb-4">
             <li>Guardian détecte une anomalie → appelle <code className="bg-navy/10 px-1 rounded">pause()</code> → nouveaux dépôts et rééquilibrages stoppés</li>
@@ -798,24 +718,65 @@ new_shares  = fee_en_usd / pricePerShare_après_yield`}</CodeBlock>
 
       {/* 9. ROADMAP */}
       <Section id="roadmap" title="9. Feuille de route">
-        <WpTable
-          headers={['Phase', 'Étape clé', 'Cible']}
-          rows={[
-            ['Phase 1', 'Architecture, IAdapter + squelette du Vault', 'Semaine 1'],
-            ['Phase 2', 'AaveAdapter + MorphoAdapter (×2) + tests unitaires', 'Semaine 2'],
-            ['Phase 3', 'Tous les adapters restants + FeeManager', 'Semaine 3'],
-            ['Phase 4', 'Contrats de gouvernance (GLOW + Governor + Timelock)', 'Semaine 4'],
-            ['Phase 5', 'Tests d\'intégration (Foundry fork mainnet), déploiement Sepolia', 'Semaine 5'],
-            ['Phase 6', 'Frontend (React + wagmi + RainbowKit), audit final, démo', 'Semaine 6'],
-          ]}
-        />
-        <SubSection title="Futur (v2)">
+        <SubSection title="9.1 v1 — MVP Académique (6 semaines)">
+          <p className="text-navy/70 text-sm mb-3">
+            Toutes les stratégies sur Ethereum mainnet. Rééquilibrage manuel (vote de gouvernance). Pas de keeper. Les protocoles avec tokens cross-chain sont accessibles uniquement via Architecture 0 (token OFT bridgé acheté sur ETH — le vault lui-même n'envoie jamais d'actifs cross-chain).
+          </p>
+          <WpTable
+            headers={['Phase', 'Étape clé', 'Cible']}
+            rows={[
+              ['Phase 1', 'Architecture, IAdapter + squelette du Vault', 'Semaine 1'],
+              ['Phase 2', 'AaveAdapter + MorphoAdapter (×2) + tests unitaires', 'Semaine 2'],
+              ['Phase 3', 'Tous les adapters restants + FeeManager', 'Semaine 3'],
+              ['Phase 4', 'Contrats de gouvernance (GLOW + Governor + Timelock)', 'Semaine 4'],
+              ['Phase 5', 'Tests d\'intégration (Foundry fork mainnet), déploiement Sepolia', 'Semaine 5'],
+              ['Phase 6', 'Frontend (React + wagmi + RainbowKit), audit final, démo', 'Semaine 6'],
+            ]}
+          />
+        </SubSection>
+
+        <SubSection title="9.2 v2 — Protocole en Production">
+          <p className="text-navy/70 text-sm mb-3 font-semibold">9.2.1 Stratégie cross-chain</p>
+          <p className="text-navy/70 text-sm mb-3">
+            Les vaults DeFi Lantern restent ancrés sur Ethereum mainnet. L'accès cross-chain est adressé progressivement via quatre architectures, appliquées dans un ordre strict de complexité croissante :
+          </p>
+          <WpTable
+            headers={['Architecture', 'Mécanisme', 'Coût', 'Quand l\'utiliser']}
+            rows={[
+              ['0 — Token bridgé sur ETH', 'Le protocole déploie son token sur ETH via LayerZero OFT ou équivalent. Le vault l\'achète sur ETH comme n\'importe quel ERC-20. Pas de bridge actif côté vault.', 'Gas uniquement (~$5–15)', 'Défaut — toujours vérifier en premier. Exemple : Sierra Money (lzSIERRA sur ETH).'],
+              ['1a — Keeper + CCTP', 'Keeper off-chain bridge les USDC via Circle CCTP v2 (quasi-gratuit, 2–10s) vers Arbitrum / Base / Optimism puis dépose dans le protocole cible. Solde rapatrié sur ETH via oracle (~1h).', '~$10–30/rééquilibrage', 'Grands L2 EVM avec USDC Circle natif.'],
+              ['1b — Keeper + Li.Fi', 'Keeper interroge l\'agrégateur Li.Fi (10+ bridges comparés en temps réel) pour les app-chains sans CCTP : Avalanche, HyperEVM, Plasma, Mantle…', '~$15–40/rééquilibrage', 'Chains EVM sans CCTP.'],
+              ['2 — OVault (LayerZero)', 'Contrats satellites sur chaque chain cible, gouvernés par le vault ETH via messages LayerZero. Entièrement décentralisé — pas de keeper requis.', 'Faible on-chain', 'Architecture cible pour v3.'],
+            ]}
+          />
+          <WpTable
+            headers={['Profil', 'Architecture']}
+            rows={[
+              ['Prudent 🛡️', '100% ETH mainnet — pas de cross-chain'],
+              ['Balanced ⚖️', '100% ETH mainnet — pas de cross-chain'],
+              ['Dynamic ⚡', 'Architecture 0 d\'abord → Architecture 1a si protocole sur un L2 EVM'],
+              ['Airdrop Hunter 🪂', 'Architecture 0 (Sierra Money, déjà décidé) → Architecture 1b pour nouveaux protocoles'],
+            ]}
+          />
+          <InfoBox>
+            <strong>Comportement en cas d'échec bridge :</strong> si un bridge dépasserait la limite de 0,5% de slippage, ou si Li.Fi ne retourne aucune route viable, le keeper n'exécute pas l'allocation cross-chain. Les USDC restent sur Aave v3 (~3–5% APY de base) et l'allocation est retentée au cycle de harvest suivant. Après 3 cycles consécutifs en échec, une alerte on-chain est émise pour revue de gouvernance. Le seuil de rentabilité du keeper se situe à ~$300K–500K TVL sur les profils concernés.
+          </InfoBox>
+          <p className="text-navy/70 text-sm mb-3 font-semibold mt-4">9.2.2 Autres jalons v2</p>
           <ul className="list-disc list-inside text-navy/70 text-sm space-y-1">
-            <li>Rééquilibrage automatisé via keeper (Chainlink Automation ou Gelato)</li>
-            <li>Intégration PT-Pendle avec rollover automatique</li>
-            <li>Intégration sUSDe (en attente d'analyse de stress en marché baissier)</li>
-            <li>Support multi-actifs (USDT, DAI)</li>
-            <li>Expansion cross-chain</li>
+            <li>Rééquilibrage automatisé via Chainlink Automation ou réseau de keepers Gelato</li>
+            <li>Intégration PT-Pendle avec rollover automatique à l'expiration</li>
+            <li>Redirection partielle des frais de performance vers les stakers GLOW (vote de gouvernance requis)</li>
+            <li>Bug bounty public sur Immunefi</li>
+            <li>Couverture d'audit élargie (minimum deux firmes avant déploiement mainnet)</li>
+          </ul>
+        </SubSection>
+
+        <SubSection title="9.3 v3 — Vision Long Terme">
+          <ul className="list-disc list-inside text-navy/70 text-sm space-y-1">
+            <li><strong className="text-navy">Cross-chain décentralisé (Architecture 2) :</strong> standard OVault LayerZero — contrats satellites sur Arbitrum, Base, Avalanche gouvernés on-chain par le vault ETH. Aucun keeper requis. Les utilisateurs peuvent déposer des USDC depuis n'importe quelle chain supportée et recevoir des parts glUSDC sur leur chain via LayerZero OFT.</li>
+            <li><strong className="text-navy">Support multi-actifs :</strong> vaults USDT et DAI avec ensembles d'adapters indépendants.</li>
+            <li><strong className="text-navy">Couverture RWA élargie :</strong> crédit tokenisé, crédit privé et instruments adossés à des matières premières au fur et à mesure que la liquidité on-chain mature.</li>
+            <li><strong className="text-navy">Décentralisation de la gouvernance :</strong> réduction progressive des pouvoirs du Guardian à mesure que le track record du protocole s'établit.</li>
           </ul>
         </SubSection>
       </Section>
@@ -998,7 +959,7 @@ function WhitepaperEN() {
 
       {/* 3. ARCHITECTURE */}
       <Section id="architecture-en" title="3. Architecture">
-        <SubSection title="3.1 Three ERC-4626 Vaults — glUSDC-P / glUSDC-B / glUSDC-D">
+        <SubSection title="3.1 Four ERC-4626 Vaults — glUSDC-P / glUSDC-B / glUSDC-D / glUSDC-AH">
           <p className="text-navy/70 leading-relaxed mb-3">
             The central contract <code className="bg-navy/10 px-1 rounded">DeFiLanternVault.sol</code> implements
             the ERC-4626 tokenized vault standard. Users interact exclusively with this contract.
@@ -1041,26 +1002,43 @@ totalAssets() : shares × pricePerShare (Chainlink oracle) → USDC equivalent`}
           </InfoBox>
         </SubSection>
         <SubSection title="3.3 Capital Allocation">
+          <p className="text-navy/70 text-sm font-semibold mb-2">🛡️ glUSDC-P — Prudent vault (10 protocols):</p>
           <WpTable
-            headers={['Protocol', 'Tier', 'Category', 'Target Weight']}
+            headers={['Protocol', 'Category', 'Weight', 'Key property']}
             rows={[
-              ['Aave v3', '1 — Core', 'Lending', '15%'],
-              ['Morpho (Gauntlet USDC Core)', '1 — Core', 'Lending', '12%'],
-              ['Morpho (Steakhouse USDC)', '1 — Core', 'Lending', '10%'],
-              ['Compound v3', '2 — Standard', 'Lending', '7%'],
-              ['SparkLend (Sky)', '2 — Standard', 'Lending', '7%'],
-              ['sUSDS (Sky)', '2 — Standard', 'Savings Rate', '8%'],
-              ['USDY (Ondo)', '2 — Standard', 'RWA T-bills', '6%'],
-              ['scrvUSD (Curve)', '2 — Standard', 'Savings Rate', '6%'],
-              ['sBOLD (Liquity v2)', '2 — Standard', 'Stability Pool', '6%'],
-              ['Euler v2', '2 — Standard', 'Lending', '5%'],
-              ['cUSDO (OpenEden)', '3 — Satellite', 'RWA T-bills', '4%'],
-              ['fxSAVE (f(x) Protocol)', '3 — Satellite', 'Stability Pool', '4%'],
-              ['Flux Finance', '3 — Satellite', 'Lending', '3%'],
-              ['syrupUSDC (Maple)', '3 — Satellite', 'Institutional Credit', '2%'],
-              ['reUSD (Re Protocol)', '3 — Satellite', 'Reinsurance', '1%'],
+              ['Liquidity Buffer (Aave v3)', 'Instant Withdrawals', '10%', 'Mandatory — not a yield allocation'],
+              ['Aave v3 USDC', 'Lending', '15%', 'Tier-1 lending reference'],
+              ['Morpho Gauntlet USDC Prime', 'Lending', '15%', 'Blue-chip collateral only, $0 bad debt'],
+              ['Morpho Steakhouse USDC', 'Lending', '13%', 'Ultra-conservative curator'],
+              ['sUSDS (Sky)', 'Savings Rate', '12%', 'MakerDAO infrastructure since 2017'],
+              ['sBOLD (Liquity v2)', 'Stability Pool', '10%', 'Immutable code, no admin keys'],
+              ['scrvUSD (Curve)', 'Savings Rate', '9%', '7-day timelock (Curve DAO)'],
+              ['sUSDe (Ethena)', 'Delta-Neutral', '7%', '7-day cooldown, buffer-managed'],
+              ['cUSDO (OpenEden)', 'RWA T-bills', '5%', 'Chainlink oracle, ChainSecurity audit'],
+              ['fxSAVE (f(x) Protocol)', 'Stability Pool', '3%', 'Exception: 16 audits, ERC-4626 native'],
+              ['thBill (Theo Network)', 'RWA T-bills', '1%', 'Exception: capped, secondary market only'],
             ]}
           />
+          <p className="text-navy/70 text-sm font-semibold mb-2 mt-4">⚡ glUSDC-D — Dynamic vault (10 protocols):</p>
+          <WpTable
+            headers={['Protocol', 'Category', 'Weight']}
+            rows={[
+              ['syrupUSDC (Maple)', 'Institutional Credit', '15%'],
+              ['sNUSD (Neutrl)', 'Delta-Neutral', '15%'],
+              ['jrUSDe (Strata)', 'Market Neutral', '13%'],
+              ['sUSD3 (3Jane)', 'Institutional Credit', '12%'],
+              ['sUSDai (USD.AI)', 'RWA / AI Credit', '12%'],
+              ['InfiniFI (siUSD)', 'Fractional Reserve', '10%'],
+              ['Reservoir (srUSD)', 'CDP Savings Rate', '8%'],
+              ['stkUSDC (Aave Umbrella)', 'Safety Module', '7%'],
+              ['imUSD (mStable)', 'Fixed Rate', '5%'],
+              ['reUSDe (Re Protocol)', 'Reinsurance', '3%'],
+            ]}
+          />
+          <p className="text-navy/70 text-sm mt-4">
+            <strong>⚖️ glUSDC-B (Balanced)</strong>: 50% Prudent + 50% Dynamic — no exclusive protocols.
+            <br/><strong>🪂 glUSDC-AH (Airdrop Hunter)</strong>: Sierra Money 25% + Cap stcUSD 25% + sUSDai 25% + thBill 25%.
+          </p>
         </SubSection>
 
         <div id="risk-profiles-en">
@@ -1073,12 +1051,12 @@ totalAssets() : shares × pricePerShare (Chainlink oracle) → USDC equivalent`}
             glUSDC-D = tier 3 protocols only.
           </p>
           <WpTable
-            headers={['Profile', 'Protocols', 'Target APY', 'Allocation']}
+            headers={['Profile', 'Protocols', 'Target APY', 'Selection logic']}
             rows={[
-              ['🛡️ Prudent', '8 protocols — tier 1 + sUSDe (audited delta-neutral) + reUSD (capital-protected senior tranche, Re Protocol)', '~4–6%', 'Max 16% per protocol — concentrated in the most audited, most liquid protocols'],
-              ['⚖️ Balanced', '15 protocols — 50% capital in Prudent pool + 50% in Dynamic pool', '~6–9%', 'Equal-weight blend of both pools (weights × 0.5)'],
-              ['⚡ Dynamic', '7 protocols — tier 3 (sNUSD, syrupUSDC, jrUSDe, sUSD3, imUSD, reUSDe, stkUSDC)', '~9–15%', 'Concentrated in high-yield protocols, including junior tranches'],
-              ['🪂 Airdrop Hunter', '1+ protocol(s) — Sierra Money (RWA+DeFi hybrid, T-bills + Aave/Morpho, native Avalanche bridged via LayerZero). Evolving list via governance vote.', 'Variable (~4–8%+)', 'Innovative protocols selected for vision, technical execution, and airdrop potential. 100% Sierra Money weight in v1.'],
+              ['🛡️ Prudent', '10 protocols — simple lending, savings rates, RWA T-bills, audited delta-neutral. No leverage.', '3–7%', 'TVL >$100M, age >1y, ≥1 recognized audit. Documented exceptions (thBill 1%, fxSAVE 3%).'],
+              ['⚖️ Balanced', '20 protocols — 50% Prudent + 50% Dynamic. No exclusive protocols.', '5–10%', 'Pure mix of both profiles. Equal weights, max 15% per protocol.'],
+              ['⚡ Dynamic', '10 protocols — junior tranches, institutional credit (KYC accepted), AI credit, fractional reserve', '8–15%', 'TVL >$5M, ≥1 audit or public code. Accepted risk, max 15% per protocol.'],
+              ['🪂 Airdrop Hunter', '4 protocols — Sierra Money, Cap stcUSD, thBill, sUSDai. Evolving list via governance.', 'Variable', 'Innovative protocols with tokenomics potential (airdrop, TGE). 25% each. Airdrops = potential bonus, never promised.'],
             ]}
           />
           <InfoBox>
@@ -1096,139 +1074,84 @@ totalAssets() : shares × pricePerShare (Chainlink oracle) → USDC equivalent`}
             <strong>Airdrops are a potential bonus, never a guaranteed return.</strong>
           </InfoBox>
           <p className="text-navy/70 text-sm">
-            Each profile's allocation weights are stored on-chain and updatable by governance vote,
-            within the limits set by the risk tiers (§7.1).
+            Each profile's allocation weights are stored on-chain and updatable by governance vote.
           </p>
         </SubSection>
         </div>
 
-        <SubSection title="3.5 Cross-Chain Architecture (Dynamic and Airdrop Hunter)">
+        <SubSection title="3.5 Non-Native Protocols: Secondary Market and Cross-Chain">
           <p className="text-navy/70 leading-relaxed mb-3">
-            The Prudent and Balanced profiles rely exclusively on native Ethereum protocols.
-            For the Dynamic and Airdrop Hunter profiles, DeFi Lantern accesses protocols on
-            other chains while maintaining the fundamental invariant: <strong>users deposit
-            and withdraw only in USDC on Ethereum mainnet</strong>.
+            Regardless of profile, <strong>users always deposit and withdraw in USDC on Ethereum mainnet</strong>.
+            Some retained protocols are not directly accessible in USDC — the vault handles these
+            via two mechanisms:
           </p>
-          <SubSection title="Core Challenge">
-            <p className="text-navy/70 text-sm mb-3">
-              ERC-4626 assumes <code className="bg-navy/10 px-1 rounded">totalAssets()</code> is
-              synchronous and observable on-chain. In a cross-chain context, this value depends
-              on assets deposited on other chains, introducing oracle delays and additional risks.
-            </p>
-          </SubSection>
-          <SubSection title="Four Possible Architectures">
-            <WpTable
-              headers={['Architecture', 'Principle', 'Decentralization', 'Complexity', 'MVP Realism']}
-              rows={[
-                ['0 — Bridged token on ETH', 'The target protocol issues a representative token on ETH (e.g. Sierra Money via LayerZero OFT). The vault buys this token directly.', '✅ Full', 'Low', '⭐⭐⭐⭐⭐'],
-                ['1 — Keeper + native bridge', 'An off-chain keeper executes bridges via Stargate V2 and pushes a balance oracle every ~1h.', '❌ Centralized keeper', 'Medium', '⭐⭐⭐'],
-                ['2 — Satellites + LayerZero', 'Satellite contracts deployed on each target chain; the ETH vault coordinates via LZ messages. Target architecture for v2.', '✅ On-chain', 'Very high', '⭐'],
-                ['3 — Chainlink CCIP', 'Same as Arch. 2 with CCIP. 5–15 min latency. Institutional standard (Sommelier, Synthetix v3).', '✅ On-chain', 'Extreme', '⭐'],
-              ]}
-            />
-          </SubSection>
+          <WpTable
+            headers={['Mechanism', 'Example', 'How it works']}
+            rows={[
+              ['Secondary market (DEX)', 'thBILL (Theo Network)', 'The vault buys thBILL via Uniswap V3. Protection: 30-min TWAP + max 0.5% slippage. The adapter handles buying and selling automatically.'],
+              ['Bridged token on ETH', 'Sierra Money (Avalanche)', 'Sierra issues a representative token on ETH via LayerZero OFT. The vault buys this token directly — no active bridge on the vault side. Risk: token liquidity + bridge tail risk.'],
+            ]}
+          />
           <InfoBox>
-            <strong>MVP Choice — Architecture 0 (bridged token on ETH):</strong> in v1,
-            DeFi Lantern only integrates protocols that have a representative token on
-            Ethereum mainnet (LayerZero OFT or equivalent). Sierra Money is the founding
-            example. This approach keeps the vault 100% on-chain on ETH, with a synchronous{' '}
-            <code className="bg-navy/10 px-1 rounded">totalAssets()</code> and instant withdrawals.
-            Architecture 2 (satellites) forms the v2 roadmap for protocols without an ETH representation.
+            <strong>Towards async flows — ERC-7540 (v2):</strong> some protocols require a waiting period before withdrawal
+            (e.g. sUSDe: 7 days). In v1, the 10% TVL liquidity buffer covers these cases.
+            In v2, DeFi Lantern plans to adopt <strong>ERC-7540</strong> — an ERC-4626 extension introducing
+            a request queue (<code className="bg-navy/10 px-1 rounded">requestRedeem()</code> →
+            wait → <code className="bg-navy/10 px-1 rounded">redeem()</code>) that would natively handle
+            cooldowns and asynchronous cross-chain flows. This standard pairs with <strong>ERC-7575</strong>,
+            which separates the share token from the vault contract for greater composability — already
+            aligned with our multi-vault architecture.
           </InfoBox>
-          <SubSection title="Cross-Chain Protocols Under Study">
-            <WpTable
-              headers={['Protocol', 'Native Chain', 'Type', 'APY', 'ETH Bridge', 'Integration']}
-              rows={[
-                ['Sierra Money', 'Avalanche', 'LYT hybrid RWA+DeFi', '~4.78%', '✅ LayerZero OFT', '★★☆ — Arch. 0, SierraAdapter.sol required'],
-                ['sUSDai (USD.AI)', 'ETH mainnet + L2s', 'Stablecoin backed by AI GPUs', '~13–17%', 'To confirm (likely native ETH)', '★★☆ — Arch. 0 if available on ETH mainnet'],
-                ['yzPP — Yuzu Money', 'Plasma L1 (Tether)', 'Junior tranche (first-loss buffer)', '14–40% variable', '❌ No known ETH bridge', '★☆☆ — Arch. 1 or 2 required'],
-              ]}
-            />
-          </SubSection>
-          <SubSection title="Cross-Chain Risk Management">
-            <WpTable
-              headers={['Risk', 'Impact', 'Mitigation']}
-              rows={[
-                ['Stale oracle (update delay)', 'Potentially incorrect NAV', 'TWAP + circuit breaker + on-chain MAX_STALENESS'],
-                ['Bridge offline', 'Temporarily inaccessible funds', '10% TVL buffer on Aave v3 (ETH) always accessible'],
-                ['Bridge slippage', 'Net yield drag', 'Weekly harvest, Stargate Bus (>90% cost reduction)'],
-                ['Bridge exploit', 'Partial cross-chain loss', '15% cap per protocol applies to cross-chain positions'],
-              ]}
-            />
-          </SubSection>
         </SubSection>
       </Section>
 
       {/* 4. UNDERLYING PROTOCOLS */}
       <Section id="protocols-en" title="4. Underlying Protocols">
         <SubSection title="4.1 Selection Methodology">
+          <p className="text-navy/70 text-sm mb-3">
+            <strong>4 universal filters</strong> (all profiles): EVM-compatible, no unresolved hack {'>'}$1M, active protocol, verifiable code.
+            Each profile then applies its own thresholds. Assignment is based on <strong>strategy risk</strong> (leverage, collateral, age, mechanism) — not yield.
+          </p>
           <WpTable
-            headers={['Criterion', 'Requirement']}
+            headers={['Criterion', '🛡️ Prudent', '⚖️ Balanced', '⚡ Dynamic', '🪂 AH']}
             rows={[
-              ['Audit quality', 'Minimum 2 audits by recognized firms'],
-              ['TVL', '> $100M (or < $100M with exceptional risk profile)'],
-              ['Oracle', 'Chainlink or equivalent decentralized feed'],
-              ['Permissioned', 'No KYC at smart contract level (exception: syrupUSDC — institutional borrowers are KYC\'d, but depositing into the vault is permissionless)'],
-              ['Cooldown', 'Documented and managed via the 10% liquidity buffer + withdrawal queue (see §5.2)'],
-              ['Blockchain', 'Ethereum mainnet (native deployment)'],
-              ['Team', 'Public or proven track record'],
-              ['Proof of Reserve', 'Required for RWA protocols'],
+              ['Min TVL', '>$100M', '>$20M', '>$5M', 'None'],
+              ['Min age', '>1 year (protocol or team)', '>3 months', '>1 month', 'None'],
+              ['Audits', '≥1 recognized (Tier-1 preferred)', '≥1 (any level)', '≥1 or public code', 'Recommended'],
+              ['KYC', 'No (or liquid secondary)', 'No (or secondary)', 'Acceptable', 'Acceptable'],
+              ['Timelock', 'Strongly recommended', 'Optional', 'Not required', 'Not required'],
+              ['Max alloc/protocol', '15%', '15%', '15%', '25%'],
             ]}
           />
         </SubSection>
-        <SubSection title="4.2 Retained Protocols (21)">
-          <div className="space-y-3">
-            {[
-              { name: 'Aave v3', cat: 'Lending', desc: '~$28B TVL. The DeFi lending reference. Your USDC is lent to overcollateralized borrowers. Audited by Trail of Bits, OpenZeppelin, Certora (formal verification), PeckShield, ABDK. Oracle: Chainlink. Timelock: 1–7 days. No cooldown.' },
-              { name: 'Morpho (Gauntlet USDC Core)', cat: 'Lending', desc: '~$5B TVL on Ethereum. Isolated risk markets — each vault exposes lenders only to its specific collateral set. Curated by Gauntlet. Audited by Trail of Bits, Dedaub, Spearbit, Cantina. No cooldown.' },
-              { name: 'Morpho (Steakhouse USDC)', cat: 'Lending', desc: 'Ultra-conservative Morpho vault by Steakhouse Financial. Carefully curated high-quality collateral (ETH, wstETH, WBTC). Minimal risk exposure. No cooldown.' },
-              { name: 'Compound v3', cat: 'Lending', desc: 'A historic DeFi lending protocol. The USDC v3 market on Ethereum is one of the most audited and liquid in the ecosystem. Audited by OpenZeppelin, Trail of Bits. Oracle: Chainlink. No cooldown.' },
-              { name: 'SparkLend (Sky)', cat: 'Lending', desc: 'Aave v3 fork developed by Sky (ex-MakerDAO). Benefits from the infrastructure and experience of one of DeFi\'s most battle-tested protocols. Robust timelock inherited from MakerDAO architecture.' },
-              { name: 'Flux Finance', cat: 'Lending', desc: 'Compound v2 fork supporting OUSG (Ondo T-bills) as collateral. Allows institutional RWA holders to borrow against their assets. Two audits completed. No cooldown.' },
-              { name: 'Euler v2', cat: 'Lending', desc: 'Modular lending protocol relaunched after the 2023 incident (full ~$200M repayment). Completely redesigned with isolated vaults, enhanced security, and an active bug bounty program.' },
-              { name: 'sUSDS (Sky)', cat: 'Savings Rate', desc: '~$8B TVL. Official Sky (ex-MakerDAO) savings rate. USDC is converted to USDS via the Sky PSM (no slippage, 1:1) then deposited into the Sky Savings Rate contract. Yield from USDS borrower interest. Double timelock: 18h and 48h. No cooldown.' },
-              { name: 'fxSAVE (f(x) Protocol)', cat: 'Stability Pool', desc: 'ERC-4626 stability pool for f(x) protocol. Innovative dual-token architecture (fxUSD and xETH): fxSAVE absorbs xETH liquidations and earns fxUSD borrower interest. Higher yield in exchange for slight liquidation exposure.' },
-              { name: 'USDY (Ondo Finance)', cat: 'RWA T-bills', desc: '~$650M TVL. USDC buys USDY, a yield-bearing token backed by short-term US Treasuries and investment-grade bonds (BlackRock, Franklin Templeton). APY: 4.3–5.3%. Permissionless (Reg S — US persons excluded). Oracle: Chainlink. No cooldown.' },
-              { name: 'scrvUSD (Curve Finance)', cat: 'Savings Rate', desc: 'ERC-4626 native. Yield from interest paid by crvUSD borrowers (LLAMMA markets). Variable APY (~9% Sept. 2025). Audited by Trail of Bits, MixBytes, Quantstamp. Timelock: 7 days (Curve DAO vote). No cooldown.' },
-              { name: 'sBOLD (Liquity v2)', cat: 'Stability Pool', desc: 'ERC-4626 native. Yield from 75% of BOLD borrower interest distributed to Stability Pool depositors. Liquity v2 core is immutable (no admin keys). Audited by ChainSecurity, Dedaub, and Certora. No cooldown.' },
-              { name: 'cUSDO (OpenEden)', cat: 'RWA T-bills', desc: '~$100–150M TVL. 100% US Treasury bills + repo. The only pure T-bill product natively available on Ethereum mainnet. Chainlink oracle (cUSDO/USD). Audited by Certik and ChainSecurity. No cooldown.' },
-              { name: 'syrupUSDC (Maple Finance)', cat: 'Institutional Credit', desc: '~$2.66B TVL. Yield from interest on loans to institutional crypto borrowers (market makers, hedge funds). APY: 8–12%. ERC-4626. Audited by Spearbit and Sherlock. Cooldown: ~5 minutes. Historical incident: Orthogonal Trading default Dec. 2022 ($36M). No incident since Maple 2.0 (2023).' },
-              { name: 'reUSD (Re Protocol)', cat: 'Reinsurance', desc: 'Capital-protected yield token. Rate = max(risk-free + 250bps, Ethena basis + 250bps). reUSDe (junior tranche) absorbs losses before reUSD is affected. DeFi Lantern integrates reUSD only.' },
-              { name: 'sNUSD (Neutrl)', cat: 'Delta-Neutral', desc: '~16–17% APY. ETH delta-neutral strategy via hedged positions across multiple CEX/DEX. Direct USDC deposit. Yield from perp funding rates. Audits in progress.' },
-              { name: 'jrUSDe (Strata Finance)', cat: 'Market Neutral', desc: '~12–20% variable APY. Junior tranche of Ethena\'s USDe strategy. Amplified yield in exchange for first-loss absorption if funding rates turn negative. Swap adapter: USDC → USDe (Uniswap V3) → jrUSDe.' },
-              { name: 'sUSD3 (3Jane)', cat: 'Institutional Credit', desc: '~8–12% APY. Unsecured institutional lending verified via zkTLS (on-chain solvency proof). Backed by Paradigm. Recent protocol (~3 months). Cooldown: 1 month.' },
-              { name: 'mPT-sUSDe (mStable)', cat: 'Fixed Rate', desc: '~15–35% APY. Leveraged strategy combining sUSDe (Ethena), a fixed-rate PT via Pendle, and a borrow loop on Aave. mStable manages the loop automatically. Swap adapter: USDC → USDe (Uniswap V3) → sUSDe → PT-sUSDe (Pendle) → mStable vault.' },
-              { name: 'stkUSDC (Aave Umbrella)', cat: 'Safety Module', desc: '~3–5% APY. Aave v3 safety module (Umbrella). USDC converted to aUSDC then staked to cover Aave bad debt shortfalls as last resort. Safety rewards compensate for the risk. Flow: USDC → aUSDC → stake.' },
-              { name: 'reUSDe (Re Protocol)', cat: 'Reinsurance', desc: '~8–12% APY. Junior tranche of Re Protocol, backed by Ethena\'s sUSDe strategy. reUSDe absorbs losses first if Ethena underperforms — in exchange for amplified yield. DeFi Lantern integrates reUSDe exclusively in the Dynamic profile. Available on Ethereum mainnet.' },
-            ].map((p) => (
-              <div key={p.name} className="bg-bg rounded-xl p-4 border border-lgrey">
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="font-semibold text-navy text-sm">{p.name}</span>
-                  <span className="text-xs bg-[#2ABFAB]/10 text-[#2ABFAB] rounded-full px-2 py-0.5">{p.cat}</span>
-                </div>
-                <p className="text-navy/70 text-sm leading-relaxed">{p.desc}</p>
-              </div>
-            ))}
-          </div>
-        </SubSection>
-
-        <SubSection title="4.3 Excluded Protocols — Rationale">
-          <p className="text-navy/70 text-sm mb-3">The following protocols were explicitly excluded:</p>
+        <SubSection title="4.2 Retained Protocols by Profile">
+          <p className="text-navy/70 text-sm mb-3">
+            <strong>10 Prudent</strong> + <strong>10 Dynamic</strong> + <strong>4 Airdrop Hunter</strong> — some protocols shared across profiles.
+            Balanced = pure 50/50 mix of Prudent and Dynamic (no exclusive protocols).
+            See the French version above for detailed per-protocol descriptions.
+          </p>
           <WpTable
-            headers={['Protocol', 'Category', 'Exclusion Rationale']}
+            headers={['Profile', '# Protocols', 'Key protocols']}
             rows={[
-              ['sUSD (Synthetix)', 'Synthetic', 'Historical depeg to $0.86 during the Synthetix crisis (2023). Less robust peg mechanism than collateral-backed or delta-neutral stablecoins.'],
-              ['Resupply reUSD', 'Lending', 'Protocol hacked in June 2025 (~$9.5M in losses). Definitively excluded from v1.'],
+              ['🛡️ Prudent', '10', 'Aave v3, Morpho Prime, Morpho Steakhouse, sUSDS, sUSDe, cUSDO, sBOLD, scrvUSD, fxSAVE, thBill'],
+              ['⚡ Dynamic', '10', 'sNUSD, syrupUSDC, jrUSDe, sUSD3, imUSD, reUSDe, stkUSDC, sUSDai, InfiniFI, Reservoir'],
+              ['⚖️ Balanced', '20', '50% Prudent + 50% Dynamic — equal weights, max 15% per protocol'],
+              ['🪂 Airdrop Hunter', '4', 'Sierra Money, Cap stcUSD, thBill, sUSDai'],
             ]}
           />
         </SubSection>
 
-        <SubSection title="4.4 Protocols Under Evaluation">
+        <SubSection title="4.3 Excluded Protocols">
           <WpTable
-            headers={['Protocol', 'Category', 'Discussion Point']}
+            headers={['Protocol', 'Reason']}
             rows={[
-              ['PT Pendle', 'Fixed Rate', 'Expiry management in an aggregator context. Rollover strategy needed.'],
-              ['Venus Core', 'Lending', 'BNB Chain leader. Ethereum mainnet architecture compatibility to confirm.'],
+              ['Resupply reUSD', 'Hacked June 2025 — $9.5M. Debt repaid but excluded (niche CDP).'],
+              ['USR / RLP (Resolv)', 'Hacked March 22, 2026 — $80M exploit, USR depeg -80%.'],
+              ['Mountain Protocol USDM', 'Wind-down — primary market closed August 2025.'],
+              ['Moonwell', 'Oracle misconfiguration Feb 2026 — $1.78M bad debt.'],
+              ['Usual USD0++', 'January 2025 depeg, 4-year lock, inflationary tokenomics.'],
+              ['HLP / JLP / Liminal', 'Non-EVM (Hyperliquid / Solana).'],
+              ['PT-Pendle', 'Expiry management complexity → v2.'],
             ]}
           />
         </SubSection>
@@ -1258,15 +1181,14 @@ new_shares  = fee_in_usd / pricePerShare_after_yield`}</CodeBlock>
           <p className="text-navy/70 leading-relaxed mb-3">
             DeFi Lantern maintains a <strong>permanent 10% liquidity reserve of TVL</strong>,
             deployed on Aave v3 (instant withdrawal). This reserve is separate from and additional to
-            Aave's protocol allocation weight in the portfolio — it is a dedicated liquid cushion,
-            not a constraint on Aave's target weight. This design is inspired by Yearn Finance
-            (~5–10% idle) and Enzyme Finance (configurable liquidity thresholds).
+            Aave's yield allocation (15%) — it is a shared vault reserve dedicated to withdrawals,
+            not drawn from any individual user's allocation.
           </p>
           <p className="text-navy/70 text-sm mb-2"><strong className="text-navy">Withdrawal priority queue:</strong></p>
           <ol className="list-decimal list-inside text-navy/70 text-sm space-y-1 mb-4">
             <li><strong>Liquidity reserve</strong> (10% of TVL, deployed on Aave v3) — instant withdrawal, always served first</li>
             <li><strong>Morpho</strong> — near-instant if underlying market is liquid</li>
-            <li><strong>Other no-cooldown protocols</strong> (Compound, SparkLend, sUSDS…)</li>
+            <li><strong>Other no-cooldown protocols</strong> (sUSDS, scrvUSD…)</li>
             <li><strong>Queue</strong> (≤7 days) — amounts exceeding buffer trigger a <code className="bg-navy/10 px-1 rounded">WithdrawalQueued</code> event</li>
           </ol>
           <InfoBox>
@@ -1275,12 +1197,57 @@ new_shares  = fee_in_usd / pricePerShare_after_yield`}</CodeBlock>
             withdrawals. The only critical scenario is a group exit {'>'}10% of TVL, which triggers
             the queue (≤7 days, matching the sUSDe cooldown).
           </InfoBox>
-          <p className="text-navy/70 text-sm mb-2"><strong className="text-navy">Native token withdrawal option:</strong></p>
-          <p className="text-navy/70 text-sm">
-            For protocols with a cooldown (e.g. syrupUSDC, ~5 min), the vault can offer users their native tokens directly
-            (e.g. <em>syrupUSDC</em>) instead of waiting for USDC redemption. The user then manages the
-            redemption independently on the source protocol, without incurring any vault queue delay.
+        </SubSection>
+
+        <SubSection title="5.3 Proportional Withdrawal Mechanism">
+          <p className="text-navy/70 leading-relaxed mb-3">
+            Each glUSDC represents a <strong>proportional claim</strong> across all underlying protocols, in line with the current allocation weights.
           </p>
+          <p className="text-navy/70 text-sm mb-2"><strong className="text-navy">Withdrawal flow:</strong></p>
+          <ol className="list-decimal list-inside text-navy/70 text-sm space-y-1 mb-4">
+            <li>User calls <code className="bg-navy/10 px-1 rounded">redeem(shares)</code></li>
+            <li>Vault burns glUSDC and computes the proportional amount owed</li>
+            <li>Vault draws from the buffer first (Aave v3); if the withdrawal exceeds the buffer, the shortfall is drawn proportionally from all adapters</li>
+            <li>USDC is sent to the user</li>
+          </ol>
+          <InfoBox>
+            <strong>The buffer is a shared vault reserve, not drawn from individual allocations.</strong> When the buffer covers a withdrawal in full, no other user's position in any protocol is touched. If the withdrawal exceeds the buffer, the shortfall is drawn proportionally from all adapters — each user bears only their own share.
+          </InfoBox>
+        </SubSection>
+
+        <SubSection title="5.4 Secondary Market Acquisition Policy — Permissioned Protocols">
+          <p className="text-navy/70 text-sm mb-3">
+            Several protocols in DeFi Lantern's selection operate a <strong>permissioned primary market</strong>: direct mint and redemption require KYC/AML whitelisting, which a smart contract cannot pass. Rather than excluding these protocols, DeFi Lantern accesses them through their <strong>secondary market</strong> (Uniswap V3 or equivalent DEX), where their tokens trade freely between on-chain participants.
+          </p>
+          <p className="text-navy/70 text-sm mb-2"><strong className="text-navy">Entry Rules (Buying):</strong></p>
+          <ul className="list-disc list-inside text-navy/70 text-sm space-y-1 mb-3">
+            <li>Default maximum slippage: <strong>0.5%</strong> (hardcoded in adapter)</li>
+            <li>Maximum single swap: <strong>5% of the adapter's target allocation</strong> per harvest cycle</li>
+            <li>TWAP oracle: adapter reads the <strong>30-minute TWAP</strong> before any swap — aborted if deviation {'>'} 0.5% from NAV</li>
+            <li>MEV protection: swaps routed through private mempool (Flashbots MEV Protect or equivalent)</li>
+          </ul>
+          <p className="text-navy/70 text-sm mb-2"><strong className="text-navy">No-Liquidity Scenario:</strong></p>
+          <ol className="list-decimal list-inside text-navy/70 text-sm space-y-1 mb-3">
+            <li>Adapter does not revert the full rebalance — failing allocation is isolated</li>
+            <li>USDC earmarked for that protocol remains in Aave v3 (~3–5% baseline APY)</li>
+            <li>Vault emits <code className="bg-navy/10 px-1 rounded">AdapterAllocationPending(address adapter, uint256 pendingAmount)</code></li>
+            <li>Adapter retries automatically on next harvest cycle</li>
+            <li>After 3 consecutive failed cycles: <code className="bg-navy/10 px-1 rounded">AdapterLiquidityAlert</code> emitted → governance review triggered</li>
+            <li>Governance may vote to extend waiting period, reduce target allocation, or remove the adapter</li>
+          </ol>
+          <WpTable
+            headers={['Risk', 'Mitigation']}
+            rows={[
+              ['Slippage on large entry/exit', '0.5% hard cap + partial fill + order splitting'],
+              ['Price impact on thin pools', 'Liquidity depth check + 5% per-cycle order cap'],
+              ['TWAP price manipulation', '30-min TWAP + ≥0.5% deviation abort threshold'],
+              ['NAV premium or discount', 'Oracle comparison + redemption halt mechanism'],
+              ['Pool illiquidity on entry', 'USDC held in Aave → retry logic → governance alert'],
+              ['Pool illiquidity on exit', 'Aave buffer absorbs withdrawal + emergencyHold'],
+              ['MEV / sandwich attacks', 'Private mempool routing via Flashbots'],
+              ['Single-protocol concentration', 'Hard cap at 1% TVL for exception-tier protocols (e.g. thBill)'],
+            ]}
+          />
         </SubSection>
 
       </Section>
@@ -1335,17 +1302,20 @@ new_shares  = fee_in_usd / pricePerShare_after_yield`}</CodeBlock>
 
       {/* 7. SECURITY */}
       <Section id="security-en" title="7. Security">
-        <SubSection title="7.1 Protocol Risk Tiers">
-          <WpTable
-            headers={['Tier', 'Max Allocation', 'Criteria', 'Protocols']}
-            rows={[
-              ['1 — Core', '20%', 'TVL > $1B, 3+ Tier-1 audits, 2+ years live', 'Aave v3, Morpho (×2)'],
-              ['2 — Standard', '10%', 'TVL > $200M, 2+ audits, 1+ year live', 'Compound v3, SparkLend, Euler v2, sUSDS, USDY, scrvUSD, sBOLD'],
-              ['3 — Satellite', '5%', 'TVL < $200M or < 1 year live, strong audits', 'Flux Finance, fxSAVE, cUSDO, syrupUSDC, reUSD, reUSDe'],
-            ]}
-          />
+        <SubSection title="7.1 Smart Contract Security">
+          <ul className="list-disc list-inside text-navy/70 text-sm space-y-1">
+            <li>All core contracts will be audited by a minimum of two independent security firms before mainnet deployment</li>
+            <li>A public bug bounty will be launched on Immunefi prior to launch</li>
+            <li>Contracts will use OpenZeppelin v5 as the baseline library</li>
+            <li>No external calls within the vault core — all protocol interactions are isolated to adapters</li>
+          </ul>
         </SubSection>
-        <SubSection title="7.2 Emergency Procedures">
+        <SubSection title="7.2 Oracle Risk">
+          <p className="text-navy/70 leading-relaxed">
+            DeFi Lantern does not introduce its own price oracle — each underlying protocol manages its own oracle infrastructure (Chainlink, Pyth, RedStone). DeFi Lantern's <code className="bg-navy/10 px-1 rounded">totalAssets()</code> function aggregates on-chain values reported by adapters, which read balances directly from protocol contracts.
+          </p>
+        </SubSection>
+        <SubSection title="7.3 Emergency Procedures">
           <p className="text-navy/70 text-sm mb-2"><strong className="text-navy">Scenario 1 — General anomaly (pause):</strong></p>
           <ol className="list-decimal list-inside text-navy/70 text-sm space-y-1 mb-4">
             <li>Guardian detects anomaly → calls <code className="bg-navy/10 px-1 rounded">pause()</code> → new deposits and rebalancing stopped</li>
@@ -1399,17 +1369,67 @@ new_shares  = fee_in_usd / pricePerShare_after_yield`}</CodeBlock>
 
       {/* 9. ROADMAP */}
       <Section id="roadmap-en" title="9. Roadmap">
-        <WpTable
-          headers={['Phase', 'Milestone', 'Target']}
-          rows={[
-            ['Phase 1', 'Architecture finalization, IAdapter + Vault skeleton', 'Week 1'],
-            ['Phase 2', 'AaveAdapter + MorphoAdapter (×2) + unit tests', 'Week 2'],
-            ['Phase 3', 'All remaining adapters + FeeManager', 'Week 3'],
-            ['Phase 4', 'Governance contracts (GLOW + Governor + Timelock)', 'Week 4'],
-            ['Phase 5', 'Integration tests (Foundry fork mainnet), Sepolia deployment', 'Week 5'],
-            ['Phase 6', 'Frontend (React + wagmi + RainbowKit), final audit, demo', 'Week 6'],
-          ]}
-        />
+        <SubSection title="9.1 v1 — Academic MVP (6 weeks)">
+          <p className="text-navy/70 text-sm mb-3">
+            All strategies on Ethereum mainnet. Manual rebalancing (governance vote). No keeper. Cross-chain token protocols accessed via Architecture 0 only (bridged OFT token bought on ETH — the vault itself never sends assets cross-chain).
+          </p>
+          <WpTable
+            headers={['Phase', 'Milestone', 'Target']}
+            rows={[
+              ['Phase 1', 'Architecture finalization, IAdapter + Vault skeleton', 'Week 1'],
+              ['Phase 2', 'AaveAdapter + MorphoAdapter (×2) + unit tests', 'Week 2'],
+              ['Phase 3', 'All remaining adapters + FeeManager', 'Week 3'],
+              ['Phase 4', 'Governance contracts (GLOW + Governor + Timelock)', 'Week 4'],
+              ['Phase 5', 'Integration tests (Foundry fork mainnet), Sepolia deployment', 'Week 5'],
+              ['Phase 6', 'Frontend (React + wagmi + RainbowKit), final audit, demo', 'Week 6'],
+            ]}
+          />
+        </SubSection>
+
+        <SubSection title="9.2 v2 — Production Protocol">
+          <p className="text-navy/70 text-sm mb-3 font-semibold">9.2.1 Cross-Chain Strategy</p>
+          <p className="text-navy/70 text-sm mb-3">
+            DeFi Lantern vaults remain anchored on Ethereum mainnet. Cross-chain access is addressed progressively using four architectures, applied in strict order of increasing complexity:
+          </p>
+          <WpTable
+            headers={['Architecture', 'Mechanism', 'Cost', 'When to use']}
+            rows={[
+              ['0 — Bridged token on ETH', 'Protocol deploys its token on ETH via LayerZero OFT or equivalent. Vault buys it on ETH like any ERC-20. No active bridging from the vault.', 'Gas only (~$5–15)', 'Default — always check first. Example: Sierra Money (lzSIERRA on ETH).'],
+              ['1a — Keeper + CCTP', 'Off-chain keeper bridges USDC via Circle CCTP v2 (near-free, 2–10s) to Arbitrum / Base / Optimism and deposits into target protocol. Balance pushed back to ETH via oracle (~1h).', '~$10–30/rebalance', 'Major EVM L2s with native Circle USDC.'],
+              ['1b — Keeper + Li.Fi', 'Keeper queries Li.Fi aggregator (10+ bridges compared in real time) for app-chains without CCTP: Avalanche, HyperEVM, Plasma, Mantle…', '~$15–40/rebalance', 'Non-CCTP EVM chains.'],
+              ['2 — OVault (LayerZero)', 'Satellite contracts on each target chain, governed by the ETH vault via LayerZero messages. Fully decentralized — no keeper required.', 'Low on-chain', 'Target architecture for v3.'],
+            ]}
+          />
+          <WpTable
+            headers={['Profile', 'Architecture']}
+            rows={[
+              ['Prudent 🛡️', '100% ETH mainnet — no cross-chain'],
+              ['Balanced ⚖️', '100% ETH mainnet — no cross-chain'],
+              ['Dynamic ⚡', 'Architecture 0 first → Architecture 1a if protocol is on an EVM L2'],
+              ['Airdrop Hunter 🪂', 'Architecture 0 (Sierra Money, already decided) → Architecture 1b for new protocols'],
+            ]}
+          />
+          <InfoBox>
+            <strong>Bridge failure behavior:</strong> if a bridge swap would exceed the 0.5% slippage limit, or if Li.Fi returns no viable route, the keeper does not execute the cross-chain allocation. USDC remains in Aave v3 (~3–5% baseline APY) and the allocation is retried at the next harvest cycle. After 3 consecutive failed cycles, an on-chain alert is emitted and governance review is triggered. The keeper only makes economic sense above ~$300K–500K TVL on the affected profiles.
+          </InfoBox>
+          <p className="text-navy/70 text-sm mb-3 font-semibold mt-4">9.2.2 Other v2 Milestones</p>
+          <ul className="list-disc list-inside text-navy/70 text-sm space-y-1">
+            <li>Automated rebalancing via Chainlink Automation or Gelato keeper network</li>
+            <li>PT-Pendle integration with automated rollover at expiry</li>
+            <li>Performance fee partial redirection to GLOW stakers (governance vote required)</li>
+            <li>Public bug bounty on Immunefi</li>
+            <li>Third-party audit coverage expansion (minimum two firms pre-mainnet)</li>
+          </ul>
+        </SubSection>
+
+        <SubSection title="9.3 v3 — Long-Term Vision">
+          <ul className="list-disc list-inside text-navy/70 text-sm space-y-1">
+            <li><strong className="text-navy">Decentralized cross-chain (Architecture 2):</strong> LayerZero OVault standard — satellite contracts on Arbitrum, Base, Avalanche governed on-chain by the ETH vault. No keeper required. Users can deposit USDC from any supported chain and receive glUSDC shares on their chain via LayerZero OFT.</li>
+            <li><strong className="text-navy">Multi-asset support:</strong> USDT and DAI vaults with independent adapter sets.</li>
+            <li><strong className="text-navy">Expanded RWA coverage:</strong> tokenized credit, private credit, and commodity-backed instruments as on-chain liquidity matures.</li>
+            <li><strong className="text-navy">Governance decentralization:</strong> progressive reduction of Guardian powers as protocol track record builds.</li>
+          </ul>
+        </SubSection>
       </Section>
 
       {/* 10. CONCLUSION */}
