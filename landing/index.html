@@ -210,10 +210,21 @@
     }
     .profile-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
     .profile-name { font-weight: 700; font-size: 0.95rem; color: var(--navy); }
-    .profile-token { font-size: 0.75rem; color: var(--teal); font-weight: 600; margin: 0.15rem 0 0.5rem; font-family: monospace; }
-    .profile-apy { font-size: 1.4rem; font-weight: 900; color: var(--navy); letter-spacing: -0.02em; }
-    .profile-apy-label { font-size: 0.7rem; color: rgba(26,35,50,0.45); margin-top: 0.15rem; }
-    .profile-desc { font-size: 0.78rem; color: rgba(26,35,50,0.6); margin-top: 0.6rem; line-height: 1.5; }
+    .profile-token { font-size: 0.75rem; color: var(--teal); font-weight: 600; margin: 0.15rem 0 0.6rem; font-family: monospace; }
+    .profile-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      background: rgba(40,176,146,0.08);
+      border: 1px solid rgba(40,176,146,0.2);
+      border-radius: 999px;
+      padding: 0.2rem 0.65rem;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--teal);
+      margin-bottom: 0.5rem;
+    }
+    .profile-desc { font-size: 0.78rem; color: rgba(26,35,50,0.6); margin-top: 0.5rem; line-height: 1.5; }
 
     /* ── Footer ── */
     footer {
@@ -262,7 +273,7 @@
 
     <div class="hero-actions">
       <a class="btn-primary" href="https://app.cryptoluciole.com">Lancer l'app →</a>
-      <a class="btn-secondary" href="https://app.cryptoluciole.com/whitepaper">Livre blanc</a>
+      <a class="btn-secondary" href="https://app.cryptoluciole.com/#whitepaper">Livre blanc</a>
     </div>
   </main>
 
@@ -278,13 +289,13 @@
     </div>
     <div class="stat-sep"></div>
     <div class="stat">
-      <div class="stat-val">0%</div>
-      <div class="stat-label">Frais d'entrée / sortie</div>
+      <div class="stat-val">100%</div>
+      <div class="stat-label">Non-custodial</div>
     </div>
     <div class="stat-sep"></div>
     <div class="stat">
-      <div class="stat-val">5%</div>
-      <div class="stat-label">Performance fee (gains nets)</div>
+      <div class="stat-val">DAO</div>
+      <div class="stat-label">Gouvernance on-chain</div>
     </div>
   </div>
 
@@ -297,33 +308,29 @@
           <div class="profile-icon">🛡️</div>
           <div class="profile-name">Prudent</div>
           <div class="profile-token">glUSD-P</div>
-          <div class="profile-apy">3–7%</div>
-          <div class="profile-apy-label">APY cible</div>
-          <div class="profile-desc">Protocoles Tier-1 uniquement. Code immuable, audits multiples, timelocks on-chain.</div>
+          <div class="profile-tag">Code immuable · Audits Tier-1</div>
+          <div class="profile-desc">Protocoles éprouvés uniquement — timelocks on-chain, audits multiples, zéro admin key. La priorité absolue : la sécurité du capital.</div>
         </div>
         <div class="profile-card">
           <div class="profile-icon">⚖️</div>
           <div class="profile-name">Balanced</div>
           <div class="profile-token">glUSD-B</div>
-          <div class="profile-apy">5–10%</div>
-          <div class="profile-apy-label">APY cible</div>
-          <div class="profile-desc">Mix équilibré de 20 protocoles — 50% Prudent + 50% Dynamic pour optimiser risque/rendement.</div>
+          <div class="profile-tag">Diversification optimale</div>
+          <div class="profile-desc">Mix de 20 protocoles — 50% Prudent + 50% Dynamic. Un seul dépôt pour une exposition naturellement équilibrée.</div>
         </div>
         <div class="profile-card">
           <div class="profile-icon">⚡</div>
           <div class="profile-name">Dynamic</div>
           <div class="profile-token">glUSD-D</div>
-          <div class="profile-apy">8–15%</div>
-          <div class="profile-apy-label">APY cible</div>
-          <div class="profile-desc">Crédit institutionnel, tranches junior, stratégies delta-neutres. Pour investisseurs avertis.</div>
+          <div class="profile-tag">Stratégies avancées</div>
+          <div class="profile-desc">Crédit institutionnel, tranches junior, stratégies delta-neutres. Accède à des rendements normalement réservés aux professionnels.</div>
         </div>
         <div class="profile-card">
           <div class="profile-icon">🪂</div>
           <div class="profile-name">Airdrop Hunter</div>
           <div class="profile-token">glUSD-AH</div>
-          <div class="profile-apy">Variable</div>
-          <div class="profile-apy-label">+ potentiel airdrop</div>
-          <div class="profile-desc">Protocoles early-stage sérieux avec vision forte. Rendement compétitif + potentiel d'airdrop (non garanti).</div>
+          <div class="profile-tag">Protocoles early-stage</div>
+          <div class="profile-desc">Protocoles innovants à fort potentiel, sélectionnés pour leur sérieux. Rendement compétitif + potentiel d'airdrop (non garanti).</div>
         </div>
       </div>
     </div>
@@ -333,7 +340,7 @@
     <p>DeFi Lantern Protocol — Projet expérimental open-source. Pas un conseil en investissement.</p>
     <p style="margin-top:0.4rem">
       <a href="https://app.cryptoluciole.com">Application</a> ·
-      <a href="https://app.cryptoluciole.com/whitepaper">Whitepaper</a> ·
+      <a href="https://app.cryptoluciole.com/#whitepaper">Whitepaper</a> ·
       <a href="https://github.com/AntoineBatou/DefiLantern">GitHub</a>
     </p>
   </footer>
