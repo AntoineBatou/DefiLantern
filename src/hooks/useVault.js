@@ -2,7 +2,7 @@
 //
 // Flux dépôt en 2 étapes :
 //   1. approve(vaultAddress, amount) sur MockUSDC  → autorise le vault à prendre nos USDC
-//   2. deposit(amount, userAddress) sur le vault   → dépose et reçoit des glUSDC-P
+//   2. deposit(amount, userAddress) sur le vault   → dépose et reçoit des glUSD-P
 //
 // On utilise useWriteContract (wagmi v2) qui gère signature + broadcast.
 
@@ -29,7 +29,7 @@ export function useVault() {
     query: { enabled: !!address && !!addrs?.mockUSDC },
   })
 
-  // ── Lecture : solde de shares glUSDC-P du wallet ────────────────────────
+  // ── Lecture : solde de shares glUSD-P du wallet ────────────────────────
   const { data: sharesBalance, refetch: refetchShares } = useReadContract({
     address: addrs?.vaultPrudent,
     abi: VaultABI.abi,

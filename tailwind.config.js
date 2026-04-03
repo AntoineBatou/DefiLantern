@@ -12,8 +12,8 @@ export default {
       // Couleurs personnalisées extraites du logo Firefly
       colors: {
         teal: {
-          DEFAULT: '#2ABFAB',
-          dark: '#22A898',
+          DEFAULT: '#28B092',
+          dark: '#2ABFAB',
           light: '#E8F8F6',
         },
         amber: {

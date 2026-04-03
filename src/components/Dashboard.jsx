@@ -37,13 +37,13 @@ function EmptyState() {
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <circle cx="60" cy="60" r="50" stroke="#2ABFAB" strokeWidth="2" strokeDasharray="8 4" />
+          <circle cx="60" cy="60" r="50" stroke="#28B092" strokeWidth="2" strokeDasharray="8 4" />
           <circle cx="60" cy="60" r="20" fill="#F5A623" opacity="0.5" />
           <circle cx="60" cy="60" r="8" fill="#F5A623" />
-          <line x1="60" y1="10" x2="60" y2="40" stroke="#2ABFAB" strokeWidth="1.5" />
-          <line x1="60" y1="80" x2="60" y2="110" stroke="#2ABFAB" strokeWidth="1.5" />
-          <line x1="10" y1="60" x2="40" y2="60" stroke="#2ABFAB" strokeWidth="1.5" />
-          <line x1="80" y1="60" x2="110" y2="60" stroke="#2ABFAB" strokeWidth="1.5" />
+          <line x1="60" y1="10" x2="60" y2="40" stroke="#28B092" strokeWidth="1.5" />
+          <line x1="60" y1="80" x2="60" y2="110" stroke="#28B092" strokeWidth="1.5" />
+          <line x1="10" y1="60" x2="40" y2="60" stroke="#28B092" strokeWidth="1.5" />
+          <line x1="80" y1="60" x2="110" y2="60" stroke="#28B092" strokeWidth="1.5" />
         </svg>
       </div>
       <h3 className="text-xl font-semibold text-navy mb-2">{t('dashboard.emptyTitle')}</h3>
@@ -63,7 +63,7 @@ function StatCard({ label, value, sub, accent = false }) {
   return (
     <div className={`rounded-2xl p-5 ${accent ? 'bg-teal-light border border-teal-200' : 'bg-white border border-lgrey'} shadow-sm`}>
       <div className="text-xs text-navy/50 mb-1">{label}</div>
-      <div className={`text-2xl font-bold ${accent ? 'text-[#2ABFAB]' : 'text-navy'}`}>{value}</div>
+      <div className={`text-2xl font-bold ${accent ? 'text-[#28B092]' : 'text-navy'}`}>{value}</div>
       {sub && <div className="text-xs text-navy/40 mt-1">{sub}</div>}
     </div>
   )
@@ -108,7 +108,7 @@ export default function Dashboard({ positions, onDeletePosition }) {
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-navy mb-4">{t('dashboard.title')}</h2>
           <p className="text-navy/60 max-w-xl mx-auto">{t('dashboard.subtitle')}</p>
-          <div className="mt-4 mx-auto w-16 h-1 rounded-full bg-[#2ABFAB]" aria-hidden="true" />
+          <div className="mt-4 mx-auto w-16 h-1 rounded-full bg-[#28B092]" aria-hidden="true" />
         </div>
 
         {/* ── Rendu conditionnel : vide ou avec données ── */}
@@ -193,7 +193,7 @@ export default function Dashboard({ positions, onDeletePosition }) {
                         </td>
 
                         {/* APY */}
-                        <td className="px-4 py-3 text-right font-bold text-[#2ABFAB] whitespace-nowrap">
+                        <td className="px-4 py-3 text-right font-bold text-[#28B092] whitespace-nowrap">
                           {position.apy.toFixed(2)}%
                         </td>
 
@@ -263,7 +263,7 @@ export default function Dashboard({ positions, onDeletePosition }) {
                     {/* Barre dépôt (gris) */}
                     <Bar dataKey="depot" fill="#EEF2F2" radius={[4, 4, 0, 0]} name="depot" />
                     {/* Barre rendement (teal) */}
-                    <Bar dataKey="rendement" fill="#2ABFAB" radius={[4, 4, 0, 0]} name="rendement" />
+                    <Bar dataKey="rendement" fill="#28B092" radius={[4, 4, 0, 0]} name="rendement" />
                   </BarChart>
                 </ResponsiveContainer>
               </div>

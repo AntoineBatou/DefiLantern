@@ -25,7 +25,7 @@ export const CATEGORY_COLORS = {
 
 // Couleurs pour le graphique donut
 export const DONUT_COLORS = [
-  '#2ABFAB', '#22A898', '#3DD4C0', '#F5A623',
+  '#28B092', '#2ABFAB', '#3DD4C0', '#F5A623',
   '#1A9E8C', '#F7B94A', '#50DBC8', '#E8943F',
   '#0D8B7B', '#FAC96B', '#60D2C5', '#F5BC56',
   '#47CBB8', '#E89B47', '#2DB8A7', '#FCBA45',

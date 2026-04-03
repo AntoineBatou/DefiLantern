@@ -53,7 +53,7 @@ export default function HowItWorks() {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
         </svg>
       ),
-      color: 'bg-teal-light text-[#2ABFAB]',
+      color: 'bg-teal-light text-[#28B092]',
     },
   ]
 
@@ -70,7 +70,7 @@ export default function HowItWorks() {
             {t('howItWorks.subtitle')}
           </p>
           {/* Ligne décorative teal */}
-          <div className="mt-4 mx-auto w-16 h-1 rounded-full bg-[#2ABFAB]" aria-hidden="true" />
+          <div className="mt-4 mx-auto w-16 h-1 rounded-full bg-[#28B092]" aria-hidden="true" />
         </div>
 
         {/* ── 3 étapes ── */}
@@ -119,7 +119,7 @@ export default function HowItWorks() {
                     className="hidden md:flex absolute -right-4 top-1/2 -translate-y-1/2 z-20 w-8 h-8 bg-white border border-lgrey rounded-full items-center justify-center shadow-sm"
                     aria-hidden="true"
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-[#2ABFAB]" viewBox="0 0 20 20" fill="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-[#28B092]" viewBox="0 0 20 20" fill="currentColor">
                       <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
                     </svg>
                   </div>
@@ -130,8 +130,8 @@ export default function HowItWorks() {
         </div>
 
         {/* ── Note sur le token fyUSDC ── */}
-        <div className="mt-12 bg-teal-light border-2 border-[#2ABFAB]/50 rounded-2xl p-6 flex gap-4 items-start">
-          <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#2ABFAB] flex items-center justify-center mt-0.5">
+        <div className="mt-12 bg-teal-light border-2 border-[#28B092]/50 rounded-2xl p-6 flex gap-4 items-start">
+          <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#28B092] flex items-center justify-center mt-0.5">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
               <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
             </svg>

@@ -106,7 +106,7 @@ function ResultCard({ label, value, highlight = false }) {
   return (
     <div className={`rounded-xl p-4 ${highlight ? 'bg-teal-light border border-teal-200' : 'bg-lgrey'}`}>
       <div className="text-xs text-navy/50 mb-1">{label}</div>
-      <div className={`text-xl font-bold ${highlight ? 'text-[#2ABFAB]' : 'text-navy'}`}>
+      <div className={`text-xl font-bold ${highlight ? 'text-[#28B092]' : 'text-navy'}`}>
         {value}
       </div>
     </div>
@@ -186,7 +186,7 @@ export default function Simulator({ averageApy, onAddPosition }) {
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-navy mb-4">{t('simulator.title')}</h2>
           <p className="text-navy/60 max-w-xl mx-auto">{t('simulator.subtitle')}</p>
-          <div className="mt-4 mx-auto w-16 h-1 rounded-full bg-[#2ABFAB]" aria-hidden="true" />
+          <div className="mt-4 mx-auto w-16 h-1 rounded-full bg-[#28B092]" aria-hidden="true" />
         </div>
 
         {/* ── Layout principal : inputs à gauche, résultats à droite ── */}
@@ -211,7 +211,7 @@ export default function Simulator({ averageApy, onAddPosition }) {
                   step="100"
                   value={amount}
                   onChange={(e) => handleAmountChange(e.target.value)}
-                  className="w-full border border-lgrey rounded-xl px-4 py-3 pr-20 text-lg font-bold text-navy focus:outline-none focus:ring-2 focus:ring-[#2ABFAB] focus:border-transparent"
+                  className="w-full border border-lgrey rounded-xl px-4 py-3 pr-20 text-lg font-bold text-navy focus:outline-none focus:ring-2 focus:ring-[#28B092] focus:border-transparent"
                   aria-label="Montant à déposer en USDC"
                 />
                 <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-medium text-navy/40">
@@ -227,7 +227,7 @@ export default function Simulator({ averageApy, onAddPosition }) {
                 step="100"
                 value={amount}
                 onChange={(e) => handleAmountChange(e.target.value)}
-                className="w-full accent-[#2ABFAB]"
+                className="w-full accent-[#28B092]"
                 aria-label="Slider du montant à déposer"
               />
 
@@ -250,8 +250,8 @@ export default function Simulator({ averageApy, onAddPosition }) {
                     onClick={() => setSelectedDuration(dur.key)}
                     className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-150 ${
                       selectedDuration === dur.key
-                        ? 'bg-[#2ABFAB] text-white shadow-sm'
-                        : 'bg-lgrey text-navy/60 hover:bg-teal-light hover:text-[#2ABFAB]'
+                        ? 'bg-[#28B092] text-white shadow-sm'
+                        : 'bg-lgrey text-navy/60 hover:bg-teal-light hover:text-[#28B092]'
                     }`}
                     aria-pressed={selectedDuration === dur.key}
                   >
@@ -267,7 +267,7 @@ export default function Simulator({ averageApy, onAddPosition }) {
                 <span className="text-sm text-navy/60">{t('simulator.avgApy')}</span>
                 <p className="text-xs text-navy/40 mt-0.5">{t('profile.label')}</p>
               </div>
-              <span className="text-xl font-bold text-[#2ABFAB]">{averageApy !== null ? `${averageApy.toFixed(2)}%` : '—'}</span>
+              <span className="text-xl font-bold text-[#28B092]">{averageApy !== null ? `${averageApy.toFixed(2)}%` : '—'}</span>
             </div>
           </div>
 
@@ -310,13 +310,13 @@ export default function Simulator({ averageApy, onAddPosition }) {
                 />
                 {/* Barre Firefly (proportionnelle au gain) */}
                 <div
-                  className="absolute left-0 top-0 h-full bg-[#2ABFAB] rounded-full transition-all duration-500"
+                  className="absolute left-0 top-0 h-full bg-[#28B092] rounded-full transition-all duration-500"
                   style={{ width: `${Math.min(((averageApy ?? 0) / 15) * 100, 100)}%` }}
                 />
               </div>
               <div className="flex justify-between text-xs mt-1">
                 <span className="text-gray-400">Livret A</span>
-                <span className="text-[#2ABFAB] font-semibold">DeFi Lantern {averageApy !== null ? `${averageApy.toFixed(2)}%` : '—'}</span>
+                <span className="text-[#28B092] font-semibold">DeFi Lantern {averageApy !== null ? `${averageApy.toFixed(2)}%` : '—'}</span>
               </div>
             </div>
 
@@ -341,8 +341,8 @@ export default function Simulator({ averageApy, onAddPosition }) {
               {/* Dégradé pour la zone Firefly */}
               <defs>
                 <linearGradient id="colorFirefly" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#2ABFAB" stopOpacity={0.3} />
-                  <stop offset="95%" stopColor="#2ABFAB" stopOpacity={0} />
+                  <stop offset="5%" stopColor="#28B092" stopOpacity={0.3} />
+                  <stop offset="95%" stopColor="#28B092" stopOpacity={0} />
                 </linearGradient>
                 <linearGradient id="colorSavings" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="5%" stopColor="#9CA3AF" stopOpacity={0.2} />
@@ -388,7 +388,7 @@ export default function Simulator({ averageApy, onAddPosition }) {
               <Area
                 type="monotone"
                 dataKey="firefly"
-                stroke="#2ABFAB"
+                stroke="#28B092"
                 strokeWidth={2.5}
                 fill="url(#colorFirefly)"
                 name="firefly"

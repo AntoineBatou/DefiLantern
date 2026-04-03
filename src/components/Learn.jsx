@@ -56,7 +56,7 @@ function YieldSourceCard({ icon, title, desc, example, color, apy, risk, riskCol
         ex. {example}
       </div>
       <div className="flex items-center justify-between pt-2 border-t border-lgrey mt-auto">
-        <span className="text-xs font-semibold text-[#2ABFAB]">{apy}</span>
+        <span className="text-xs font-semibold text-[#28B092]">{apy}</span>
         <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${riskColor}`}>{risk}</span>
       </div>
     </div>
@@ -187,7 +187,7 @@ export default function Learn({ navigateTo }) {
         <div className="max-w-2xl mx-auto">
           <div className="inline-flex items-center gap-2 bg-white border border-lgrey rounded-full px-4 py-2 mb-6 shadow-sm">
             <span className="text-lg">🎓</span>
-            <span className="text-xs font-semibold text-[#2ABFAB] uppercase tracking-wider">
+            <span className="text-xs font-semibold text-[#28B092] uppercase tracking-wider">
               {lang === 'fr' ? 'Pédagogie DeFi' : 'DeFi Education'}
             </span>
           </div>
@@ -197,7 +197,7 @@ export default function Learn({ navigateTo }) {
           <p className="text-navy/60 leading-relaxed">
             {t('learn.subtitle')}
           </p>
-          <div className="mt-6 mx-auto w-16 h-1 rounded-full bg-[#2ABFAB]" aria-hidden="true" />
+          <div className="mt-6 mx-auto w-16 h-1 rounded-full bg-[#28B092]" aria-hidden="true" />
         </div>
       </div>
 
@@ -290,7 +290,7 @@ export default function Learn({ navigateTo }) {
             {/* DeFi Lantern */}
             <div className="bg-gradient-to-br from-teal-light to-white rounded-2xl border border-teal-200 p-6 shadow-sm">
               <div className="flex items-center gap-3 mb-5">
-                <div className="w-10 h-10 rounded-xl bg-[#2ABFAB] flex items-center justify-center text-xl">🏮</div>
+                <div className="w-10 h-10 rounded-xl bg-[#28B092] flex items-center justify-center text-xl">🏮</div>
                 <h3 className="font-bold text-navy">{t('learn.diversifyFirefly')}</h3>
               </div>
               <div className="flex flex-col gap-3">

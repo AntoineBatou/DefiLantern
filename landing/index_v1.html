@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DeFi Lantern — Rendement stablecoin, sans friction</title>
+  <meta name="description" content="DeFi Lantern est un agrégateur de rendement pour stablecoins déployé sur Ethereum. Non-custodial, 4 profils de risque, gouvernance on-chain." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:   #1A2332;
+      --teal:   #28B092;
+      --teal-d: #2ABFAB;
+      --bg:     #F7FAFA;
+      --lgrey:  #EEF2F2;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--navy);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Nav ── */
+    nav {
+      background: var(--navy);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+    }
+    .nav-brand span {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--teal-d);
+      letter-spacing: -0.02em;
+    }
+    .nav-logo {
+      width: 32px;
+      height: 32px;
+    }
+    .nav-cta {
+      background: var(--teal);
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.875rem;
+      padding: 0.5rem 1.25rem;
+      border-radius: 0.75rem;
+      transition: background 0.15s;
+    }
+    .nav-cta:hover { background: var(--teal-d); }
+
+    /* ── Hero ── */
+    .hero {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 5rem 1.5rem 3rem;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: white;
+      border: 1px solid var(--lgrey);
+      border-radius: 999px;
+      padding: 0.3rem 0.9rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--teal);
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.02em;
+    }
+    .badge-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--teal);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+    h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 900;
+      color: var(--navy);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      max-width: 700px;
+      margin-bottom: 1.25rem;
+    }
+    h1 span { color: var(--teal); }
+    .hero-sub {
+      font-size: 1.125rem;
+      color: rgba(26,35,50,0.6);
+      max-width: 520px;
+      line-height: 1.6;
+      margin-bottom: 2.5rem;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .btn-primary {
+      background: var(--teal);
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 0.85rem 2rem;
+      border-radius: 0.875rem;
+      transition: background 0.15s, transform 0.1s;
+      box-shadow: 0 4px 14px rgba(40,176,146,0.3);
+    }
+    .btn-primary:hover { background: var(--teal-d); transform: translateY(-1px); }
+    .btn-secondary {
+      border: 2px solid var(--lgrey);
+      color: var(--navy);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 0.85rem 2rem;
+      border-radius: 0.875rem;
+      transition: border-color 0.15s;
+      background: white;
+    }
+    .btn-secondary:hover { border-color: var(--teal); color: var(--teal); }
+
+    /* ── Stats ── */
+    .stats {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin: 3rem 1.5rem;
+    }
+    .stat {
+      text-align: center;
+    }
+    .stat-val {
+      font-size: 1.75rem;
+      font-weight: 900;
+      color: var(--navy);
+      letter-spacing: -0.03em;
+    }
+    .stat-label {
+      font-size: 0.8rem;
+      color: rgba(26,35,50,0.5);
+      margin-top: 0.2rem;
+    }
+    .stat-sep {
+      width: 1px;
+      background: var(--lgrey);
+      align-self: stretch;
+    }
+
+    /* ── Profiles ── */
+    .profiles {
+      background: white;
+      padding: 4rem 1.5rem;
+      border-top: 1px solid var(--lgrey);
+    }
+    .profiles-inner {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .profiles-title {
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.02em;
+    }
+    .profiles-sub {
+      text-align: center;
+      color: rgba(26,35,50,0.5);
+      font-size: 0.9rem;
+      margin-bottom: 2.5rem;
+    }
+    .profiles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+    .profile-card {
+      background: var(--bg);
+      border: 1px solid var(--lgrey);
+      border-radius: 1rem;
+      padding: 1.25rem;
+    }
+    .profile-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
+    .profile-name { font-weight: 700; font-size: 0.95rem; color: var(--navy); }
+    .profile-token { font-size: 0.75rem; color: var(--teal); font-weight: 600; margin: 0.15rem 0 0.5rem; font-family: monospace; }
+    .profile-apy { font-size: 1.4rem; font-weight: 900; color: var(--navy); letter-spacing: -0.02em; }
+    .profile-apy-label { font-size: 0.7rem; color: rgba(26,35,50,0.45); margin-top: 0.15rem; }
+    .profile-desc { font-size: 0.78rem; color: rgba(26,35,50,0.6); margin-top: 0.6rem; line-height: 1.5; }
+
+    /* ── Footer ── */
+    footer {
+      background: var(--navy);
+      color: rgba(255,255,255,0.4);
+      text-align: center;
+      padding: 1.5rem;
+      font-size: 0.8rem;
+    }
+    footer a { color: var(--teal-d); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 600px) {
+      .stat-sep { display: none; }
+      .stats { gap: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-brand" href="#">
+      <svg class="nav-logo" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="20" cy="20" r="20" fill="#1A2332"/>
+        <path d="M20 8 L28 22 L20 32 L12 22 Z" fill="#28B092" opacity="0.9"/>
+        <path d="M20 8 L28 22 L20 26 Z" fill="#2ABFAB"/>
+        <circle cx="20" cy="20" r="3" fill="white" opacity="0.9"/>
+      </svg>
+      <span>DeFi Lantern</span>
+    </a>
+    <a class="nav-cta" href="https://app.cryptoluciole.com">Lancer l'app →</a>
+  </nav>
+
+  <main class="hero">
+    <div class="badge">
+      <span class="badge-dot"></span>
+      Sur Ethereum Mainnet
+    </div>
+
+    <h1>Déposez vos stablecoins,<br /><span>le protocole fait le reste.</span></h1>
+
+    <p class="hero-sub">
+      DeFi Lantern agrège le rendement de jusqu'à 20 protocoles DeFi éprouvés.
+      Non-custodial, transparent, gouverné par sa communauté.
+    </p>
+
+    <div class="hero-actions">
+      <a class="btn-primary" href="https://app.cryptoluciole.com">Lancer l'app →</a>
+      <a class="btn-secondary" href="https://app.cryptoluciole.com/whitepaper">Livre blanc</a>
+    </div>
+  </main>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-val">4</div>
+      <div class="stat-label">Profils de risque</div>
+    </div>
+    <div class="stat-sep"></div>
+    <div class="stat">
+      <div class="stat-val">20+</div>
+      <div class="stat-label">Protocoles sous-jacents</div>
+    </div>
+    <div class="stat-sep"></div>
+    <div class="stat">
+      <div class="stat-val">0%</div>
+      <div class="stat-label">Frais d'entrée / sortie</div>
+    </div>
+    <div class="stat-sep"></div>
+    <div class="stat">
+      <div class="stat-val">5%</div>
+      <div class="stat-label">Performance fee (gains nets)</div>
+    </div>
+  </div>
+
+  <section class="profiles">
+    <div class="profiles-inner">
+      <h2 class="profiles-title">Choisissez votre profil</h2>
+      <p class="profiles-sub">Un seul dépôt USDC. Une exposition diversifiée au rendement DeFi.</p>
+      <div class="profiles-grid">
+        <div class="profile-card">
+          <div class="profile-icon">🛡️</div>
+          <div class="profile-name">Prudent</div>
+          <div class="profile-token">glUSD-P</div>
+          <div class="profile-apy">3–7%</div>
+          <div class="profile-apy-label">APY cible</div>
+          <div class="profile-desc">Protocoles Tier-1 uniquement. Code immuable, audits multiples, timelocks on-chain.</div>
+        </div>
+        <div class="profile-card">
+          <div class="profile-icon">⚖️</div>
+          <div class="profile-name">Balanced</div>
+          <div class="profile-token">glUSD-B</div>
+          <div class="profile-apy">5–10%</div>
+          <div class="profile-apy-label">APY cible</div>
+          <div class="profile-desc">Mix équilibré de 20 protocoles — 50% Prudent + 50% Dynamic pour optimiser risque/rendement.</div>
+        </div>
+        <div class="profile-card">
+          <div class="profile-icon">⚡</div>
+          <div class="profile-name">Dynamic</div>
+          <div class="profile-token">glUSD-D</div>
+          <div class="profile-apy">8–15%</div>
+          <div class="profile-apy-label">APY cible</div>
+          <div class="profile-desc">Crédit institutionnel, tranches junior, stratégies delta-neutres. Pour investisseurs avertis.</div>
+        </div>
+        <div class="profile-card">
+          <div class="profile-icon">🪂</div>
+          <div class="profile-name">Airdrop Hunter</div>
+          <div class="profile-token">glUSD-AH</div>
+          <div class="profile-apy">Variable</div>
+          <div class="profile-apy-label">+ potentiel airdrop</div>
+          <div class="profile-desc">Protocoles early-stage sérieux avec vision forte. Rendement compétitif + potentiel d'airdrop (non garanti).</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>DeFi Lantern Protocol — Projet expérimental open-source. Pas un conseil en investissement.</p>
+    <p style="margin-top:0.4rem">
+      <a href="https://app.cryptoluciole.com">Application</a> ·
+      <a href="https://app.cryptoluciole.com/whitepaper">Whitepaper</a> ·
+      <a href="https://github.com/AntoineBatou/DefiLantern">GitHub</a>
+    </p>
+  </footer>
+
+</body>
+</html>

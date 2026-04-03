@@ -32,7 +32,7 @@ function ProtocolCard({ protocol, apyData, loading, lang, onClick, profileColor,
   return (
     <button
       onClick={() => onClick(protocol)}
-      className="relative bg-white rounded-2xl border border-lgrey p-5 shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-1 flex flex-col gap-4 text-left w-full cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2ABFAB]"
+      className="relative bg-white rounded-2xl border border-lgrey p-5 shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-1 flex flex-col gap-4 text-left w-full cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#28B092]"
       aria-label={`Voir les détails de ${protocol.name}`}
     >
       {/* Badge profil */}
@@ -172,7 +172,7 @@ export default function Protocols({ apyData, loading }) {
             </div>
           </div>
 
-          <div className="mt-4 mx-auto w-16 h-1 rounded-full bg-[#2ABFAB]" aria-hidden="true" />
+          <div className="mt-4 mx-auto w-16 h-1 rounded-full bg-[#28B092]" aria-hidden="true" />
         </div>
 
         {/* Sous-titre */}

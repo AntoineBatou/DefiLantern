@@ -98,7 +98,7 @@ export default function Deposit({ averageApy }) {
     try {
       setTxStep('Étape 1/2 — Autorisation USDC...')
       await deposit(numAmount)
-      setTxStep(`Dépôt réussi ! Tu as reçu ${glUsdcReceived.toFixed(2)} glUSDC-P`)
+      setTxStep(`Dépôt réussi ! Tu as reçu ${glUsdcReceived.toFixed(2)} glUSD-P`)
       setAmount('')
       setTimeout(() => setTxStep(''), 5000)
     } catch (e) {
@@ -122,7 +122,7 @@ export default function Deposit({ averageApy }) {
           <p className="text-navy/60 max-w-xl mx-auto">
             {t('deposit.subtitle')}
           </p>
-          <div className="mt-4 mx-auto w-16 h-1 rounded-full bg-[#2ABFAB]" aria-hidden="true" />
+          <div className="mt-4 mx-auto w-16 h-1 rounded-full bg-[#28B092]" aria-hidden="true" />
         </div>
 
         {/* ── Layout : formulaire + explications ── */}
@@ -163,7 +163,7 @@ export default function Deposit({ averageApy }) {
                 </div>
                 {parseFloat(sharesBalance) > 0 && (
                   <div className="text-xs text-amber-700">
-                    Ton solde glUSDC-P : <span className="font-bold">{sharesBalance}</span>
+                    Ton solde glUSD-P : <span className="font-bold">{sharesBalance}</span>
                   </div>
                 )}
               </div>
@@ -180,8 +180,8 @@ export default function Deposit({ averageApy }) {
                   onClick={() => { setAsset('USDC'); setAmount('') }}
                   className={`flex items-center gap-2 flex-1 justify-center px-4 py-3 rounded-2xl border-2 transition-all font-medium text-sm ${
                     asset === 'USDC'
-                      ? 'border-[#2ABFAB] bg-white text-navy shadow-sm'
-                      : 'border-lgrey bg-white/50 text-navy/50 hover:border-[#2ABFAB]/50'
+                      ? 'border-[#28B092] bg-white text-navy shadow-sm'
+                      : 'border-lgrey bg-white/50 text-navy/50 hover:border-[#28B092]/50'
                   }`}
                 >
                   <UsdcIcon />
@@ -251,13 +251,13 @@ export default function Deposit({ averageApy }) {
                   onChange={(e) => setAmount(e.target.value)}
                   placeholder="0.00"
                   min="0"
-                  className="w-full bg-white border-2 border-lgrey rounded-2xl px-4 py-4 text-2xl font-bold text-navy placeholder-navy/20 focus:outline-none focus:border-[#2ABFAB] transition-colors pr-24"
+                  className="w-full bg-white border-2 border-lgrey rounded-2xl px-4 py-4 text-2xl font-bold text-navy placeholder-navy/20 focus:outline-none focus:border-[#28B092] transition-colors pr-24"
                 />
                 <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2">
                   <button
                     onClick={handleMax}
                     disabled={!isConnected || !mockUsdcBalance}
-                    className="text-xs font-bold text-[#2ABFAB] hover:text-[#22A898] disabled:text-navy/30 transition-colors"
+                    className="text-xs font-bold text-[#28B092] hover:text-[#2ABFAB] disabled:text-navy/30 transition-colors"
                   >
                     {t('deposit.maxBtn')}
                   </button>
@@ -298,7 +298,7 @@ export default function Deposit({ averageApy }) {
 
             {/* Feedback transaction */}
             {txStep && (
-              <div className="text-center text-sm font-medium text-[#2ABFAB] bg-[#2ABFAB]/10 rounded-2xl py-3 px-4">
+              <div className="text-center text-sm font-medium text-[#28B092] bg-[#28B092]/10 rounded-2xl py-3 px-4">
                 {txStep}
               </div>
             )}
@@ -341,7 +341,7 @@ export default function Deposit({ averageApy }) {
                   { num: '4', text: t('deposit.step4') },
                 ].map(({ num, text }) => (
                   <div key={num} className="flex items-start gap-3">
-                    <div className="w-7 h-7 rounded-full bg-[#2ABFAB] text-white flex items-center justify-center text-xs font-bold flex-shrink-0">
+                    <div className="w-7 h-7 rounded-full bg-[#28B092] text-white flex items-center justify-center text-xs font-bold flex-shrink-0">
                       {num}
                     </div>
                     <p className="text-sm text-navy/70 pt-1">{text}</p>

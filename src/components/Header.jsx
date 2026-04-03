@@ -102,7 +102,7 @@ export default function Header({ currentPage, navigateTo, navigateToSection }) {
               alt="DeFi Lantern"
               className="h-10 w-auto transition-transform duration-200 group-hover:scale-105"
             />
-            <span className="font-bold text-xl tracking-tight text-[#2ABFAB]">
+            <span className="font-bold text-xl tracking-tight text-[#28B092]">
               DeFi Lantern
             </span>
           </a>
@@ -186,8 +186,8 @@ export default function Header({ currentPage, navigateTo, navigateToSection }) {
                     onClick={() => handleLinkClick(link)}
                     className={`text-sm font-semibold px-4 py-1.5 rounded-full transition-colors duration-200 ${
                       currentPage === 'deposit'
-                        ? 'bg-[#22A898] text-white'
-                        : 'bg-[#2ABFAB] text-white hover:bg-[#22A898]'
+                        ? 'bg-[#2ABFAB] text-white'
+                        : 'bg-[#28B092] text-white hover:bg-[#2ABFAB]'
                     }`}
                   >
                     {link.label}
@@ -201,8 +201,8 @@ export default function Header({ currentPage, navigateTo, navigateToSection }) {
                   onClick={() => handleLinkClick(link)}
                   className={`text-sm font-medium transition-colors duration-200 ${
                     link.type === 'page' && currentPage === link.target
-                      ? 'text-[#2ABFAB] font-semibold'
-                      : 'text-navy/70 hover:text-[#2ABFAB]'
+                      ? 'text-[#28B092] font-semibold'
+                      : 'text-navy/70 hover:text-[#28B092]'
                   }`}
                 >
                   {link.label}
@@ -220,10 +220,10 @@ export default function Header({ currentPage, navigateTo, navigateToSection }) {
               className="flex items-center bg-[#EEF2F2] rounded-full p-0.5 transition-all duration-200 hover:bg-teal-light"
               aria-label={`Changer la langue — actuellement ${lang.toUpperCase()}`}
             >
-              <span className={`px-3 py-1 rounded-full text-xs font-semibold transition-all duration-200 ${lang === 'fr' ? 'bg-[#2ABFAB] text-white shadow-sm' : 'text-navy/50 hover:text-navy/70'}`}>
+              <span className={`px-3 py-1 rounded-full text-xs font-semibold transition-all duration-200 ${lang === 'fr' ? 'bg-[#28B092] text-white shadow-sm' : 'text-navy/50 hover:text-navy/70'}`}>
                 FR
               </span>
-              <span className={`px-3 py-1 rounded-full text-xs font-semibold transition-all duration-200 ${lang === 'en' ? 'bg-[#2ABFAB] text-white shadow-sm' : 'text-navy/50 hover:text-navy/70'}`}>
+              <span className={`px-3 py-1 rounded-full text-xs font-semibold transition-all duration-200 ${lang === 'en' ? 'bg-[#28B092] text-white shadow-sm' : 'text-navy/50 hover:text-navy/70'}`}>
                 EN
               </span>
             </button>
@@ -281,10 +281,10 @@ export default function Header({ currentPage, navigateTo, navigateToSection }) {
                   onClick={() => handleLinkClick(link)}
                   className={`text-left px-4 py-2.5 text-sm font-medium rounded-lg transition-colors ${
                     link.cta
-                      ? 'bg-[#2ABFAB] text-white hover:bg-[#22A898] mx-2 text-center'
+                      ? 'bg-[#28B092] text-white hover:bg-[#2ABFAB] mx-2 text-center'
                       : link.type === 'page' && currentPage === link.target
-                        ? 'text-[#2ABFAB] bg-teal-light font-semibold'
-                        : 'text-navy/70 hover:text-[#2ABFAB] hover:bg-teal-light'
+                        ? 'text-[#28B092] bg-teal-light font-semibold'
+                        : 'text-navy/70 hover:text-[#28B092] hover:bg-teal-light'
                   }`}
                 >
                   {link.label}

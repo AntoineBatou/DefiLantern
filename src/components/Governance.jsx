@@ -11,9 +11,9 @@ import { useLang } from '../context/LangContext'
 
 // ── Distribution FLY ──────────────────────────────────────────────────────────
 const DISTRIBUTION = [
-  { key: 'community', color: '#2ABFAB', pct: 30 },
+  { key: 'community', color: '#28B092', pct: 30 },
   { key: 'treasury',  color: '#F5A623', pct: 40 },
-  { key: 'team',      color: '#22A898', pct: 20 },
+  { key: 'team',      color: '#2ABFAB', pct: 20 },
   { key: 'ecosystem', color: '#F7B94A', pct: 10 },
 ]
 

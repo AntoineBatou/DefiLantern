@@ -25,7 +25,7 @@ export default function Hero({ averageApy, loading, hasLiveData, onSimulateClick
       {/* Décoratifs d'arrière-plan */}
       <div
         className="absolute -top-32 -right-32 w-96 h-96 rounded-full opacity-10"
-        style={{ background: 'radial-gradient(circle, #2ABFAB 0%, transparent 70%)' }}
+        style={{ background: 'radial-gradient(circle, #28B092 0%, transparent 70%)' }}
         aria-hidden="true"
       />
       <div
@@ -86,7 +86,7 @@ export default function Hero({ averageApy, loading, hasLiveData, onSimulateClick
 
             {/* Stat 1 : Nombre de protocoles dans le profil */}
             <div className="bg-white rounded-2xl shadow-sm border border-lgrey px-8 py-5 text-center min-w-[140px]">
-              <div className="text-3xl font-extrabold text-[#2ABFAB]">{profileProtocols.length}</div>
+              <div className="text-3xl font-extrabold text-[#28B092]">{profileProtocols.length}</div>
               <div className="text-sm text-navy/50 font-medium mt-1">{t('hero.protocols')}</div>
             </div>
 

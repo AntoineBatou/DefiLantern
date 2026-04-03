@@ -57,6 +57,11 @@ export default function Footer({ navigateTo }) {
       external: false,
     },
     {
+      label: t('footer.mvpDoc'),
+      href: `${import.meta.env.BASE_URL}fonctionnement-mvp-v1.pdf`,
+      external: true,
+    },
+    {
       label: t('footer.github'),
       href: 'https://github.com/AntoineBatou/DefiLantern',
       external: true,
@@ -84,7 +89,7 @@ export default function Footer({ navigateTo }) {
                 alt="DeFi Lantern"
                 className="h-8 w-auto"
               />
-              <span className="font-bold text-xl text-[#2ABFAB]">DeFi Lantern</span>
+              <span className="font-bold text-xl text-[#28B092]">DeFi Lantern</span>
             </div>
             <p className="text-white/60 text-sm leading-relaxed">
               {t('footer.tagline')}
@@ -110,7 +115,7 @@ export default function Footer({ navigateTo }) {
                   {link.onClick ? (
                     <button
                       onClick={link.onClick}
-                      className="text-white/60 hover:text-[#2ABFAB] transition-colors text-sm flex items-center gap-2"
+                      className="text-white/60 hover:text-[#28B092] transition-colors text-sm flex items-center gap-2"
                     >
                       {link.label}
                     </button>
@@ -119,7 +124,7 @@ export default function Footer({ navigateTo }) {
                       href={link.href}
                       target={link.external ? '_blank' : undefined}
                       rel={link.external ? 'noopener noreferrer' : undefined}
-                      className="text-white/60 hover:text-[#2ABFAB] transition-colors text-sm flex items-center gap-2"
+                      className="text-white/60 hover:text-[#28B092] transition-colors text-sm flex items-center gap-2"
                     >
                       {link.icon && <span>{link.icon}</span>}
                       {link.label}

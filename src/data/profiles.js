@@ -54,18 +54,18 @@ const AIRDROP_HUNTER_PROTOCOL_IDS = [
 
 // ── Poids d'allocation ────────────────────────────────────────────────────
 
-// Prudent (sum = 1.0)
-// 8 protocoles standard × 11.25% + fxSAVE 5% (exception TVL) + thBILL 5% (exception score)
-// = 0.90 + 0.05 + 0.05 = 1.00 ✓
+// Prudent (sum = 0.90 = 90% du capital déployé en rendement)
+// 8 protocoles standard × 10% + fxSAVE 5% (exception TVL) + thBILL 5% (exception score — cap 5%)
+// = 0.80 + 0.05 + 0.05 = 0.90 ✓ (+ 10% buffer idle USDC dans le vault = 100% TVL)
 const PRUDENT_WEIGHTS = {
-  'aave-v3':           0.1125,
-  'morpho-gauntlet':   0.1125,
-  'morpho-steakhouse': 0.1125,
-  'susds':             0.1125,
-  'susde':             0.1125,
-  'cusdo':             0.1125,
-  'sbold':             0.1125,
-  'scrvusd':           0.1125,
+  'aave-v3':           0.10,
+  'morpho-gauntlet':   0.10,
+  'morpho-steakhouse': 0.10,
+  'susds':             0.10,
+  'susde':             0.10,
+  'cusdo':             0.10,
+  'sbold':             0.10,
+  'scrvusd':           0.10,
   'fxsave':            0.05,   // exception TVL — allocation réduite
   'thbill':            0.05,   // exception score — cap 5%
 }
@@ -106,7 +106,7 @@ export const PROFILES = {
   prudent: {
     id: 'prudent',
     icon: '🛡️',
-    shareToken: 'glUSDC-P',
+    shareToken: 'glUSD-P',
     protocolIds: PRUDENT_PROTOCOL_IDS,
     weights: PRUDENT_WEIGHTS,
     apyRange: '3–7%',
@@ -115,7 +115,7 @@ export const PROFILES = {
   balanced: {
     id: 'balanced',
     icon: '⚖️',
-    shareToken: 'glUSDC-B',
+    shareToken: 'glUSD-B',
     protocolIds: [...PRUDENT_PROTOCOL_IDS, ...DYNAMIC_PROTOCOL_IDS],
     weights: BALANCED_WEIGHTS,
     apyRange: '5–10%',
@@ -124,7 +124,7 @@ export const PROFILES = {
   dynamic: {
     id: 'dynamic',
     icon: '⚡',
-    shareToken: 'glUSDC-D',
+    shareToken: 'glUSD-D',
     protocolIds: DYNAMIC_PROTOCOL_IDS,
     weights: DYNAMIC_WEIGHTS,
     apyRange: '8–15%',
@@ -133,7 +133,7 @@ export const PROFILES = {
   airdropHunter: {
     id: 'airdropHunter',
     icon: '🪂',
-    shareToken: 'glUSDC-AH',
+    shareToken: 'glUSD-AH',
     protocolIds: AIRDROP_HUNTER_PROTOCOL_IDS,
     weights: AIRDROP_HUNTER_WEIGHTS,
     apyRange: 'Variable',
@@ -145,8 +145,8 @@ export const PROFILES = {
 export const PROFILE_PILL_COLORS = {
   prudent: {
     inactive: 'bg-teal-50 text-teal-700 border border-teal-200 hover:bg-teal-100',
-    active: 'bg-[#2ABFAB] text-white shadow-sm',
-    dot: '#2ABFAB',
+    active: 'bg-[#28B092] text-white shadow-sm',
+    dot: '#28B092',
     darkInactive: 'dark:bg-teal-900/30 dark:text-teal-300 dark:border-teal-700',
   },
   balanced: {

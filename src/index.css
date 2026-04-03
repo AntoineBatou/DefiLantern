@@ -33,12 +33,12 @@
 
   /* Bouton principal teal */
   .btn-primary {
-    @apply bg-[#2ABFAB] hover:bg-[#22A898] text-white font-semibold px-6 py-3 rounded-xl transition-all duration-200 shadow-sm hover:shadow-md active:scale-95;
+    @apply bg-[#28B092] hover:bg-[#2ABFAB] text-white font-semibold px-6 py-3 rounded-xl transition-all duration-200 shadow-sm hover:shadow-md active:scale-95;
   }
 
   /* Bouton secondaire outline */
   .btn-secondary {
-    @apply border-2 border-[#2ABFAB] text-[#2ABFAB] hover:bg-teal-light font-semibold px-6 py-3 rounded-xl transition-all duration-200;
+    @apply border-2 border-[#28B092] text-[#28B092] hover:bg-teal-light font-semibold px-6 py-3 rounded-xl transition-all duration-200;
   }
 
   /* Carte avec effet hover */
@@ -243,9 +243,9 @@ section {
 .dark .btn-primary             { background-color: #7C3AED !important; }
 .dark .btn-primary:hover       { background-color: #9333EA !important; }
 .dark .btn-secondary           { border-color: #7C3AED !important; color: #7C3AED !important; }
-.dark .bg-\[#2ABFAB\]          { background-color: #7C3AED !important; }
-.dark .bg-\[#22A898\]          { background-color: #9333EA !important; }
-.dark .hover\:bg-\[#22A898\]:hover { background-color: #9333EA !important; }
+.dark .bg-\[#28B092\]          { background-color: #7C3AED !important; }
+.dark .bg-\[#2ABFAB\]          { background-color: #9333EA !important; }
+.dark .hover\:bg-\[#2ABFAB\]:hover { background-color: #9333EA !important; }
 
 /* ── Inputs ──────────────────────────────────────────────────────────────────── */
 
@@ -348,13 +348,13 @@ section {
 /* ── Boutons ── */
 .theme-christmas .btn-primary             { background-color: #C0392B !important; color: white !important; }
 .theme-christmas .btn-primary:hover       { background-color: #A93226 !important; }
-.theme-christmas .bg-\[#2ABFAB\]          { background-color: #C0392B !important; }
-.theme-christmas .bg-\[#22A898\]          { background-color: #A93226 !important; }
-.theme-christmas .hover\:bg-\[#22A898\]:hover { background-color: #A93226 !important; }
+.theme-christmas .bg-\[#28B092\]          { background-color: #C0392B !important; }
+.theme-christmas .bg-\[#2ABFAB\]          { background-color: #A93226 !important; }
+.theme-christmas .hover\:bg-\[#2ABFAB\]:hover { background-color: #A93226 !important; }
 
 /* Accents APY : teal → or */
 .theme-christmas .text-teal-500,
-.theme-christmas .text-\[\#2ABFAB\] { color: #FFD700 !important; }
+.theme-christmas .text-\[\#28B092\] { color: #FFD700 !important; }
 
 /* ── Header : se fond dans le hero (même fond que #hero) ──
    On surcharge explicitement header.bg-white pour battre la spécificité de .bg-white */

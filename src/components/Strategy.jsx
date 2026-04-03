@@ -26,7 +26,7 @@ function CustomTooltip({ active, payload, apyData }) {
   return (
     <div className="bg-white border border-lgrey rounded-xl shadow-lg px-4 py-3">
       <p className="font-semibold text-navy text-sm">{protocol.name}</p>
-      <p className="text-[#2ABFAB] font-bold">{protocol.allocation.toFixed(1)}% du capital</p>
+      <p className="text-[#28B092] font-bold">{protocol.allocation.toFixed(1)}% du capital</p>
       <p className="text-navy/60 text-xs">APY : {apy.toFixed(2)}%</p>
     </div>
   )
@@ -111,14 +111,14 @@ export default function Strategy({ apyData, averageApy, historicalApy }) {
           </p>
           {/* Indicateur du profil actif */}
           <div className="flex items-center justify-center gap-2 mt-4">
-            <div className="w-16 h-1 rounded-full bg-[#2ABFAB]" aria-hidden="true" />
+            <div className="w-16 h-1 rounded-full bg-[#28B092]" aria-hidden="true" />
             <span
               className="text-xs font-semibold px-3 py-1 rounded-full text-white"
               style={{ backgroundColor: pillColors.dot }}
             >
               {profileProtocols.length} protocoles sélectionnés
             </span>
-            <div className="w-16 h-1 rounded-full bg-[#2ABFAB]" aria-hidden="true" />
+            <div className="w-16 h-1 rounded-full bg-[#28B092]" aria-hidden="true" />
           </div>
 
           {/* Carte de description du profil — placée sous l'indicateur */}
@@ -239,7 +239,7 @@ export default function Strategy({ apyData, averageApy, historicalApy }) {
             {/* Tiers de risque (filtrés) */}
             <div>
               <h4 className="font-semibold text-navy mb-4 flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#2ABFAB]" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#28B092]" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                   <path fillRule="evenodd" d="M3 6a3 3 0 013-3h10a1 1 0 01.8 1.6L14.25 8l2.55 3.4A1 1 0 0116 13H6a1 1 0 00-1 1v3a1 1 0 11-2 0V6z" clipRule="evenodd" />
                 </svg>
                 {t('strategy.riskTiers')}
