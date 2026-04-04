@@ -750,8 +750,126 @@ function WhitepaperFR() {
         </p>
       </Section>
 
-      {/* 11. DISCLAIMER */}
-      <Section id="legal" title="11. Avertissement légal">
+      {/* 11. REWARDS HUNTER */}
+      <Section id="rewards-hunter" title="11. Détail du fonctionnement Rewards Hunter (glUSD-AH)">
+        <p className="text-navy/70 text-sm leading-relaxed mb-4">
+          Le vault Rewards Hunter est un agrégateur de positions de rendement ciblant spécifiquement les protocoles qui
+          proposent des campagnes d'incentives — émissions de tokens en temps réel ou systèmes de points à long terme
+          récompensés par un futur airdrop. Il constitue un <strong className="text-navy">point d'entrée unique</strong> vers
+          plusieurs campagnes, sans que l'utilisateur ait à interagir avec chaque protocole individuellement.
+        </p>
+
+        <SubSection title="Deux scénarios de récompenses">
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm border-collapse mb-4">
+              <thead>
+                <tr className="bg-navy/5">
+                  <th className="text-left p-2 text-navy font-semibold border border-navy/10">Scénario</th>
+                  <th className="text-left p-2 text-navy font-semibold border border-navy/10">Mécanisme</th>
+                  <th className="text-left p-2 text-navy font-semibold border border-navy/10">Expérience utilisateur</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td className="p-2 border border-navy/10 text-navy font-medium">Campagnes d'incentives live</td>
+                  <td className="p-2 border border-navy/10 text-navy/70">Les tokens sont émis en temps réel par les protocoles partenaires et routés directement vers Merkl — ils ne transitent jamais par le vault.</td>
+                  <td className="p-2 border border-navy/10 text-navy/70">Le solde augmente en temps réel sur le portail Merkl. Le claim est disponible immédiatement.</td>
+                </tr>
+                <tr className="bg-navy/5">
+                  <td className="p-2 border border-navy/10 text-navy font-medium">Campagnes de points à long terme</td>
+                  <td className="p-2 border border-navy/10 text-navy/70">Quand un protocole convertit des points en tokens (événement airdrop), le vault reçoit les tokens et les redistribue via un Gnosis Safe (multisig) vers Merkl, proportionnellement au poids de chaque déposant.</td>
+                  <td className="p-2 border border-navy/10 text-navy/70">L'utilisateur surveille le portail Merkl et effectue le claim après la clôture de la campagne.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </SubSection>
+
+        <SubSection title="Partenariat Merkl — Distribution des récompenses">
+          <p className="text-navy/70 text-sm leading-relaxed mb-3">
+            La redistribution des récompenses est gérée en partenariat avec <strong className="text-navy">Merkl</strong> (by Angle Labs),
+            choisi pour sa fiabilité, sa réputation institutionnelle et son interface de réclamation unifiée.
+            Merkl indexe en continu les balances des déposants pour permettre un claim précis, proportionnel à l'allocation de chacun.
+          </p>
+        </SubSection>
+
+        <SubSection title="Modèle de sécurité">
+          <ul className="list-disc list-inside text-navy/70 text-sm space-y-2 mb-3">
+            <li><strong className="text-navy">Fonction <code>sweep()</code> :</strong> seuls les tokens qui ne sont pas l'actif de réserve (USDC) peuvent être transférés du vault vers le Gnosis Safe — les dépôts utilisateurs ne peuvent jamais transiter par ce chemin.</li>
+            <li><strong className="text-navy">Whitelist du Safe :</strong> depuis le Safe, seule l'adresse du contrat Merkl est autorisée à recevoir des tokens. Aucun membre de l'équipe ne peut rediriger les flux de récompenses vers une autre destination.</li>
+            <li><strong className="text-navy">Aucun partenariat commercial :</strong> DeFi Lantern n'a aucun accord commercial avec les protocoles du vault. Les critères et la finalité des airdrops sont déterminés uniquement par chaque protocole tiers.</li>
+          </ul>
+          <WarningBox>
+            DeFi Lantern ne décide pas des critères, du calendrier ni du montant final des airdrops tiers.
+            Le protocole contrôle uniquement la façon dont les tokens reçus au niveau du vault sont routés vers les déposants.
+            Les airdrops sont des décisions discrétionnaires des protocoles externes et ne constituent en aucun cas un rendement garanti.
+          </WarningBox>
+        </SubSection>
+      </Section>
+
+      {/* 12. LIQUIDITÉ MARCHÉS SECONDAIRES */}
+      <Section id="liquidity" title="12. Liquidité de nos jetons sur le marché secondaire">
+        <p className="text-navy/70 text-sm leading-relaxed mb-4">
+          En tant que yield-bearing tokens (YBT) ERC-4626, les parts glUSD sont normalement mintées au dépôt et brûlées au retrait.
+          Cela crée deux limitations : chaque remboursement draine le buffer USDC du vault, et en cas de crise de liquidité
+          ou d'incident, les retraits peuvent être retardés.
+        </p>
+
+        <SubSection title="Solution — Pools de liquidité sur Curve Finance">
+          <p className="text-navy/70 text-sm leading-relaxed mb-3">
+            DeFi Lantern déploiera des <strong className="text-navy">pools glUSD/USDC sur Curve Finance</strong> (standard Stableswap NG),
+            créant un marché secondaire où les utilisateurs peuvent céder leurs glUSD directement à d'autres participants
+            sans déclencher un retrait du vault. La pool constitue une <strong className="text-navy">couche de sortie complémentaire</strong>,
+            pas un remplacement du mécanisme ERC-4626.
+          </p>
+          <ul className="list-disc list-inside text-navy/70 text-sm space-y-1 mb-3">
+            <li><strong className="text-navy">Pourquoi Curve :</strong> le standard Stableswap NG est conçu pour les paires stables et YBT, avec des paramètres ajustables adaptés à la NAV appréciante des glUSD.</li>
+            <li><strong className="text-navy">VoteMarket :</strong> l'écosystème Curve/VoteMarket permet d'incentiver la pool via des <em>bribes</em>, attirant des apporteurs de liquidité tiers à faible coût direct.</li>
+            <li><strong className="text-navy">Sortie d'urgence :</strong> en cas de pause du vault ou d'incident, le marché secondaire reste opérationnel et constitue une sortie alternative pour les utilisateurs.</li>
+          </ul>
+        </SubSection>
+
+        <SubSection title="La boucle vertueuse (Liquidity Providing Flywheel)">
+          <p className="text-navy/70 text-sm leading-relaxed mb-3">
+            Une partie des performance fees collectés par DeFi Lantern finance des bribes sur VoteMarket, créant un cycle auto-entretenu :
+          </p>
+          <ol className="list-decimal list-inside text-navy/70 text-sm space-y-1 mb-3">
+            <li>Création d'une pool glUSD-P/USDC sur Curve, seedée par la trésorerie</li>
+            <li>Demande de création d'une gauge Curve pour permettre les votes CRV</li>
+            <li>Financement de bribes sur VoteMarket (trésorerie + performance fees) → direction des émissions CRV vers la pool</li>
+            <li>L'APY de la pool augmente → attire des apporteurs de liquidité tiers</li>
+            <li>Plus de liquidité → plus de frais de swap perçus</li>
+            <li>Une partie des CRV reçus est swappée en USDC pour alimenter de nouvelles bribes</li>
+            <li>Selon l'état de la pool, les fees sont soit réinvestis dans la pool, soit dirigés vers des bribes, soit retournés à la trésorerie</li>
+            <li>À terme : accumulation de veCRV pour voter directement, réduisant les dépenses en bribes</li>
+          </ol>
+          <InfoBox>
+            <strong>Aucune contamination des rendements déposants :</strong> les performance fees utilisés pour financer les bribes sont des revenus de la trésorerie — ils ne sont jamais prélevés sur le principal ni sur les rendements alloués aux déposants. La pool est opérée séparément des stratégies de rendement du vault.
+          </InfoBox>
+        </SubSection>
+
+        <SubSection title="Bénéfices">
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="bg-navy/5">
+                  <th className="text-left p-2 text-navy font-semibold border border-navy/10">Bénéfice</th>
+                  <th className="text-left p-2 text-navy font-semibold border border-navy/10">Mécanisme</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td className="p-2 border border-navy/10 text-navy/70">Sortie secondaire pour les déposants</td><td className="p-2 border border-navy/10 text-navy/70">glUSD échangeable contre USDC sur Curve sans passer par le vault</td></tr>
+                <tr className="bg-navy/5"><td className="p-2 border border-navy/10 text-navy/70">Sortie d'urgence en cas de crise</td><td className="p-2 border border-navy/10 text-navy/70">La pool reste opérationnelle même si les retraits du vault sont en pause</td></tr>
+                <tr><td className="p-2 border border-navy/10 text-navy/70">Bootstrapping de liquidité efficient</td><td className="p-2 border border-navy/10 text-navy/70">Les bribes levent la liquidité tierce sans immobiliser de capital propre excessif</td></tr>
+                <tr className="bg-navy/5"><td className="p-2 border border-navy/10 text-navy/70">Réduction de la pression vendeuse</td><td className="p-2 border border-navy/10 text-navy/70">Les glUSD changent de main plutôt que d'être brûlés, préservant la profondeur de la pool</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </SubSection>
+      </Section>
+
+      {/* 13. DISCLAIMER */}
+      <Section id="legal" title="13. Avertissement légal">
         <WarningBox>
           DeFi Lantern est un projet logiciel expérimental et open-source développé à des fins académiques.
           Ce n'est pas un produit financier enregistré ni un véhicule d'investissement. Les parts glUSD-P,
@@ -1554,8 +1672,126 @@ new_shares  = fee_in_usd / pricePerShare_after_yield`}</CodeBlock>
         </p>
       </Section>
 
-      {/* 11. LEGAL */}
-      <Section id="legal-en" title="11. Legal Disclaimer">
+      {/* 11. REWARDS HUNTER EN */}
+      <Section id="rewards-hunter-en" title="11. Rewards Hunter Vault — Mechanics (glUSD-AH)">
+        <p className="text-navy/70 text-sm leading-relaxed mb-4">
+          The Rewards Hunter vault is an aggregator of yield positions specifically targeting protocols that
+          offer access to incentive campaigns — live token emissions or long-term point accumulation systems
+          rewarded by future airdrops. It provides a <strong className="text-navy">single entry point</strong> to
+          multiple campaigns, without requiring users to interact with each protocol individually.
+        </p>
+
+        <SubSection title="Two Reward Scenarios">
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm border-collapse mb-4">
+              <thead>
+                <tr className="bg-navy/5">
+                  <th className="text-left p-2 text-navy font-semibold border border-navy/10">Scenario</th>
+                  <th className="text-left p-2 text-navy font-semibold border border-navy/10">Mechanism</th>
+                  <th className="text-left p-2 text-navy font-semibold border border-navy/10">User experience</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td className="p-2 border border-navy/10 text-navy font-medium">Live incentive campaigns</td>
+                  <td className="p-2 border border-navy/10 text-navy/70">Tokens emitted in real time by partner protocols and routed directly to Merkl — they never transit through the vault.</td>
+                  <td className="p-2 border border-navy/10 text-navy/70">Balance increases in real time on the Merkl portal. Instant claim available.</td>
+                </tr>
+                <tr className="bg-navy/5">
+                  <td className="p-2 border border-navy/10 text-navy font-medium">Long-term point campaigns</td>
+                  <td className="p-2 border border-navy/10 text-navy/70">When a protocol converts points into tokens (airdrop event), the vault receives the tokens and redistributes them via a Gnosis Safe (multisig) to Merkl, proportional to each depositor's allocation weight.</td>
+                  <td className="p-2 border border-navy/10 text-navy/70">User monitors the Merkl portal and claims after the campaign concludes.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </SubSection>
+
+        <SubSection title="Merkl Partnership — Reward Distribution">
+          <p className="text-navy/70 text-sm leading-relaxed mb-3">
+            Reward redistribution is managed through a partnership with <strong className="text-navy">Merkl</strong> (by Angle Labs),
+            selected for its reliability, institutional reputation, and unified claim interface.
+            Merkl continuously indexes depositor balances to compute precise, proportional claim amounts.
+          </p>
+        </SubSection>
+
+        <SubSection title="Security Model">
+          <ul className="list-disc list-inside text-navy/70 text-sm space-y-2 mb-3">
+            <li><strong className="text-navy"><code>sweep()</code> function:</strong> only tokens that are not the reserve asset (USDC) can be transferred from the vault to the Gnosis Safe — user deposits cannot be moved through this path under any circumstance.</li>
+            <li><strong className="text-navy">Safe whitelist:</strong> from the Gnosis Safe, only the Merkl contract address is authorized to receive tokens. No team member can redirect reward flows to any other destination.</li>
+            <li><strong className="text-navy">No commercial partnership:</strong> DeFi Lantern has no commercial agreement with the protocols in this vault. Airdrop criteria and finality are determined solely by each third-party protocol.</li>
+          </ul>
+          <WarningBox>
+            DeFi Lantern does not determine the criteria, timing, or final amount of third-party airdrops.
+            The protocol only controls how tokens received at the vault level are routed to depositors.
+            Airdrops are discretionary decisions by external protocols and must never be construed as guaranteed returns.
+          </WarningBox>
+        </SubSection>
+      </Section>
+
+      {/* 12. SECONDARY MARKET LIQUIDITY EN */}
+      <Section id="liquidity-en" title="12. Secondary Market Liquidity — Curve/VoteMarket Flywheel">
+        <p className="text-navy/70 text-sm leading-relaxed mb-4">
+          As ERC-4626 yield-bearing tokens (YBT), glUSD shares are normally minted at deposit and burned at redemption.
+          This creates two limitations: each redemption draws down the vault's USDC buffer, and in stress scenarios
+          (protocol incident, liquidity crisis), redemptions may be delayed.
+        </p>
+
+        <SubSection title="Solution — Curve Finance Liquidity Pools">
+          <p className="text-navy/70 text-sm leading-relaxed mb-3">
+            DeFi Lantern will deploy <strong className="text-navy">glUSD/USDC liquidity pools on Curve Finance</strong> (Stableswap NG standard),
+            creating a secondary market where users can exit their glUSD position by swapping directly with other participants —
+            without triggering vault redemption. The pool acts as a <strong className="text-navy">complementary exit layer</strong>,
+            not a replacement for the ERC-4626 mechanism.
+          </p>
+          <ul className="list-disc list-inside text-navy/70 text-sm space-y-1 mb-3">
+            <li><strong className="text-navy">Why Curve:</strong> Stableswap NG is purpose-built for stable and yield-bearing token pairs, with adjustable parameters suited to glUSD's appreciating NAV.</li>
+            <li><strong className="text-navy">VoteMarket:</strong> the Curve/VoteMarket ecosystem allows the protocol to direct CRV emissions to its pool via bribes, incentivizing third-party liquidity providers at low direct cost.</li>
+            <li><strong className="text-navy">Emergency exit:</strong> in the event of a vault pause or incident, the secondary market remains operational as an alternative exit for users.</li>
+          </ul>
+        </SubSection>
+
+        <SubSection title="The Liquidity Providing Flywheel">
+          <p className="text-navy/70 text-sm leading-relaxed mb-3">
+            A portion of DeFi Lantern's performance fees funds bribes on VoteMarket, creating a self-reinforcing cycle:
+          </p>
+          <ol className="list-decimal list-inside text-navy/70 text-sm space-y-1 mb-3">
+            <li>Create a glUSD-P/USDC pool on Curve, seeded with treasury funds</li>
+            <li>Request gauge creation on Curve to enable CRV vote emissions</li>
+            <li>Fund bribes on VoteMarket (treasury + performance fees) → directs CRV emissions to the pool</li>
+            <li>Higher pool APY attracts third-party liquidity providers</li>
+            <li>Deeper liquidity generates more swap fee revenue</li>
+            <li>A portion of CRV rewards swapped to USDC to fund new bribes</li>
+            <li>Pool fees are dynamically allocated: reinvested in the pool, directed to bribes, or returned to treasury</li>
+            <li>Long-term: accumulate veCRV to vote directly for the gauge, reducing bribe expenditure</li>
+          </ol>
+          <InfoBox>
+            <strong>No yield cross-contamination:</strong> the performance fees used to fund bribes are treasury revenues — they are never drawn from depositor principal or yield allocations. The pool is operated separately from the vault's yield strategies.
+          </InfoBox>
+        </SubSection>
+
+        <SubSection title="Benefits">
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="bg-navy/5">
+                  <th className="text-left p-2 text-navy font-semibold border border-navy/10">Benefit</th>
+                  <th className="text-left p-2 text-navy font-semibold border border-navy/10">Mechanism</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td className="p-2 border border-navy/10 text-navy/70">Secondary exit route</td><td className="p-2 border border-navy/10 text-navy/70">glUSD swappable for USDC on Curve without vault redemption</td></tr>
+                <tr className="bg-navy/5"><td className="p-2 border border-navy/10 text-navy/70">Emergency exit in stress scenarios</td><td className="p-2 border border-navy/10 text-navy/70">Pool remains operational even if vault redemptions are paused</td></tr>
+                <tr><td className="p-2 border border-navy/10 text-navy/70">Capital-efficient liquidity bootstrapping</td><td className="p-2 border border-navy/10 text-navy/70">Bribes attract third-party liquidity without excessive capital commitment</td></tr>
+                <tr className="bg-navy/5"><td className="p-2 border border-navy/10 text-navy/70">Reduced sell pressure</td><td className="p-2 border border-navy/10 text-navy/70">glUSD changes hands rather than being burned, preserving pool depth</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </SubSection>
+      </Section>
+
+      {/* 13. LEGAL */}
+      <Section id="legal-en" title="13. Legal Disclaimer">
         <WarningBox>
           DeFi Lantern is an experimental, open-source software project developed for academic purposes.
           It is not a registered financial product or investment vehicle. glUSD-P, glUSD-B, glUSD-D, and glUSD-AH shares are not securities.
@@ -1570,7 +1806,7 @@ new_shares  = fee_in_usd / pricePerShare_after_yield`}</CodeBlock>
           a prospectus, investment advice, or solicitation of any kind.
         </p>
         <p className="text-navy/40 text-xs mt-6 text-center">
-          DeFi Lantern — Whitepaper v0.2 — March 2026<br />
+          DeFi Lantern — Whitepaper v0.3 — April 2026<br />
           This document will be updated as the protocol evolves.
         </p>
       </Section>
@@ -1593,7 +1829,9 @@ const TOC_FR = [
   { id: 'tokenomics', label: '8. Tokenomique' },
   { id: 'roadmap', label: '9. Feuille de route' },
   { id: 'conclusion', label: '10. Conclusion' },
-  { id: 'legal', label: '11. Avertissement légal' },
+  { id: 'rewards-hunter', label: '11. Rewards Hunter' },
+  { id: 'liquidity', label: '12. Liquidité marchés secondaires' },
+  { id: 'legal', label: '13. Avertissement légal' },
 ]
 
 const TOC_EN = [
@@ -1610,7 +1848,9 @@ const TOC_EN = [
   { id: 'tokenomics-en', label: '8. Tokenomics' },
   { id: 'roadmap-en', label: '9. Roadmap' },
   { id: 'conclusion-en', label: '10. Conclusion' },
-  { id: 'legal-en', label: '11. Legal Disclaimer' },
+  { id: 'rewards-hunter-en', label: '11. Rewards Hunter Vault' },
+  { id: 'liquidity-en', label: '12. Secondary Market Liquidity' },
+  { id: 'legal-en', label: '13. Legal Disclaimer' },
 ]
 
 // ── Composant principal ────────────────────────────────────────────────────
