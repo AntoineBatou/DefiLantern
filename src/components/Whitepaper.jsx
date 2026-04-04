@@ -83,8 +83,8 @@ function WhitepaperFR() {
   return (
     <div>
       <div className="text-center mb-12">
-        <h1 className="text-4xl font-black text-navy mb-3">DeFi Lantern — Livre Blanc v0.2</h1>
-        <p className="text-navy/50 text-sm">Statut : Brouillon — Mars 2026. Tous les paramètres sont susceptibles de modification.</p>
+        <h1 className="text-4xl font-black text-navy mb-3">DeFi Lantern — Livre Blanc v0.3</h1>
+        <p className="text-navy/50 text-sm">Statut : Brouillon — Avril 2026. Tous les paramètres sont susceptibles de modification.</p>
         <div className="mt-4 mx-auto w-16 h-1 rounded-full bg-[#28B092]" />
       </div>
 
@@ -103,15 +103,14 @@ function WhitepaperFR() {
           DeFi Lantern cible les détenteurs de stablecoins cherchant un rendement passif,
           sans gestion active de portefeuille et sans exposition aux variations du marché.
           Le capital est réparti entre jusqu'à vingt protocoles sous-jacents couvrant les marchés de prêt,
-          les produits adossés à des actifs réels (obligations d'État tokenisées, T-bills),
-          les stratégies delta-neutres (couvertes contre les variations de prix)
-          et le crédit institutionnel.
+          les produits adossés à des actifs réels (T-bills, obligations souveraines tokenisées),
+          les stratégies delta-neutres, le crédit institutionnel,
+          les pools de stabilité et d'autres stratégies de rendement diversifiées.
         </p>
         <p className="text-navy/70 leading-relaxed mt-3">
           Les décisions de gouvernance sont conduites via le token <strong>GLOW</strong> : les détenteurs
           votent on-chain, et toute décision adoptée entre en vigueur après un délai obligatoire de
-          48 heures (Timelock). Un comité d'urgence (multisig 2-sur-3) peut uniquement suspendre
-          les nouveaux dépôts — jamais accéder aux fonds.
+          48 heures (Timelock).
         </p>
       </Section>
 
@@ -165,16 +164,16 @@ function WhitepaperFR() {
               ['Frais', '5% de frais de performance sur les gains nets'],
               ['Garde', 'Non-custodial'],
               ['Retraits', 'Non-custodial, initiés par l\'utilisateur'],
-              ['Rééquilibrage', 'Contrôlé par la gouvernance'],
+              ['Rééquilibrage', 'Automatique lors du harvest (équipe) ; modification des poids par gouvernance'],
             ]}
           />
         </SubSection>
 
         <SubSection title="2.2 Caractéristiques clés">
-          <p className="text-navy/70 text-sm mb-2"><strong className="text-navy">Rendement à entrée unique.</strong> Un seul dépôt USDC donne accès à jusqu'à seize stratégies de rendement simultanées.</p>
-          <p className="text-navy/70 text-sm mb-2"><strong className="text-navy">Standard ERC-4626.</strong> glUSD-P, glUSD-B, glUSD-D et glUSD-AH suivent le standard de vault Ethereum ERC-4626 — compatibles avec tout protocole DeFi supportant ce format. Chaque token est interchangeable au sein de son vault : acheter du glUSD-P sur le marché secondaire, c'est s'exposer exactement aux mêmes protocoles Prudent que le déposant initial.</p>
-          <p className="text-navy/70 text-sm mb-2"><strong className="text-navy">Non-custodial.</strong> Aucune clé admin ne peut déplacer les fonds des utilisateurs. Le comité d'urgence peut uniquement suspendre les nouveaux dépôts — les retraits restent possibles en permanence.</p>
-          <p className="text-navy/70 text-sm mb-2"><strong className="text-navy">Stratégie transparente.</strong> Les poids d'allocation par protocole sont inscrits sur la blockchain (en points de base : 100 bp = 1%, somme = 10 000 bp = 100%). Tout détenteur de GLOW peut les vérifier à tout moment.</p>
+          <p className="text-navy/70 text-sm mb-2"><strong className="text-navy">Rendement à entrée unique.</strong> Un seul dépôt USDC donne accès à de multiples stratégies de rendement simultanées.</p>
+          <p className="text-navy/70 text-sm mb-2"><strong className="text-navy">Standard ERC-4626.</strong> glUSD-P, glUSD-B, glUSD-D et glUSD-AH suivent le standard de vault Ethereum ERC-4626 — compatibles avec tout protocole DeFi supportant ce format.</p>
+          <p className="text-navy/70 text-sm mb-2"><strong className="text-navy">Non-custodial.</strong> Aucune clé admin ne peut déplacer les fonds des utilisateurs vers une adresse externe. En cas d'urgence, le Guardian peut retirer les fonds d'un protocole compromis pour les rapatrier dans le vault — seuls les utilisateurs peuvent ensuite les récupérer. Les retraits restent possibles en permanence.</p>
+          <p className="text-navy/70 text-sm mb-2"><strong className="text-navy">Stratégie transparente.</strong> Les allocations par protocole sont inscrites sur la blockchain et vérifiables par tout détenteur de GLOW.</p>
           <p className="text-navy/70 text-sm"><strong className="text-navy">Gouvernance on-chain.</strong> Tous les changements de paramètres passent par un vote communautaire suivi d'un délai obligatoire de 48 heures avant exécution.</p>
         </SubSection>
 
@@ -236,7 +235,6 @@ function WhitepaperFR() {
             <strong>Prix du share (pricePerShare)</strong> augmente de façon monotone au fil des collectes de rendement.
             Un utilisateur qui dépose 1 000 USDC dans le vault Prudent et reçoit 1 000 glUSD-P à t=0
             pourra racheter ces 1 000 glUSD-P contre ~1 035 USDC à t=1 an (APY net ~3,5% après frais).
-            Sur le marché secondaire, tout acheteur de glUSD-P sait qu'il s'expose aux seuls protocoles du profil Prudent.
           </InfoBox>
         </SubSection>
 
@@ -252,6 +250,7 @@ function WhitepaperFR() {
             Certains protocoles n'acceptent pas directement les USDC. Dans ce cas, l'adapter intègre
             automatiquement un échange via Uniswap V3 : les USDC déposés sont convertis au moment du dépôt,
             et reconvertis en USDC au moment du retrait. L'utilisateur ne voit que des USDC à tout moment.
+            (Fonctionnalité prévue en V2.)
           </p>
         </SubSection>
 
@@ -308,7 +307,7 @@ function WhitepaperFR() {
           <h4 className="font-semibold text-navy mb-2">⚡ glUSD-D — Dynamic</h4>
           <p className="text-navy/70 text-sm mb-4">
             Maximisation du rendement pour les utilisateurs acceptant un risque sous-jacent plus élevé.
-            Les stratégies incluent le crédit institutionnel (protocoles KYC), le levier delta-neutre,
+            Les stratégies incluent le crédit institutionnel, le levier delta-neutre,
             des tranches junior et le collatéral AI/RWA. Aucun protocole ne dépasse 15% du TVL.
             La sélection est discrétionnaire et révisée trimestriellement.
           </p>
@@ -354,51 +353,37 @@ function WhitepaperFR() {
 
         <SubSection title="4.2 Protocoles retenus">
           <p className="text-navy/70 text-sm mb-3 font-semibold">🛡️ Prudent — 10 protocoles</p>
-          <div className="space-y-4 mb-6">
-            {[
-              { name: 'Aave v3', cat: 'Lending', desc: '~$28B TVL. Référence du lending DeFi. Audité par Trail of Bits, OpenZeppelin, Certora. Oracle Chainlink. Timelock 1–7j.' },
-              { name: 'Morpho (Gauntlet USDC Prime)', cat: 'Lending', desc: 'Vault Prime — collatéral blue-chip uniquement (ETH, wstETH, WBTC). $0 bad debt durant le stress test nov. 2025. Trail of Bits, Spearbit.' },
-              { name: 'Morpho (Steakhouse USDC)', cat: 'Lending', desc: 'Vault ultra-conservateur par Steakhouse Financial. Collatéraux haute qualité, exposition minimale au risque.' },
-              { name: 'sUSDS (Sky)', cat: 'Savings Rate', desc: '~$8B TVL. Taux d\'épargne Sky (ex-MakerDAO). USDC → USDS (PSM 1:1) → sUSDS. Double timelock 18h/48h. Depuis 2017.' },
-              { name: 'sUSDe (Ethena)', cat: 'Delta-Neutral', desc: '~$6B TVL. Delta-neutre ETH (spot long + perp short). Funding rates + staking. Cooldown 7j géré par buffer.' },
-              { name: 'cUSDO (OpenEden)', cat: 'RWA T-bills', desc: '100% T-bills US. Oracle Chainlink. ChainSecurity audit. Seul produit T-bills pur natif Ethereum.' },
-              { name: 'sBOLD (Liquity v2)', cat: 'Stability Pool', desc: 'ERC-4626 natif. Code immuable (zéro admin key). 3 audits Tier-1 (ChainSecurity, Dedaub, Certora). Équipe depuis 2021.' },
-              { name: 'scrvUSD (Curve)', cat: 'Savings Rate', desc: 'ERC-4626 natif. Intérêts des emprunteurs crvUSD. Trail of Bits + MixBytes + Quantstamp. Timelock 7j. Curve depuis 2020.' },
-              { name: 'fxSAVE (f(x) Protocol)', cat: 'Stability Pool', desc: 'ERC-4626 natif. Delta-neutre auto-compounding. 16 audits (100% code). Aladdin DAO depuis 2021. Exception TVL ($53M).' },
-              { name: 'thBill (Theo Network)', cat: 'RWA T-bills', desc: 'T-bills US tokenisés. Standard Chartered + Wellington Management. ERC-4626. Exception — cap 1%. Marché secondaire uniquement (Uniswap V3, TWAP 30min). Revue trimestrielle.' },
-            ].map((p) => (
-              <div key={p.name} className="bg-bg rounded-xl p-4 border border-lgrey">
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="font-semibold text-navy text-sm">{p.name}</span>
-                  <span className="text-xs bg-[#28B092]/10 text-[#28B092] rounded-full px-2 py-0.5">{p.cat}</span>
-                </div>
-                <p className="text-navy/70 text-sm leading-relaxed">{p.desc}</p>
-              </div>
-            ))}
-          </div>
+          <WpTable
+            headers={['Protocole', 'Stratégie']}
+            rows={[
+              ['Aave v3 USDC', 'Lending'],
+              ['Morpho — Gauntlet USDC Prime', 'Lending'],
+              ['Morpho — Steakhouse USDC', 'Lending'],
+              ['sUSDS (Sky)', 'Savings Rate'],
+              ['sUSDe (Ethena)', 'Delta-Neutral'],
+              ['cUSDO (OpenEden)', 'RWA T-bills'],
+              ['sBOLD (Liquity v2)', 'Stability Pool'],
+              ['scrvUSD (Curve)', 'Savings Rate'],
+              ['fxSAVE (f(x) Protocol)', 'Stability Pool'],
+              ['thBill (Theo Network)', 'RWA T-bills'],
+            ]}
+          />
           <p className="text-navy/70 text-sm mb-3 font-semibold">⚡ Dynamic — 10 protocoles</p>
-          <div className="space-y-4 mb-6">
-            {[
-              { name: 'sNUSD (Neutrl)', cat: 'Delta-Neutral', desc: 'Delta-neutre multi-exchanges. Position longue spot ETH + courte perp. Rendement des funding rates.' },
-              { name: 'syrupUSDC (Maple)', cat: 'Institutional Credit', desc: 'Prêts on-chain à des institutions crypto vérifiées. KYC requis — accepté en Dynamic. ERC-4626. Spearbit + Sherlock.' },
-              { name: 'jrUSDe (Strata)', cat: 'Market Neutral', desc: 'Tranche junior Ethena. Rendement amplifié en échange d\'absorption prioritaire des pertes.' },
-              { name: 'sUSD3 (3Jane)', cat: 'Institutional Credit', desc: 'Prêts institutionnels vérifiés via zkTLS. Soutenu par Paradigm. Cooldown 1 mois.' },
-              { name: 'imUSD (mStable)', cat: 'Fixed Rate', desc: 'Stratégie taux fixe via Pendle PT. Rendement défini à l\'avance, risque de taux.' },
-              { name: 'reUSDe (Re Protocol)', cat: 'Reinsurance', desc: 'Tranche junior réassurance. Absorbe les pertes en premier si Ethena sous-performe.' },
-              { name: 'stkUSDC (Aave Umbrella)', cat: 'Safety Module', desc: 'Module de sécurité Aave v3. USDC stakés pour couvrir les déficits de bad debt. Risque de slashing.' },
-              { name: 'sUSDai (USD.AI)', cat: 'RWA / AI Credit', desc: 'Prêts collatéralisés par GPUs NVIDIA. 13–17% APY. CHIP token Q1 2026. Partenariat PayPal.' },
-              { name: 'InfiniFI (siUSD)', cat: 'Fractional Reserve', desc: 'Banque fractionnaire on-chain. Tranche liquide (siUSD) sur Aave/Fluid. Certora formal verification. TGE début 2026.' },
-              { name: 'Reservoir (srUSD)', cat: 'CDP Stablecoin', desc: 'CDP stablecoin + savings rate. $526M TVL. Halborn + 4 audits spécialisés. Token DAM.' },
-            ].map((p) => (
-              <div key={p.name} className="bg-bg rounded-xl p-4 border border-lgrey">
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="font-semibold text-navy text-sm">{p.name}</span>
-                  <span className="text-xs bg-[#7C3AED]/10 text-[#7C3AED] rounded-full px-2 py-0.5">{p.cat}</span>
-                </div>
-                <p className="text-navy/70 text-sm leading-relaxed">{p.desc}</p>
-              </div>
-            ))}
-          </div>
+          <WpTable
+            headers={['Protocole', 'Stratégie']}
+            rows={[
+              ['sNUSD (Neutrl)', 'Delta-Neutral'],
+              ['syrupUSDC (Maple)', 'Institutional Credit'],
+              ['jrUSDe (Strata)', 'Market Neutral'],
+              ['sUSD3 (3Jane)', 'Institutional Credit'],
+              ['imUSD (mStable)', 'Fixed Rate'],
+              ['reUSDe (Re Protocol)', 'Reinsurance'],
+              ['stkUSDC (Aave Umbrella)', 'Safety Module'],
+              ['sUSDai (USD.AI)', 'RWA / AI Credit'],
+              ['InfiniFI (siUSD)', 'Fractional Reserve'],
+              ['Reservoir (srUSD)', 'CDP Stablecoin'],
+            ]}
+          />
           <p className="text-navy/70 text-sm mb-3 font-semibold">⚖️ Balanced — 20 protocoles (50% Prudent + 50% Dynamic)</p>
           <p className="text-navy/70 text-sm mb-6">
             Le profil Balanced est un mix pur : 50% des allocations Prudent + 50% des allocations Dynamic.
@@ -451,8 +436,7 @@ function WhitepaperFR() {
           </p>
           <InfoBox>
             <strong>v1 — Exécution manuelle :</strong> En v1, <code className="bg-navy/10 px-1 rounded">harvest()</code> est appelé manuellement par le Guardian multisig. Aucun keeper automatique. La fréquence est dictée par l'économie des frais de gas : à faible TVL, harvester trop souvent détruit le rendement. Un harvest est déclenché lors d'un dépôt ou retrait significatif, ou quand les gains accumulés justifient le coût.<br /><br />
-            <strong>Pas de claim() nécessaire :</strong> Tous les protocoles Prudent sont ERC-4626 ou auto-compoundants natifs. Leur valeur augmente automatiquement — aucun appel <code className="bg-navy/10 px-1 rounded">claim()</code> requis. Cela simplifie le harvest et réduit significativement le gas.<br /><br />
-            <strong>Calcul des gains nets :</strong> <code className="bg-navy/10 px-1 rounded">gain = Σ adapter[i].totalAssets() maintenant − Σ adapter[i].totalAssets() au dernier harvest</code>
+            <strong>Pas de claim() nécessaire :</strong> Tous les protocoles Prudent sont ERC-4626 ou auto-compoundants natifs. Leur valeur augmente automatiquement — aucun appel <code className="bg-navy/10 px-1 rounded">claim()</code> requis. Cela simplifie le harvest et réduit significativement le gas.
           </InfoBox>
         </SubSection>
 
@@ -468,10 +452,7 @@ function WhitepaperFR() {
             Ce mécanisme aligne les intérêts de l'équipe avec ceux des déposants :
             le protocole ne perçoit un revenu que quand les utilisateurs en perçoivent un.
           </InfoBox>
-          <CodeBlock>{`gain        = totalAssets_après_yield - totalAssets_avant_yield
-fee_en_usd  = gain × 5%
-new_shares  = fee_en_usd / pricePerShare_après_yield`}</CodeBlock>
-          <p className="text-navy/70 text-sm">Le treasury est un multisig Gnosis Safe contrôlé par l'équipe DeFi Lantern.</p>
+          <p className="text-navy/70 text-sm">Le treasury est l'adresse du TimelockController (DAO). Toute utilisation des fonds nécessite un vote de gouvernance GLOW suivi d'un délai obligatoire de 48 heures.</p>
           <InfoBox>
             <strong>Fee Accrual — séparation continue (sans dépeg au harvest) :</strong><br /><br />
             Sans mécanisme dédié, le mint de shares à la trésorerie au harvest augmente <code className="bg-navy/10 px-1 rounded">totalSupply</code> instantanément sans changer <code className="bg-navy/10 px-1 rounded">totalAssets</code>, provoquant une micro-chute du <code className="bg-navy/10 px-1 rounded">pricePerShare</code>.<br /><br />
@@ -482,9 +463,9 @@ new_shares  = fee_en_usd / pricePerShare_après_yield`}</CodeBlock>
 
         <SubSection title="5.3 Buffer de liquidité et mécanisme de retrait">
           <p className="text-navy/70 leading-relaxed mb-3">
-            DeFi Lantern maintient une <strong>réserve de liquidité de 10% du TVL</strong> (total des actifs déposés),
-            placée sur Aave v3 pour un retrait instantané. Cette réserve est distincte et séparée
-            de l'allocation rendement Aave (15%) — c'est un coussin collectif dédié aux retraits.
+            DeFi Lantern maintient une <strong>réserve de liquidité de 10% du TVL</strong> conservée en USDC inactif
+            dans le vault, disponible pour les retraits immédiats.
+            Cette réserve est distincte et séparée de l'allocation rendement — c'est un coussin collectif dédié aux retraits.
             Elle couvre la très grande majorité des demandes de retrait individuelles sans délai.
           </p>
           <p className="text-navy/70 text-sm mb-2"><strong className="text-navy">Flux de retrait :</strong></p>
@@ -541,7 +522,7 @@ new_shares  = fee_en_usd / pricePerShare_après_yield`}</CodeBlock>
 
         <SubSection title="6.4 Guardian">
           <p className="text-navy/70 leading-relaxed mb-2">
-            Un comité d'urgence (multisig 2-sur-3 : 3 membres de l'équipe, 2 signatures requises) détient des pouvoirs limités. Il peut uniquement :
+            Un comité d'urgence (multisig 3-sur-5 : 5 membres de l'équipe, 3 signatures requises) détient des pouvoirs limités. Il peut uniquement :
           </p>
           <ul className="list-disc list-inside text-navy/70 text-sm space-y-1 mb-3">
             <li>Appeler <code className="bg-navy/10 px-1 rounded">pause()</code> — bloque les nouveaux dépôts et les rééquilibrages</li>
@@ -593,6 +574,9 @@ new_shares  = fee_en_usd / pricePerShare_après_yield`}</CodeBlock>
         </SubSection>
 
         <SubSection title="7.3 Politique d'acquisition sur marché secondaire">
+          <p className="text-navy/70 text-sm mb-3 leading-relaxed font-semibold text-navy/50">
+            Cette fonctionnalité est prévue pour la V2 du protocole et n'est pas implémentée dans le MVP.
+          </p>
           <p className="text-navy/70 text-sm mb-3 leading-relaxed">
             La politique marché secondaire couvre deux situations distinctes où DeFi Lantern ne peut pas utiliser le marché primaire (émission/remboursement officiel) d'un protocole.
           </p>
@@ -681,7 +665,7 @@ new_shares  = fee_en_usd / pricePerShare_après_yield`}</CodeBlock>
           <WpTable
             headers={['Allocation', '%', 'Montant', 'Vesting', 'Justification']}
             rows={[
-              ['Équipe (5 fondateurs)', '20%', '4 000 000 chacun', 'Cliff 12 mois + linéaire 24 mois', 'Les fondateurs ne peuvent pas vendre au lancement'],
+              ['Équipe (5 fondateurs)', '20%', '4 000 000 chacun', 'Cliff 12 mois (aucun token débloqué pendant la première année) puis libération progressive sur 24 mois', 'Les fondateurs ne peuvent pas vendre au lancement'],
               ['Treasury / DAO', '40%', '40 000 000', 'Gouverné par la DAO', 'Finance les audits, l\'infrastructure, le développement'],
               ['Communauté / Liquidity Mining', '30%', '30 000 000', 'Émission sur 48 mois aux déposants des 4 vaults (glUSD-P/B/D/AH)', 'Bootstrap de l\'adoption par récompense des premiers utilisateurs'],
               ['Écosystème / Grants', '10%', '10 000 000', 'Discrétionnaire, gouverné par la DAO', 'Intégrations, hackathons, partenariats tiers'],
@@ -693,72 +677,32 @@ new_shares  = fee_en_usd / pricePerShare_après_yield`}</CodeBlock>
           <ul className="list-disc list-inside text-navy/70 text-sm space-y-1">
             <li><strong className="text-navy">Gouvernance :</strong> voter sur tous les paramètres du protocole (poids, frais, adapters)</li>
             <li><strong className="text-navy">Droits de proposition :</strong> détenir ≥ 1% de l'offre (1 000 000 GLOW) permet de proposer des changements</li>
-            <li><strong className="text-navy">Partage des frais (v2) :</strong> une part des frais de performance pourra être redirigée vers les stakers GLOW par vote de gouvernance</li>
+            <li><strong className="text-navy">Partage des frais (perspective long terme) :</strong> à très long terme, une part des frais de performance pourrait être redirigée vers les stakers GLOW par vote de gouvernance — cette évolution n'est pas prévue dans les versions immédiates du protocole.</li>
           </ul>
         </SubSection>
       </Section>
 
       {/* 9. ROADMAP */}
       <Section id="roadmap" title="9. Feuille de route">
-        <SubSection title="9.1 v1 — MVP Académique (6 semaines)">
+        <SubSection title="9.1 Vision Long Terme">
           <p className="text-navy/70 text-sm mb-3">
-            Toutes les stratégies sur Ethereum mainnet. Rééquilibrage manuel (vote de gouvernance). Pas de keeper. Les protocoles avec tokens cross-chain sont accessibles uniquement via Architecture 0 (token OFT bridgé acheté sur ETH — le vault lui-même n'envoie jamais d'actifs cross-chain).
+            DeFi Lantern a vocation à devenir la couche de rendement de référence pour les stablecoins sur Ethereum mainnet — composable avec tout protocole ERC-4626, extensible à d'autres actifs et à d'autres chaînes.
           </p>
-          <WpTable
-            headers={['Phase', 'Étape clé', 'Cible']}
-            rows={[
-              ['Phase 1', 'Architecture, IAdapter + squelette du Vault', 'Semaine 1'],
-              ['Phase 2', 'AaveAdapter + MorphoAdapter (×2) + tests unitaires', 'Semaine 2'],
-              ['Phase 3', 'Tous les adapters restants + FeeManager', 'Semaine 3'],
-              ['Phase 4', 'Contrats de gouvernance (GLOW + Governor + Timelock)', 'Semaine 4'],
-              ['Phase 5', 'Tests d\'intégration (Foundry fork mainnet), déploiement Sepolia', 'Semaine 5'],
-              ['Phase 6', 'Frontend (React + wagmi + RainbowKit), audit final, démo', 'Semaine 6'],
-            ]}
-          />
-        </SubSection>
-
-        <SubSection title="9.2 v2 — Protocole en Production">
-          <p className="text-navy/70 text-sm mb-3 font-semibold">9.2.1 Stratégie cross-chain</p>
-          <p className="text-navy/70 text-sm mb-3">
-            Les vaults DeFi Lantern restent ancrés sur Ethereum mainnet. L'accès cross-chain est adressé progressivement via quatre architectures, appliquées dans un ordre strict de complexité croissante :
-          </p>
-          <WpTable
-            headers={['Architecture', 'Mécanisme', 'Coût', 'Quand l\'utiliser']}
-            rows={[
-              ['0 — Token bridgé sur ETH', 'Le protocole déploie son token sur ETH via LayerZero OFT ou équivalent. Le vault l\'achète sur ETH comme n\'importe quel ERC-20. Pas de bridge actif côté vault.', 'Gas uniquement (~$5–15)', 'Défaut — toujours vérifier en premier. Exemple : Sierra Money (lzSIERRA sur ETH).'],
-              ['1a — Keeper + CCTP', 'Keeper off-chain bridge les USDC via Circle CCTP v2 (quasi-gratuit, 2–10s) vers Arbitrum / Base / Optimism puis dépose dans le protocole cible. Solde rapatrié sur ETH via oracle (~1h).', '~$10–30/rééquilibrage', 'Grands L2 EVM avec USDC Circle natif.'],
-              ['1b — Keeper + Li.Fi', 'Keeper interroge l\'agrégateur Li.Fi (10+ bridges comparés en temps réel) pour les app-chains sans CCTP : Avalanche, HyperEVM, Plasma, Mantle…', '~$15–40/rééquilibrage', 'Chains EVM sans CCTP.'],
-              ['2 — OVault (LayerZero)', 'Contrats satellites sur chaque chain cible, gouvernés par le vault ETH via messages LayerZero. Entièrement décentralisé — pas de keeper requis.', 'Faible on-chain', 'Architecture cible pour v3.'],
-            ]}
-          />
-          <WpTable
-            headers={['Profil', 'Architecture']}
-            rows={[
-              ['Prudent 🛡️', '100% ETH mainnet — pas de cross-chain'],
-              ['Balanced ⚖️', '100% ETH mainnet — pas de cross-chain'],
-              ['Dynamic ⚡', 'Architecture 0 d\'abord → Architecture 1a si protocole sur un L2 EVM'],
-              ['Airdrop Hunter 🪂', 'Architecture 0 (Sierra Money, déjà décidé) → Architecture 1b pour nouveaux protocoles'],
-            ]}
-          />
-          <InfoBox>
-            <strong>Comportement en cas d'échec bridge :</strong> si un bridge dépasserait la limite de 0,5% de slippage, ou si Li.Fi ne retourne aucune route viable, le keeper n'exécute pas l'allocation cross-chain. Les USDC restent sur Aave v3 (~3–5% APY de base) et l'allocation est retentée au cycle de harvest suivant. Après 3 cycles consécutifs en échec, une alerte on-chain est émise pour revue de gouvernance. Le seuil de rentabilité du keeper se situe à ~$300K–500K TVL sur les profils concernés.
-          </InfoBox>
-          <p className="text-navy/70 text-sm mb-3 font-semibold mt-4">9.2.2 Autres jalons v2</p>
-          <ul className="list-disc list-inside text-navy/70 text-sm space-y-1">
-            <li>Rééquilibrage automatisé via Chainlink Automation ou réseau de keepers Gelato</li>
-            <li>Intégration PT-Pendle avec rollover automatique à l'expiration</li>
-            <li>Redirection partielle des frais de performance vers les stakers GLOW (vote de gouvernance requis)</li>
-            <li>Bug bounty public sur Immunefi</li>
-            <li>Couverture d'audit élargie (minimum deux firmes avant déploiement mainnet)</li>
-          </ul>
-        </SubSection>
-
-        <SubSection title="9.3 v3 — Vision Long Terme">
-          <ul className="list-disc list-inside text-navy/70 text-sm space-y-1">
-            <li><strong className="text-navy">Cross-chain décentralisé (Architecture 2) :</strong> standard OVault LayerZero — contrats satellites sur Arbitrum, Base, Avalanche gouvernés on-chain par le vault ETH. Aucun keeper requis. Les utilisateurs peuvent déposer des USDC depuis n'importe quelle chain supportée et recevoir des parts glUSD sur leur chain via LayerZero OFT.</li>
+          <ul className="list-disc list-inside text-navy/70 text-sm space-y-1 mb-4">
+            <li><strong className="text-navy">Cross-chain décentralisé :</strong> contrats satellites sur Arbitrum, Base, Avalanche gouvernés on-chain par le vault ETH. Les utilisateurs pourront déposer depuis n'importe quelle chain supportée.</li>
             <li><strong className="text-navy">Support multi-actifs :</strong> vaults USDT et DAI avec ensembles d'adapters indépendants.</li>
             <li><strong className="text-navy">Couverture RWA élargie :</strong> crédit tokenisé, crédit privé et instruments adossés à des matières premières au fur et à mesure que la liquidité on-chain mature.</li>
             <li><strong className="text-navy">Décentralisation de la gouvernance :</strong> réduction progressive des pouvoirs du Guardian à mesure que le track record du protocole s'établit.</li>
+          </ul>
+          <p className="text-navy/70 text-sm mb-2 font-semibold">Fonctionnalités non incluses en V1 (prévues V2+) :</p>
+          <ul className="list-disc list-inside text-navy/70 text-sm space-y-1">
+            <li>Marché secondaire pour les actifs illiquides (TWAP, slippage protégé)</li>
+            <li>Architecture cross-chain (dépôts depuis d'autres blockchains)</li>
+            <li>Harvest automatique via keeper (Chainlink Automation ou équivalent)</li>
+            <li>Adapters supplémentaires (PT Pendle, GMX sur Arbitrum, etc.)</li>
+            <li>Partage des frais avec les stakers GLOW</li>
+            <li>Gouvernance déléguée et vote par signature (EIP-712)</li>
+            <li>Dashboard analytics avancé (historique APY par stratégie)</li>
           </ul>
         </SubSection>
       </Section>
@@ -773,7 +717,7 @@ new_shares  = fee_en_usd / pricePerShare_après_yield`}</CodeBlock>
           n'est pas en mesure d'assumer.
         </p>
         <p className="text-navy/70 leading-relaxed mb-4">
-          Notre réponse est un vault ERC-4626 non-custodial qui agrège seize sources de rendement
+          Notre réponse est un vault ERC-4626 non-custodial qui agrège de multiples sources de rendement
           complémentaires en un seul point d'entrée. L'utilisateur dépose une fois et reçoit des
           glUSD-P, glUSD-B, glUSD-D ou glUSD-AH dont la valeur s'apprécie automatiquement. DeFi Lantern gère l'allocation,
           le harvest et le rééquilibrage — sans jamais prendre la garde des fonds.
@@ -783,7 +727,7 @@ new_shares  = fee_en_usd / pricePerShare_après_yield`}</CodeBlock>
         </p>
         <ul className="list-disc list-inside text-navy/70 text-sm space-y-2 mb-4">
           <li><strong className="text-navy">Diversification structurelle :</strong> aucun protocole ne dépasse 15% du TVL. Une défaillance isolée ne compromet pas l'ensemble du vault — contrairement à une position unique sur Morpho ou Aave.</li>
-          <li><strong className="text-navy">Liquidité gérée :</strong> une réserve de 10% du TVL déposée sur Aave v3 — distincte de son allocation protocolaire — couvre la majorité des retraits sans délai. La file de priorité et l'option de retrait en tokens natifs gèrent les cas extrêmes sans friction.</li>
+          <li><strong className="text-navy">Liquidité gérée :</strong> une réserve de 10% du TVL conservée en USDC inactif dans le vault couvre la majorité des retraits sans délai. La file de priorité et l'option de retrait en tokens natifs gèrent les cas extrêmes sans friction.</li>
           <li><strong className="text-navy">Gouvernance transparente :</strong> tous les paramètres — poids, frais, adapters — sont modifiables uniquement par vote on-chain avec Timelock 48 heures. Le Guardian ne peut que mettre en pause, jamais confisquer.</li>
         </ul>
         <p className="text-navy/70 leading-relaxed mb-4">
@@ -827,7 +771,7 @@ new_shares  = fee_en_usd / pricePerShare_après_yield`}</CodeBlock>
           en investissement ou une sollicitation de quelque nature que ce soit.
         </p>
         <p className="text-navy/40 text-xs mt-6 text-center">
-          DeFi Lantern — Livre Blanc v0.2 — Mars 2026<br />
+          DeFi Lantern — Livre Blanc v0.3 — Avril 2026<br />
           Ce document sera mis à jour au fur et à mesure de l'évolution du protocole.
         </p>
       </Section>
@@ -1699,7 +1643,7 @@ export default function Whitepaper({ navigateTo }) {
             <img src={`${import.meta.env.BASE_URL}lantern-logo.svg`} alt="DeFi Lantern" className="h-8 w-auto" />
             <div>
               <h1 className="text-2xl font-bold text-[#28B092]">DeFi Lantern</h1>
-              <p className="text-white/50 text-sm">{isFR ? 'Livre Blanc v0.2 — Mars 2026' : 'Whitepaper v0.2 — March 2026'}</p>
+              <p className="text-white/50 text-sm">{isFR ? 'Livre Blanc v0.3 — Avril 2026' : 'Whitepaper v0.2 — March 2026'}</p>
             </div>
           </div>
         </div>
