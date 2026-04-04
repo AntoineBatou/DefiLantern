@@ -819,11 +819,10 @@ function WhitepaperFR() {
           <p className="text-navy/70 text-sm leading-relaxed mb-3">
             DeFi Lantern déploiera des <strong className="text-navy">pools glUSD/USDC sur Curve Finance</strong> (standard Stableswap NG),
             créant un marché secondaire où les utilisateurs peuvent céder leurs glUSD directement à d'autres participants
-            sans déclencher un retrait du vault. La pool constitue une <strong className="text-navy">couche de sortie complémentaire</strong>,
-            pas un remplacement du mécanisme ERC-4626.
+            sans déclencher un retrait du vault. La pool constitue une <strong className="text-navy">couche de sortie complémentaire</strong>.
           </p>
           <ul className="list-disc list-inside text-navy/70 text-sm space-y-1 mb-3">
-            <li><strong className="text-navy">Pourquoi Curve :</strong> le standard Stableswap NG est conçu pour les paires stables et YBT, avec des paramètres ajustables adaptés à la NAV appréciante des glUSD.</li>
+            <li><strong className="text-navy">Pourquoi Curve :</strong> Curve est spécialement optimisé pour les pools d'actifs stables et de yield-bearing tokens — idéal pour nos glUSD.</li>
             <li><strong className="text-navy">VoteMarket :</strong> l'écosystème Curve/VoteMarket permet d'incentiver la pool via des <em>bribes</em>, attirant des apporteurs de liquidité tiers à faible coût direct.</li>
             <li><strong className="text-navy">Sortie d'urgence :</strong> en cas de pause du vault ou d'incident, le marché secondaire reste opérationnel et constitue une sortie alternative pour les utilisateurs.</li>
           </ul>
@@ -834,14 +833,14 @@ function WhitepaperFR() {
             Une partie des performance fees collectés par DeFi Lantern finance des bribes sur VoteMarket, créant un cycle auto-entretenu :
           </p>
           <ol className="list-decimal list-inside text-navy/70 text-sm space-y-1 mb-3">
-            <li>Création d'une pool glUSD-P/USDC sur Curve, seedée par la trésorerie</li>
+            <li>Création d'une pool glUSD-P/USDC sur Curve, alimentée par la trésorerie</li>
             <li>Demande de création d'une gauge Curve pour permettre les votes CRV</li>
             <li>Financement de bribes sur VoteMarket (trésorerie + performance fees) → direction des émissions CRV vers la pool</li>
             <li>L'APY de la pool augmente → attire des apporteurs de liquidité tiers</li>
             <li>Plus de liquidité → plus de frais de swap perçus</li>
             <li>Une partie des CRV reçus est swappée en USDC pour alimenter de nouvelles bribes</li>
             <li>Selon l'état de la pool, les fees sont soit réinvestis dans la pool, soit dirigés vers des bribes, soit retournés à la trésorerie</li>
-            <li>À terme : accumulation de veCRV pour voter directement, réduisant les dépenses en bribes</li>
+            <li>À terme : si suffisamment de CRV accumulés, arbitrage entre locker en veCRV (voter directement pour la gauge) ou vendre pour financer de nouvelles bribes</li>
           </ol>
           <InfoBox>
             <strong>Aucune contamination des rendements déposants :</strong> les performance fees utilisés pour financer les bribes sont des revenus de la trésorerie — ils ne sont jamais prélevés sur le principal ni sur les rendements alloués aux déposants. La pool est opérée séparément des stratégies de rendement du vault.
@@ -1741,11 +1740,10 @@ new_shares  = fee_in_usd / pricePerShare_after_yield`}</CodeBlock>
           <p className="text-navy/70 text-sm leading-relaxed mb-3">
             DeFi Lantern will deploy <strong className="text-navy">glUSD/USDC liquidity pools on Curve Finance</strong> (Stableswap NG standard),
             creating a secondary market where users can exit their glUSD position by swapping directly with other participants —
-            without triggering vault redemption. The pool acts as a <strong className="text-navy">complementary exit layer</strong>,
-            not a replacement for the ERC-4626 mechanism.
+            without triggering vault redemption. The pool acts as a <strong className="text-navy">complementary exit layer</strong>.
           </p>
           <ul className="list-disc list-inside text-navy/70 text-sm space-y-1 mb-3">
-            <li><strong className="text-navy">Why Curve:</strong> Stableswap NG is purpose-built for stable and yield-bearing token pairs, with adjustable parameters suited to glUSD's appreciating NAV.</li>
+            <li><strong className="text-navy">Why Curve:</strong> Curve is specifically optimized for stable asset and yield-bearing token pools — ideal for glUSD pairs.</li>
             <li><strong className="text-navy">VoteMarket:</strong> the Curve/VoteMarket ecosystem allows the protocol to direct CRV emissions to its pool via bribes, incentivizing third-party liquidity providers at low direct cost.</li>
             <li><strong className="text-navy">Emergency exit:</strong> in the event of a vault pause or incident, the secondary market remains operational as an alternative exit for users.</li>
           </ul>
@@ -1756,14 +1754,14 @@ new_shares  = fee_in_usd / pricePerShare_after_yield`}</CodeBlock>
             A portion of DeFi Lantern's performance fees funds bribes on VoteMarket, creating a self-reinforcing cycle:
           </p>
           <ol className="list-decimal list-inside text-navy/70 text-sm space-y-1 mb-3">
-            <li>Create a glUSD-P/USDC pool on Curve, seeded with treasury funds</li>
+            <li>Create a glUSD-P/USDC pool on Curve, funded by the treasury</li>
             <li>Request gauge creation on Curve to enable CRV vote emissions</li>
             <li>Fund bribes on VoteMarket (treasury + performance fees) → directs CRV emissions to the pool</li>
             <li>Higher pool APY attracts third-party liquidity providers</li>
             <li>Deeper liquidity generates more swap fee revenue</li>
             <li>A portion of CRV rewards swapped to USDC to fund new bribes</li>
             <li>Pool fees are dynamically allocated: reinvested in the pool, directed to bribes, or returned to treasury</li>
-            <li>Long-term: accumulate veCRV to vote directly for the gauge, reducing bribe expenditure</li>
+            <li>Long-term: if enough CRV accumulated, arbitrage between locking as veCRV (voting directly for the gauge) vs. selling to fund new bribes</li>
           </ol>
           <InfoBox>
             <strong>No yield cross-contamination:</strong> the performance fees used to fund bribes are treasury revenues — they are never drawn from depositor principal or yield allocations. The pool is operated separately from the vault's yield strategies.
