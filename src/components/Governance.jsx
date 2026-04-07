@@ -9,12 +9,12 @@
 
 import { useLang } from '../context/LangContext'
 
-// ── Distribution FLY ──────────────────────────────────────────────────────────
+// ── Distribution GLOW ─────────────────────────────────────────────────────────
 const DISTRIBUTION = [
-  { key: 'community', color: '#28B092', pct: 30 },
-  { key: 'treasury',  color: '#F5A623', pct: 40 },
+  { key: 'community', color: '#28B092', pct: 50 },
+  { key: 'ecosystem', color: '#F5A623', pct: 20 },
   { key: 'team',      color: '#2ABFAB', pct: 20 },
-  { key: 'ecosystem', color: '#F7B94A', pct: 10 },
+  { key: 'investors', color: '#F7B94A', pct: 10 },
 ]
 
 // ── Mini donut SVG ────────────────────────────────────────────────────────────
@@ -148,6 +148,12 @@ export default function Governance() {
                   {t('governance.guardianDesc')}
                 </p>
               </div>
+              <div className="bg-navy/3 rounded-2xl p-4">
+                <p className="text-xs font-semibold text-navy mb-1">🏛 {t('governance.treasuryTitle')}</p>
+                <p className="text-xs text-navy/60 leading-relaxed">
+                  {t('governance.treasuryDesc')}
+                </p>
+              </div>
             </div>
           </div>
 
@@ -156,6 +162,7 @@ export default function Governance() {
             <h3 className="text-base font-bold text-navy mb-4">{t('governance.paramsTitle')}</h3>
             <VoteParam label={t('governance.quorum')}       value={t('governance.quorumVal')} />
             <VoteParam label={t('governance.threshold')}    value={t('governance.thresholdVal')} />
+            <VoteParam label={t('governance.voteDelay')}    value={t('governance.voteDelayVal')} />
             <VoteParam label={t('governance.votingPeriod')} value={t('governance.votingPeriodVal')} />
             <VoteParam label={t('governance.timelock')}     value={t('governance.timelockVal')} />
           </div>
