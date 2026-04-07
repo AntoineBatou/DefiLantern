@@ -26,12 +26,15 @@ import Protocols from './components/Protocols'
 import Strategy from './components/Strategy'
 import Simulator from './components/Simulator'
 import Dashboard from './components/Dashboard'
+import Deposit from './components/Deposit'
 import Footer from './components/Footer'
 import Governance from './components/Governance'
 import Whitepaper from './components/Whitepaper'
 import Learn from './components/Learn'
 import ParachuteOverlay from './components/ParachuteOverlay'
 import LanternCursor from './components/LanternCursor'
+
+const IS_APP = window.location.hostname === 'app.cryptoluciole.com'
 
 // ── Composant interne qui utilise les deux contextes ──────────────────────────
 function AppContent() {
@@ -114,6 +117,19 @@ function AppContent() {
   const themeClass = profileConfig.theme === 'light' ? ''
     : profileConfig.theme === 'dark' ? 'dark'
     : `theme-${profileConfig.theme}` // → 'theme-christmas'
+
+  // ── app.cryptoluciole.com : page dépôt uniquement ────────────────────────
+  if (IS_APP) {
+    return (
+      <div className="theme-transition min-h-screen">
+        <Header currentPage="deposit" navigateTo={() => {}} navigateToSection={() => {}} />
+        <main>
+          <Deposit averageApy={profileAverageApy} />
+        </main>
+        <Footer navigateTo={() => {}} />
+      </div>
+    )
+  }
 
   return (
     // Wrapper racine : la classe de thème active le mode visuel sur tout l'arbre
