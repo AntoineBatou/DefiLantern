@@ -666,11 +666,10 @@ function WhitepaperFR() {
           <WpTable
             headers={['Allocation', '%', 'Montant', 'Vesting', 'Justification']}
             rows={[
-              ['Équipe — Genesis Gouvernance (5 fondateurs)', '5%', '1 000 000 chacun', 'Attribués immédiatement — non cessibles pendant 24 mois', 'Permet le vote dès le premier jour pour assurer le fonctionnement de la gouvernance'],
+              ['Équipe — Genesis Gouvernance (5 fondateurs)', '10%', '2 000 000 chacun', 'Attribués immédiatement — non cessibles pendant 24 mois', 'Permet le vote dès le premier jour pour assurer le fonctionnement de la gouvernance'],
               ['Équipe — Vesting long terme (5 fondateurs)', '10%', '2 000 000 chacun', 'Cliff 12 mois puis libération linéaire sur 24 mois', 'Alignement long terme — les fondateurs ne peuvent pas vendre au lancement'],
-              ['Communauté & Incentives', '45%', '45 000 000', 'Émission sur 48 mois aux déposants des 4 vaults (glUSD-P/B/D/RH)', 'Bootstrap de l\'adoption par récompense des premiers utilisateurs'],
+              ['Communauté & Incentives', '50%', '50 000 000', 'Émission sur 48 mois aux déposants des 4 vaults (glUSD-P/B/D/RH)', 'Bootstrap de l\'adoption par récompense des premiers utilisateurs'],
               ['Écosystème & Croissance (DAO Treasury)', '20%', '20 000 000', 'Gouverné par la DAO', 'Finance les audits, l\'infrastructure, le développement et les grants'],
-              ['Apport de liquidité', '10%', '10 000 000', 'Émission progressive sur 24 mois', 'Incentives pour les fournisseurs de liquidité glUSD/USDC'],
               ['Investisseurs', '10%', '10 000 000', 'Cliff 12 mois puis libération linéaire sur 24 mois', 'Financement amorçage du protocole, alignement sur la durée'],
             ]}
           />
@@ -1552,11 +1551,10 @@ new_shares  = fee_in_usd / pricePerShare_after_yield`}</CodeBlock>
           <WpTable
             headers={['Allocation', '%', 'Amount', 'Vesting', 'Rationale']}
             rows={[
-              ['Team — Genesis Governance (5 founders)', '5%', '1,000,000 each', 'Granted immediately — non-transferable for 24 months', 'Enables voting from day one to ensure governance operates from launch'],
+              ['Team — Genesis Governance (5 founders)', '10%', '2,000,000 each', 'Granted immediately — non-transferable for 24 months', 'Enables voting from day one to ensure governance operates from launch'],
               ['Team — Long-term vesting (5 founders)', '10%', '2,000,000 each', '12-month cliff + 24-month linear release', 'Long-term alignment — founders cannot sell at launch'],
-              ['Community & Incentives', '45%', '45,000,000', '48-month emission to depositors across all 4 vaults (glUSD-P/B/D/RH)', 'Bootstraps adoption, rewards early users'],
+              ['Community & Incentives', '50%', '50,000,000', '48-month emission to depositors across all 4 vaults (glUSD-P/B/D/RH)', 'Bootstraps adoption, rewards early users'],
               ['Ecosystem & Growth (DAO Treasury)', '20%', '20,000,000', 'DAO-governed', 'Funds audits, infrastructure, development and grants'],
-              ['Liquidity Providing', '10%', '10,000,000', 'Progressive emission over 24 months', 'Incentives for glUSD/USDC liquidity providers'],
               ['Investors', '10%', '10,000,000', '12-month cliff + 24-month linear release', 'Seed funding for protocol bootstrap, long-term alignment'],
             ]}
           />
