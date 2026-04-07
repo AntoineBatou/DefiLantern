@@ -501,13 +501,14 @@ function WhitepaperFR() {
 
         <SubSection title="6.2 Paramètres du Governor">
           <WpTable
-            headers={['Paramètre', 'Valeur']}
+            headers={['Paramètre', 'Valeur', 'Ce que ça signifie']}
             rows={[
-              ['Délai de vote', '1 jour (après création de la proposition)'],
-              ['Période de vote', '3 jours'],
-              ['Quorum', '10% de l\'offre totale de GLOW'],
-              ['Seuil de proposition', '1% de l\'offre totale de GLOW'],
-              ['Délai Timelock', '48 heures'],
+              ['Délai de vote', '1 jour', 'Après la création d\'une proposition, 24h s\'écoulent avant l\'ouverture du vote — temps pour les détenteurs de GLOW de lire la proposition et déléguer leurs tokens si nécessaire'],
+              ['Période de vote', '3 jours', 'Fenêtre pendant laquelle les détenteurs de GLOW peuvent voter (Pour / Contre / Abstention)'],
+              ['Type de majorité', 'Majorité simple', 'La proposition passe si Pour > Contre parmi les votes exprimés — les abstentions ne comptent ni pour ni contre'],
+              ['Quorum', '10% de l\'offre totale (10 000 000 GLOW)', 'Seuil minimum de participation : au moins 10M GLOW doivent avoir voté (Pour ou Contre) pour que le vote soit valide — évite qu\'une décision importante passe avec une poignée de votes'],
+              ['Seuil de proposition', '1% de l\'offre totale (1 000 000 GLOW)', 'Minimum requis pour soumettre une proposition — évite le spam de propositions'],
+              ['Délai Timelock', '48 heures', 'Après un vote accepté, 48h s\'écoulent avant l\'exécution — fenêtre pour que tout utilisateur désapprouvant la décision puisse retirer ses fonds'],
             ]}
           />
         </SubSection>
@@ -1365,19 +1366,20 @@ new_shares  = fee_in_usd / pricePerShare_after_yield`}</CodeBlock>
         </SubSection>
         <SubSection title="6.2 Governor Parameters">
           <WpTable
-            headers={['Parameter', 'Value']}
+            headers={['Parameter', 'Value', 'What it means']}
             rows={[
-              ['Voting delay', '1 day (after proposal creation)'],
-              ['Voting period', '3 days'],
-              ['Quorum', '10% of GLOW total supply'],
-              ['Proposal threshold', '1% of GLOW total supply'],
-              ['Timelock delay', '48 hours'],
+              ['Voting delay', '1 day', 'After a proposal is created, 24 hours pass before voting opens — time for GLOW holders to read the proposal and delegate their tokens if needed'],
+              ['Voting period', '3 days', 'Window during which GLOW holders can cast their vote (For / Against / Abstain)'],
+              ['Majority type', 'Simple majority', 'A proposal passes if For > Against among votes cast — abstentions count neither for nor against'],
+              ['Quorum', '10% of total supply (10,000,000 GLOW)', 'Minimum participation threshold: at least 10M GLOW must have voted (For or Against) for the vote to be valid — prevents important decisions from passing with only a handful of votes'],
+              ['Proposal threshold', '1% of total supply (1,000,000 GLOW)', 'Minimum required to submit a proposal — prevents spam'],
+              ['Timelock delay', '48 hours', 'After a successful vote, 48 hours pass before execution — window for any user who disagrees with the outcome to withdraw their funds'],
             ]}
           />
         </SubSection>
         <SubSection title="6.3 Guardian">
           <p className="text-navy/70 text-sm mb-2">
-            A 2-of-3 multisig controlled by the core team holds Guardian rights. The Guardian can:
+            A 3-of-5 multisig controlled by the core team holds Guardian rights. The Guardian can:
           </p>
           <ul className="list-disc list-inside text-navy/70 text-sm space-y-1 mb-3">
             <li>Call <code className="bg-navy/10 px-1 rounded">pause()</code> — blocks new deposits and rebalancing</li>
