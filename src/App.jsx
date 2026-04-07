@@ -122,11 +122,23 @@ function AppContent() {
   if (IS_APP) {
     return (
       <div className="theme-transition min-h-screen">
-        <Header currentPage="deposit" navigateTo={() => {}} navigateToSection={() => {}} />
+        <header className="sticky top-0 z-50 bg-white border-b border-lgrey shadow-sm">
+          <div className="max-w-6xl mx-auto px-4 h-14 flex items-center">
+            <a
+              href="https://cryptoluciole.com"
+              className="flex items-center gap-2 text-sm text-navy/60 hover:text-[#28B092] transition-colors"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
+              </svg>
+              cryptoluciole.com
+            </a>
+            <span className="mx-auto font-bold text-[#28B092]">DeFi Lantern — Dépôt</span>
+          </div>
+        </header>
         <main>
           <Deposit averageApy={profileAverageApy} />
         </main>
-        <Footer navigateTo={() => {}} />
       </div>
     )
   }
