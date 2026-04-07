@@ -7,9 +7,10 @@
 //   ├── Header (navigation + profile selector)
 //   ├── [page 'home']       : Hero → HowItWorks → Protocols → Strategy
 //   ├── [page 'simulator']  : Simulator → Dashboard
-//   ├── [page 'deposit']    : Deposit
 //   ├── [page 'learn']      : Learn
+//   ├── [page 'governance'] : Governance
 //   └── Footer
+// Dépôt/retrait → app.cryptoluciole.com (site séparé)
 
 import { useState, useEffect, useMemo } from 'react'
 import { LangProvider } from './context/LangContext'
@@ -25,7 +26,6 @@ import Protocols from './components/Protocols'
 import Strategy from './components/Strategy'
 import Simulator from './components/Simulator'
 import Dashboard from './components/Dashboard'
-import Deposit from './components/Deposit'
 import Footer from './components/Footer'
 import Governance from './components/Governance'
 import Whitepaper from './components/Whitepaper'
@@ -166,9 +166,6 @@ function AppContent() {
 
         {/* ── Page Gouvernance ── */}
         {currentPage === 'governance' && <Governance />}
-
-        {/* ── Page Dépôt ── */}
-        {currentPage === 'deposit' && <Deposit averageApy={profileAverageApy} />}
 
         {/* ── Page Whitepaper ── */}
         {currentPage === 'whitepaper' && <Whitepaper navigateTo={navigateTo} />}

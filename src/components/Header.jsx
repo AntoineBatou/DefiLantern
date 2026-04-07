@@ -39,18 +39,20 @@ export default function Header({ currentPage, navigateTo, navigateToSection }) {
   const closeMenu = () => setMenuOpen(false)
 
   const navLinks = [
-    { label: t('nav.howItWorks'), type: 'section', target: 'how-it-works' },
-    { label: t('nav.protocols'),  type: 'section', target: 'protocols' },
-    { label: t('nav.strategy'),   type: 'section', target: 'strategy' },
-    { label: t('nav.simulator'),  type: 'page',    target: 'simulator' },
-    { label: t('nav.learn'),      type: 'page',    target: 'learn' },
-    { label: t('nav.governance'), type: 'page',    target: 'governance' },
-    { label: t('nav.deposit'),    type: 'page',    target: 'deposit', cta: true },
+    { label: t('nav.howItWorks'), type: 'section',  target: 'how-it-works' },
+    { label: t('nav.protocols'),  type: 'section',  target: 'protocols' },
+    { label: t('nav.strategy'),   type: 'section',  target: 'strategy' },
+    { label: t('nav.simulator'),  type: 'page',     target: 'simulator' },
+    { label: t('nav.learn'),      type: 'page',     target: 'learn' },
+    { label: t('nav.governance'), type: 'page',     target: 'governance' },
+    { label: t('nav.deposit'),    type: 'external', href: 'https://app.cryptoluciole.com', cta: true },
   ]
 
   const handleLinkClick = (link) => {
     closeMenu()
-    if (link.type === 'section') {
+    if (link.type === 'external') {
+      window.open(link.href, '_blank', 'noopener,noreferrer')
+    } else if (link.type === 'section') {
       navigateToSection(link.target)
     } else {
       navigateTo(link.target)
@@ -182,13 +184,9 @@ export default function Header({ currentPage, navigateTo, navigateToSection }) {
               if (link.cta) {
                 return (
                   <button
-                    key={link.target}
+                    key={link.href}
                     onClick={() => handleLinkClick(link)}
-                    className={`text-sm font-semibold px-4 py-1.5 rounded-full transition-colors duration-200 ${
-                      currentPage === 'deposit'
-                        ? 'bg-[#2ABFAB] text-white'
-                        : 'bg-[#28B092] text-white hover:bg-[#2ABFAB]'
-                    }`}
+                    className="text-sm font-semibold px-4 py-1.5 rounded-full transition-colors duration-200 bg-[#28B092] text-white hover:bg-[#2ABFAB]"
                   >
                     {link.label}
                   </button>
