@@ -58,7 +58,7 @@ export default function Footer({ navigateTo }) {
     },
     {
       label: t('footer.mvpDoc'),
-      href: `${import.meta.env.BASE_URL}fonctionnement-mvp-v1.pdf`,
+      href: `${import.meta.env.BASE_URL}protocole-vulgarise.html`,
       external: true,
     },
     {

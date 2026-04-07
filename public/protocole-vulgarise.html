@@ -1,0 +1,1280 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DeFi Lantern — Comment ça marche</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --teal:    #2ABFAB;
+    --teal-lt: #e6f9f7;
+    --navy:    #1a2340;
+    --navy-lt: #f0f3f9;
+    --gold:    #f5a623;
+    --gold-lt: #fffbf0;
+    --red:     #e05252;
+    --red-lt:  #fff5f5;
+    --green:   #27ae60;
+    --green-lt:#f0fdf4;
+    --gray:    #6b7280;
+    --border:  #e2e8f0;
+    --text:    #1e293b;
+    --text-sm: #475569;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--text);
+    background: #f8fafc;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .page {
+    max-width: 860px;
+    margin: 0 auto;
+    background: white;
+  }
+
+  /* ══ HERO ══════════════════════════════════════════════════════════ */
+  .hero {
+    background: var(--navy);
+    padding: 52px 60px 44px;
+    color: white;
+  }
+  .hero-label {
+    display: inline-block;
+    background: var(--teal);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-size: 32px;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+  .hero h1 span { color: var(--teal); }
+  .hero .tagline {
+    font-size: 16px;
+    color: #94a3b8;
+    max-width: 560px;
+    line-height: 1.6;
+  }
+  .hero-meta {
+    margin-top: 28px;
+    display: flex;
+    gap: 24px;
+    font-size: 12px;
+    color: #64748b;
+    border-top: 1px solid #2d3a56;
+    padding-top: 20px;
+  }
+
+  /* ══ INTRO CARD ══════════════════════════════════════════════════════ */
+  .intro-card {
+    background: var(--teal-lt);
+    border-left: 5px solid var(--teal);
+    padding: 24px 28px;
+    margin: 40px 60px;
+    border-radius: 0 10px 10px 0;
+    font-size: 15px;
+    line-height: 1.8;
+  }
+  .intro-card strong { color: var(--navy); }
+  .analogy-box {
+    background: var(--navy-lt);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin: 0 60px 36px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .analogy-icon { font-size: 28px; flex-shrink: 0; margin-top: 2px; }
+  .analogy-text { font-size: 14px; color: var(--text-sm); line-height: 1.7; }
+  .analogy-text strong { color: var(--text); }
+
+  /* ══ SECTION ══════════════════════════════════════════════════════════ */
+  .section { padding: 0 60px 44px; }
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  .section-num {
+    background: var(--navy);
+    color: var(--teal);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+  .section-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--navy);
+    border-bottom: 2px solid var(--border);
+    flex: 1;
+    padding-bottom: 8px;
+  }
+  .section-divider {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 0 60px 44px;
+  }
+
+  h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--navy);
+    margin: 28px 0 10px;
+  }
+  h3:first-child { margin-top: 0; }
+
+  p { margin-bottom: 12px; color: var(--text-sm); font-size: 14.5px; }
+  p strong { color: var(--text); }
+
+  /* ══ SCHEMA FLOW ══════════════════════════════════════════════════════ */
+  .flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    margin: 24px 0;
+    flex-wrap: wrap;
+  }
+  .flow-node {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 18px;
+    text-align: center;
+    min-width: 110px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.06);
+  }
+  .flow-node .node-icon { font-size: 24px; display: block; margin-bottom: 4px; }
+  .flow-node .node-label { font-size: 12px; font-weight: 700; color: var(--navy); line-height: 1.3; }
+  .flow-node .node-sub { font-size: 10.5px; color: var(--gray); margin-top: 3px; line-height: 1.3; }
+  .flow-node.accent { background: var(--teal-lt); border-color: var(--teal); }
+  .flow-node.dark { background: var(--navy); border-color: var(--navy); }
+  .flow-node.dark .node-label { color: white; }
+  .flow-node.dark .node-sub { color: #94a3b8; }
+  .flow-arrow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 6px;
+  }
+  .flow-arrow .arrow-label {
+    font-size: 10px;
+    color: var(--teal);
+    font-weight: 600;
+    margin-bottom: 2px;
+    white-space: nowrap;
+    text-align: center;
+  }
+  .flow-arrow .arrow-line {
+    width: 36px;
+    height: 2px;
+    background: var(--teal);
+    position: relative;
+  }
+  .flow-arrow .arrow-line::after {
+    content: '';
+    position: absolute;
+    right: -1px;
+    top: -4px;
+    border: 5px solid transparent;
+    border-left: 7px solid var(--teal);
+  }
+
+  /* ══ VAULT DIAGRAM ══════════════════════════════════════════════════════ */
+  .vault-diagram {
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    margin: 20px 0;
+  }
+  .vault-header {
+    background: var(--navy);
+    color: white;
+    padding: 12px 20px;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .vault-row {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    border-bottom: 1px solid var(--border);
+    gap: 14px;
+  }
+  .vault-row:last-child { border-bottom: none; }
+  .vault-row.buffer-row { background: var(--gold-lt); }
+  .vault-bar-wrap { flex: 1; height: 10px; background: #f1f5f9; border-radius: 20px; overflow: hidden; }
+  .vault-bar { height: 100%; border-radius: 20px; }
+  .vault-name { font-size: 12.5px; font-weight: 600; color: var(--navy); min-width: 170px; }
+  .vault-pct { font-size: 12px; color: var(--gray); min-width: 46px; text-align: right; }
+
+  /* ══ INFO/WARNING BOXES ══════════════════════════════════════════════════ */
+  .box {
+    border-radius: 0 10px 10px 0;
+    padding: 16px 20px;
+    margin: 16px 0;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  .box-teal  { background: var(--teal-lt);  border-left: 4px solid var(--teal);  }
+  .box-gold  { background: var(--gold-lt);  border-left: 4px solid var(--gold);  }
+  .box-red   { background: var(--red-lt);   border-left: 4px solid var(--red);   }
+  .box-green { background: var(--green-lt); border-left: 4px solid var(--green); }
+  .box-navy  { background: var(--navy-lt);  border-left: 4px solid var(--navy);  }
+  .box .box-title {
+    font-weight: 700;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: .6px;
+    margin-bottom: 6px;
+  }
+  .box-teal  .box-title { color: #0f766e; }
+  .box-gold  .box-title { color: #92400e; }
+  .box-red   .box-title { color: #991b1b; }
+  .box-green .box-title { color: #166534; }
+  .box-navy  .box-title { color: var(--navy); }
+  .box p { margin-bottom: 4px; color: inherit; font-size: 14px; }
+  .box p:last-child { margin-bottom: 0; }
+
+  /* ══ EXAMPLE CARD ══════════════════════════════════════════════════════ */
+  .example {
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 22px;
+    margin: 16px 0;
+  }
+  .example-title {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .7px;
+    color: var(--teal);
+    margin-bottom: 12px;
+  }
+  .calc-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13.5px;
+  }
+  .calc-row:last-child { border-bottom: none; }
+  .calc-row .label { color: var(--text-sm); }
+  .calc-row .value { font-weight: 700; color: var(--navy); }
+  .calc-row .value.green { color: var(--green); }
+  .calc-row .value.red { color: var(--red); }
+
+  /* ══ FUNCTION CARDS ══════════════════════════════════════════════════════ */
+  .fn-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 16px 0;
+  }
+  .fn-card {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 18px;
+    background: white;
+  }
+  .fn-card .fn-name {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .fn-icon { font-size: 20px; }
+  .fn-title { font-size: 14px; font-weight: 700; color: var(--navy); }
+  .fn-badge {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-left: auto;
+  }
+  .fn-badge.public { background: #dbeafe; color: #1d4ed8; }
+  .fn-badge.guardian { background: #fee2e2; color: #991b1b; }
+  .fn-badge.dao { background: #ede9fe; color: #5b21b6; }
+  .fn-badge.auto { background: var(--teal-lt); color: #0f766e; }
+  .fn-card p { font-size: 13px; color: var(--text-sm); margin: 0; }
+  .fn-when {
+    margin-top: 8px;
+    font-size: 12px;
+    color: var(--gray);
+    font-style: italic;
+    border-top: 1px solid var(--border);
+    padding-top: 8px;
+  }
+
+  /* ══ TIMELINE ══════════════════════════════════════════════════════════ */
+  .timeline-wrap { margin: 20px 0; position: relative; }
+  .tl-item {
+    display: flex;
+    gap: 18px;
+    margin-bottom: 4px;
+    position: relative;
+  }
+  .tl-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 44px;
+  }
+  .tl-dot {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--navy);
+    color: var(--teal);
+    font-size: 14px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    z-index: 1;
+  }
+  .tl-dot.teal { background: var(--teal); color: white; }
+  .tl-dot.gold { background: var(--gold); color: white; }
+  .tl-dot.red  { background: var(--red); color: white; }
+  .tl-line {
+    width: 2px;
+    flex: 1;
+    background: var(--border);
+    min-height: 20px;
+    margin: 2px auto 2px;
+  }
+  .tl-content {
+    flex: 1;
+    padding: 6px 0 20px;
+  }
+  .tl-day { font-size: 12px; font-weight: 700; color: var(--gray); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 4px; }
+  .tl-text { font-size: 14px; color: var(--text-sm); line-height: 1.7; }
+  .tl-text strong { color: var(--text); }
+
+  /* ══ SHARE PRICE VISUAL ══════════════════════════════════════════════════ */
+  .share-visual {
+    background: var(--navy);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin: 16px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+  }
+  .share-item { text-align: center; }
+  .share-label { font-size: 11px; color: #94a3b8; margin-bottom: 4px; text-transform: uppercase; letter-spacing: .5px; }
+  .share-value { font-size: 22px; font-weight: 800; color: white; }
+  .share-value.teal { color: var(--teal); }
+  .share-arrow { font-size: 28px; color: var(--teal); }
+
+  /* ══ GLOSSAIRE ══════════════════════════════════════════════════════════ */
+  .glossary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .glossary-item {
+    background: var(--navy-lt);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .glossary-term {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 4px;
+  }
+  .glossary-def { font-size: 12.5px; color: var(--text-sm); line-height: 1.6; }
+
+  /* ══ FOOTER ══════════════════════════════════════════════════════════════ */
+  .footer {
+    background: var(--navy-lt);
+    border-top: 2px solid var(--border);
+    padding: 20px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer p { font-size: 12px; color: var(--gray); margin: 0; }
+
+  /* ══ PRINT ══════════════════════════════════════════════════════════════ */
+  @media print {
+    body { background: white; font-size: 13px; }
+    .page { max-width: 100%; }
+    .section { padding: 0 40px 32px; }
+    .section-divider { margin: 0 40px 32px; }
+    .hero { padding: 36px 40px 32px; }
+    .intro-card, .analogy-box { margin-left: 40px; margin-right: 40px; }
+    .fn-grid { grid-template-columns: 1fr 1fr; }
+    .glossary-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- ══ HERO ══════════════════════════════════════════════════════════════ -->
+<div class="hero">
+  <div class="hero-label">Document équipe · Version accessible</div>
+  <h1>DeFi Lantern Protocol<br><span>Comment ça marche ?</span></h1>
+  <p class="tagline">Ce document explique, étape par étape et sans jargon technique, comment fonctionne notre protocole — du premier dépôt d'un utilisateur jusqu'au retrait de ses gains.</p>
+  <div class="hero-meta">
+    <span>Avril 2026</span>
+    <span>·</span>
+    <span>Document équipe — usage interne</span>
+    <span>·</span>
+    <span>Version vulgarisée (sans code)</span>
+  </div>
+</div>
+
+<!-- ══ INTRO ══════════════════════════════════════════════════════════════ -->
+<div class="intro-card" style="margin-top:40px;">
+  <strong>En une phrase :</strong> Un utilisateur dépose des USDC (une monnaie numérique stable, toujours égale à 1 dollar). En échange, il reçoit des <em>parts</em> du protocole. Ces parts prennent de la valeur au fil du temps grâce aux rendements générés. Quand il souhaite sortir, il rend ses parts et récupère ses USDC d'origine, plus les gains accumulés.
+</div>
+
+<div class="analogy-box">
+  <div class="analogy-icon">🏦</div>
+  <div class="analogy-text">
+    <strong>L'analogie la plus proche :</strong> imaginez un <strong>fonds d'investissement collectif</strong> (comme un OPCVM). Chaque épargnant reçoit des "parts de fonds". Un gestionnaire place l'argent sur plusieurs supports. Si le fonds performe, les parts valent plus. Si vous voulez sortir, vous revendez vos parts à leur valeur du jour. DeFi Lantern fonctionne exactement comme ça — sauf que le "gestionnaire" est un programme informatique transparent, sans intermédiaire humain, et que tous les mouvements d'argent sont visibles publiquement sur la blockchain.
+  </div>
+</div>
+
+<!-- ══ LES ACTEURS ══════════════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-label">
+    <span class="section-num">Les acteurs</span>
+    <span class="section-title">Qui fait quoi dans le protocole ?</span>
+  </div>
+
+  <div class="fn-grid" style="grid-template-columns:1fr 1fr 1fr;">
+    <div class="fn-card">
+      <div class="fn-name"><span class="fn-icon">👤</span><span class="fn-title">L'utilisateur</span></div>
+      <p>Il dépose ses USDC, reçoit des parts du vault dans lequel il a déposé (ex : glUSD-P pour le vault prudent), et retire quand il le souhaite. Le protocole travaille pour lui en permanence.</p>
+    </div>
+    <div class="fn-card">
+      <div class="fn-name"><span class="fn-icon">🏛️</span><span class="fn-title">Le vault</span></div>
+      <p>Le "coffre-fort" central. Il reçoit les USDC, émet les parts, déploie les fonds sur les protocoles, et gère les retraits.</p>
+    </div>
+    <div class="fn-card">
+      <div class="fn-name"><span class="fn-icon">🔌</span><span class="fn-title">Les adapters</span></div>
+      <p>Des connecteurs entre le vault et chaque protocole externe (Aave, Morpho…). Chacun gère une fraction de l'argent.</p>
+    </div>
+    <div class="fn-card">
+      <div class="fn-name"><span class="fn-icon">🛡️</span><span class="fn-title">Le Guardian</span></div>
+      <p>Un comité de 3 membres sur 5. Peut uniquement déclencher une pause d'urgence ou rapatrier les fonds d'un protocole compromis.</p>
+    </div>
+    <div class="fn-card">
+      <div class="fn-name"><span class="fn-icon">🗳️</span><span class="fn-title">La gouvernance</span></div>
+      <p>Les détenteurs de tokens GLOW votent pour modifier les allocations, ajouter un protocole ou changer les frais. Toute décision passe par un délai de 48h.</p>
+    </div>
+    <div class="fn-card">
+      <div class="fn-name"><span class="fn-icon">💰</span><span class="fn-title">Le Treasury</span></div>
+      <p>L'adresse de la <strong>DAO</strong> (TimelockController). Reçoit la commission de 5% sous forme de parts — jamais en USDC directement. Toute dépense nécessite un vote de gouvernance GLOW + délai obligatoire de 48h.</p>
+    </div>
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<!-- ══ ÉTAPE 1 : DÉPÔT ══════════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-label">
+    <span class="section-num">Étape 1</span>
+    <span class="section-title">Le dépôt</span>
+  </div>
+
+  <h3>Ce qui se passe quand un utilisateur dépose</h3>
+  <p>Un utilisateur arrive avec des USDC. Il les confie au vault. En échange, le vault lui crée et lui envoie un certain nombre de <strong>parts</strong>, appelées <em>glUSD-P</em> pour le profil Prudent (ou glUSD-B, glUSD-D, glUSD-RH selon le profil choisi).</p>
+
+  <div class="flow" style="margin: 28px 0;">
+    <div class="flow-node">
+      <span class="node-icon">👤</span>
+      <span class="node-label">Utilisateur</span>
+      <span class="node-sub">Ex : Alice</span>
+    </div>
+    <div class="flow-arrow">
+      <span class="arrow-label">donne ses USDC</span>
+      <span class="arrow-line"></span>
+    </div>
+    <div class="flow-node accent">
+      <span class="node-icon">🏛️</span>
+      <span class="node-label">Vault<br>DeFi Lantern</span>
+      <span class="node-sub">Coffre central</span>
+    </div>
+    <div class="flow-arrow">
+      <span class="arrow-label">reçoit ses parts</span>
+      <span class="arrow-line"></span>
+    </div>
+    <div class="flow-node">
+      <span class="node-icon">🎫</span>
+      <span class="node-label">Parts (glUSD-P)</span>
+      <span class="node-sub">Preuve de dépôt</span>
+    </div>
+  </div>
+
+  <h3>Comment le nombre de parts est-il calculé ?</h3>
+  <p>Le vault calcule le <strong>prix d'une part</strong> au moment du dépôt (valeur totale du vault ÷ nombre de parts existantes), puis divise le montant déposé par ce prix.</p>
+
+  <div class="box box-teal">
+    <div class="box-title">Formule simple</div>
+    <p>Prix d'une part = Valeur totale du vault ÷ Nombre total de parts existantes</p>
+    <p>Parts reçues = Montant déposé ÷ Prix d'une part</p>
+  </div>
+
+  <div class="fn-grid">
+    <div class="example">
+      <div class="example-title">Exemple A — Vault tout neuf</div>
+      <div class="calc-row"><span class="label">Alice dépose</span><span class="value">1 000 USDC</span></div>
+      <div class="calc-row"><span class="label">Valeur totale du vault</span><span class="value">0 → ratio 1 pour 1</span></div>
+      <div class="calc-row"><span class="label">Prix d'une part</span><span class="value">1,000 USDC</span></div>
+      <div class="calc-row"><span class="label">Alice reçoit</span><span class="value green">1 000 parts</span></div>
+    </div>
+    <div class="example">
+      <div class="example-title">Exemple B — Vault actif 6 mois</div>
+      <div class="calc-row"><span class="label">Alice dépose</span><span class="value">1 000 USDC</span></div>
+      <div class="calc-row"><span class="label">Valeur totale vault</span><span class="value">5 200 000 USDC</span></div>
+      <div class="calc-row"><span class="label">Parts existantes</span><span class="value">5 000 000</span></div>
+      <div class="calc-row"><span class="label">Prix d'une part</span><span class="value">1,040 USDC</span></div>
+      <div class="calc-row"><span class="label">Alice reçoit</span><span class="value green">961,5 parts</span></div>
+    </div>
+  </div>
+
+  <p>Dans l'exemple B, Alice reçoit <em>moins</em> de parts qu'elle n'a déposé d'USDC — mais c'est normal : chaque part vaut plus d'un dollar car le vault a déjà accumulé des rendements.</p>
+
+  <h3>Où vont ses USDC après le dépôt ?</h3>
+  <p>Pas immédiatement sur les protocoles. Les USDC restent dans le vault sous forme de <strong>réserve de liquidité</strong> — une sorte de "caisse" toujours disponible. C'est ce qu'on appelle le <strong>buffer</strong>. Ils seront déployés sur les protocoles lors de la prochaine opération de <em>harvest</em> (voir étape 3).</p>
+
+  <div class="box box-gold">
+    <div class="box-title">Pourquoi garder une réserve ?</div>
+    <p>Le buffer représente environ <strong>10% du total du vault</strong>. Il permet de payer les petits retraits immédiatement, sans avoir à retirer d'argent des protocoles (ce qui prendrait du temps et coûterait des frais). C'est l'équivalent de la caisse d'une banque.</p>
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<!-- ══ ÉTAPE 2 : ENTRE DEUX HARVESTS ══════════════════════════════════════ -->
+<div class="section">
+  <div class="section-label">
+    <span class="section-num">Étape 2</span>
+    <span class="section-title">Les rendements s'accumulent</span>
+  </div>
+
+  <h3>Ce qui se passe entre deux harvests</h3>
+  <p>Une fois les fonds déployés sur les protocoles, les rendements s'accumulent <strong>automatiquement, en continu, à chaque seconde</strong>. Il n'y a aucune action requise de la part du protocole ou des utilisateurs.</p>
+
+  <p>Concrètement : Aave accumule des intérêts, Morpho aussi, sUSDS aussi… La valeur totale du vault augmente donc en permanence. Et comme le <strong>nombre de parts ne change pas</strong> entre deux harvests, chaque part vaut un peu plus chaque jour.</p>
+
+  <div class="share-visual">
+    <div class="share-item">
+      <div class="share-label">Valeur totale vault</div>
+      <div class="share-value">10 000 000 $</div>
+    </div>
+    <div class="share-arrow">→</div>
+    <div class="share-item">
+      <div class="share-label">Parts en circulation</div>
+      <div class="share-value">9 615 384</div>
+    </div>
+    <div class="share-arrow">=</div>
+    <div class="share-item">
+      <div class="share-label">Prix d'une part</div>
+      <div class="share-value teal">1,040 USDC</div>
+    </div>
+    <div class="share-arrow">↗</div>
+    <div class="share-item">
+      <div class="share-label">Une semaine plus tard</div>
+      <div class="share-value teal">1,042 USDC</div>
+    </div>
+  </div>
+
+  <div class="box box-teal">
+    <div class="box-title">Le mécanisme clé</div>
+    <p>Le harvest ne <em>crée</em> pas les gains — il les <em>officialise</em>. Les utilisateurs bénéficient de la croissance de la valeur de leur part dès qu'elle se produit, pas seulement au moment du harvest.</p>
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<!-- ══ ÉTAPE 3 : HARVEST ══════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-label">
+    <span class="section-num">Étape 3</span>
+    <span class="section-title">Le harvest — la comptabilité</span>
+  </div>
+
+  <p>Le harvest est une opération déclenchée manuellement par l'équipe (en version 1 du protocole). C'est le moment où le protocole fait son <strong>bilan</strong> : il mesure les gains réalisés depuis le dernier harvest, prend sa commission, puis redéploie l'argent en attente dans le buffer.</p>
+
+  <div class="box box-navy">
+    <div class="box-title">Quand déclenche-t-on un harvest ?</div>
+    <p>· Après un dépôt important (pour déployer rapidement le capital)</p>
+    <p>· Quand les gains accumulés justifient le coût de la transaction</p>
+    <p>· En version 2 : automatiquement, par un programme informatique (keeper)</p>
+  </div>
+
+  <p>Le harvest se déroule en quatre temps :</p>
+
+  <!-- SOUS-ÉTAPE 3.1 -->
+  <h3>① Mesure des gains nets</h3>
+  <p>Le protocole compare la <strong>valeur totale actuelle</strong> de toutes ses positions avec ce qu'elle était lors du dernier harvest. La différence est le gain net.</p>
+
+  <div class="example">
+    <div class="example-title">Exemple — Vault Prudent</div>
+    <div class="calc-row"><span class="label">Valeur totale au dernier harvest</span><span class="value">10 000 000 USDC</span></div>
+    <div class="calc-row"><span class="label">Valeur totale aujourd'hui</span><span class="value">10 042 000 USDC</span></div>
+    <div class="calc-row" style="background:#f0fdf4; border-radius:6px; padding:8px 12px; margin-top:4px; border:none;">
+      <span class="label" style="font-weight:700;">Gain net</span>
+      <span class="value green">42 000 USDC (+ 0,42%)</span>
+    </div>
+  </div>
+
+  <!-- SOUS-ÉTAPE 3.2 -->
+  <h3>② Prélèvement de la commission (5%)</h3>
+  <p>Sur ces 42 000 USDC de gains, le protocole prélève une commission de <strong>5%</strong> — soit 2 100 USDC — au bénéfice de la trésorerie de la <strong>DAO</strong> (treasury).</p>
+
+  <div class="box box-teal">
+    <div class="box-title">Pourquoi en parts et pas en USDC ?</div>
+    <p>Le protocole ne transfère jamais d'USDC au treasury. Il <strong>crée de nouvelles parts</strong> équivalant à 2 100 USDC et les envoie au treasury. Cela a deux avantages : l'équipe est rémunérée <em>uniquement si les utilisateurs gagnent</em>, et les fonds des utilisateurs ne sont jamais touchés directement.</p>
+  </div>
+
+  <div class="box box-navy">
+    <div class="box-title">Le prix des parts ne chute pas au harvest (Fee Accrual)</div>
+    <p>Entre deux harvests, le protocole met de côté en temps réel la part des gains qui reviendra à la trésorerie. Ainsi, quand le harvest arrive et que les nouvelles parts sont créées pour l'équipe, le prix de vos parts ne bouge pas — cette commission était déjà comptabilisée.</p>
+  </div>
+
+  <div class="example">
+    <div class="example-title">Exemple — Commission de harvest</div>
+    <div class="calc-row"><span class="label">Gains nets</span><span class="value">42 000 USDC</span></div>
+    <div class="calc-row"><span class="label">Commission (5%)</span><span class="value">2 100 USDC</span></div>
+    <div class="calc-row"><span class="label">Gains nets pour les utilisateurs</span><span class="value green">39 900 USDC (95%)</span></div>
+    <div class="calc-row"><span class="label">Nouvelles parts créées pour le treasury</span><span class="value">~2 020 parts glUSD-P</span></div>
+  </div>
+
+  <!-- SOUS-ÉTAPE 3.3 -->
+  <h3>③ Le rééquilibrage</h3>
+  <p>Après la comptabilité, le protocole vérifie si les allocations sont toujours conformes aux pourcentages cibles. Si un protocole a trop ou pas assez d'argent (écart supérieur à 5%), il corrige automatiquement. Le buffer est également vérifié : s'il est en dessous ou au-dessus de 10% du TVL, il est ramené dans ses bornes.</p>
+
+  <div class="box box-gold">
+    <div class="box-title">Pourquoi un seuil de 5% ?</div>
+    <p>Chaque déplacement d'argent entre protocoles coûte des frais de transaction. Ne rééquilibrer que si l'écart dépasse 5% évite des ajustements inutiles et coûteux pour de petits écarts qui ne changent pas vraiment le profil de risque.</p>
+  </div>
+
+  <div class="example">
+    <div class="example-title">Exemple — Vault Prudent, TVL 10 000 000 USDC (seuil ±5 points)</div>
+    <div class="calc-row"><span class="label">Aave v3 — cible 10% → réel 12%</span><span class="value" style="color:var(--green);">Bornes [5%–15%] → dans les bornes, pas de rééquilibrage ✓</span></div>
+    <div class="calc-row"><span class="label">Morpho — cible 11,25% → réel 17%</span><span class="value" style="color:var(--red);">Bornes [6,25%–16,25%] → hors bornes, rééquilibrage déclenché ⚡</span></div>
+    <div class="calc-row"><span class="label">sUSDS — cible 11,25% → réel 10,5%</span><span class="value" style="color:var(--green);">Bornes [6,25%–16,25%] → dans les bornes, pas de rééquilibrage ✓</span></div>
+  </div>
+
+  <h3>④ Déploiement des fonds en attente</h3>
+  <p>Les USDC déposés depuis le dernier harvest et restés dans le buffer sont enfin déployés sur les protocoles, selon les pourcentages cibles. C'est à ce moment que le capital d'un nouvel utilisateur commence réellement à générer du rendement.</p>
+
+  <div class="vault-diagram" style="margin:20px 0;">
+    <div class="vault-header">🏛️ Structure du Vault Prudent — répartition cible</div>
+    <div class="vault-row buffer-row">
+      <div class="vault-name">💰 Buffer (réserve de caisse)</div>
+      <div class="vault-bar-wrap"><div class="vault-bar" style="width:10%;background:#f5a623;"></div></div>
+      <div class="vault-pct">10 %</div>
+    </div>
+    <div class="vault-row">
+      <div class="vault-name">Aave v3</div>
+      <div class="vault-bar-wrap"><div class="vault-bar" style="width:10%;background:#2ABFAB;"></div></div>
+      <div class="vault-pct">10 %</div>
+    </div>
+    <div class="vault-row">
+      <div class="vault-name">Morpho (Gauntlet)</div>
+      <div class="vault-bar-wrap"><div class="vault-bar" style="width:10%;background:#2ABFAB;"></div></div>
+      <div class="vault-pct">10 %</div>
+    </div>
+    <div class="vault-row">
+      <div class="vault-name">Morpho (Steakhouse)</div>
+      <div class="vault-bar-wrap"><div class="vault-bar" style="width:10%;background:#2ABFAB;"></div></div>
+      <div class="vault-pct">10 %</div>
+    </div>
+    <div class="vault-row">
+      <div class="vault-name">sUSDS (Sky / MakerDAO)</div>
+      <div class="vault-bar-wrap"><div class="vault-bar" style="width:10%;background:#2ABFAB;"></div></div>
+      <div class="vault-pct">10 %</div>
+    </div>
+    <div class="vault-row">
+      <div class="vault-name">sUSDe (Ethena)</div>
+      <div class="vault-bar-wrap"><div class="vault-bar" style="width:10%;background:#2ABFAB;"></div></div>
+      <div class="vault-pct">10 %</div>
+    </div>
+    <div class="vault-row">
+      <div class="vault-name">cUSDO (OpenEden)</div>
+      <div class="vault-bar-wrap"><div class="vault-bar" style="width:10%;background:#2ABFAB;"></div></div>
+      <div class="vault-pct">10 %</div>
+    </div>
+    <div class="vault-row">
+      <div class="vault-name">thBILL (Theo Network)</div>
+      <div class="vault-bar-wrap"><div class="vault-bar" style="width:5%;background:#94a3b8;"></div></div>
+      <div class="vault-pct">5 % ⚠️</div>
+    </div>
+    <div class="vault-row">
+      <div class="vault-name">sBOLD (Liquity v2)</div>
+      <div class="vault-bar-wrap"><div class="vault-bar" style="width:10%;background:#2ABFAB;"></div></div>
+      <div class="vault-pct">10 %</div>
+    </div>
+    <div class="vault-row">
+      <div class="vault-name">scrvUSD (Curve)</div>
+      <div class="vault-bar-wrap"><div class="vault-bar" style="width:10%;background:#2ABFAB;"></div></div>
+      <div class="vault-pct">10 %</div>
+    </div>
+    <div class="vault-row">
+      <div class="vault-name">fxSAVE (f(x) Protocol)</div>
+      <div class="vault-bar-wrap"><div class="vault-bar" style="width:5%;background:#2ABFAB;"></div></div>
+      <div class="vault-pct">5 % ⚠️</div>
+    </div>
+  </div>
+
+  <p style="font-size:13px; color:var(--gray);">⚠️ thBILL : plafonné à 5% car protocole plus récent — précaution de diversification.</p>
+</div>
+
+<hr class="section-divider">
+
+<!-- ══ ÉTAPE 4 : RETRAIT ══════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-label">
+    <span class="section-num">Étape 4</span>
+    <span class="section-title">Le retrait</span>
+  </div>
+
+  <p>Un utilisateur peut retirer ses fonds à tout moment. Il indique soit le <strong>montant en USDC</strong> qu'il souhaite récupérer, soit le <strong>nombre de parts</strong> qu'il veut rendre. Le vault calcule l'autre valeur automatiquement et lui envoie ses USDC.</p>
+
+  <div class="flow" style="margin:28px 0;">
+    <div class="flow-node">
+      <span class="node-icon">👤</span>
+      <span class="node-label">Utilisateur</span>
+      <span class="node-sub">Ex : Bob</span>
+    </div>
+    <div class="flow-arrow">
+      <span class="arrow-label">rend ses parts</span>
+      <span class="arrow-line"></span>
+    </div>
+    <div class="flow-node accent">
+      <span class="node-icon">🏛️</span>
+      <span class="node-label">Vault</span>
+      <span class="node-sub">Brûle les parts</span>
+    </div>
+    <div class="flow-arrow">
+      <span class="arrow-label">envoie USDC + gains</span>
+      <span class="arrow-line"></span>
+    </div>
+    <div class="flow-node" style="border-color:var(--green); background:var(--green-lt);">
+      <span class="node-icon">💵</span>
+      <span class="node-label">USDC + gains</span>
+      <span class="node-sub">Retrait final</span>
+    </div>
+  </div>
+
+  <h3>Cas 1 — Petit retrait (le plus courant, ~95% des cas)</h3>
+  <p>Le montant demandé est inférieur à ce qui est disponible dans la réserve de caisse (buffer). Le retrait est <strong>immédiat</strong> — pas besoin de toucher aux protocoles externes.</p>
+
+  <div class="example">
+    <div class="example-title">Exemple — Bob retire 50 000 USDC</div>
+    <div class="calc-row"><span class="label">Buffer disponible</span><span class="value">1 000 000 USDC</span></div>
+    <div class="calc-row"><span class="label">Bob demande</span><span class="value">50 000 USDC</span></div>
+    <div class="calc-row"><span class="label">50 000 &lt; 1 000 000 → retrait direct</span><span class="value green">Immédiat ✓</span></div>
+    <div class="calc-row"><span class="label">Bob était entré à 1,000 USDC/part, il sort à 1,041</span><span class="value green">+ 4,1% de gain ✓</span></div>
+  </div>
+
+  <h3>Cas 2 — Grand retrait (supérieur au buffer)</h3>
+  <p>Si le montant demandé dépasse la réserve de caisse, le vault va chercher l'argent <strong>proportionnellement sur tous les protocoles simultanément</strong>. Exemple : si Bob retire 20% du vault, chaque protocole libère 20% de sa position.</p>
+
+  <div class="box box-gold">
+    <div class="box-title">Pourquoi proportionnel et pas d'un seul protocole ?</div>
+    <p>Si le vault vidait d'abord le protocole le plus liquide, les utilisateurs restants se retrouveraient avec une exposition différente de celle qu'ils avaient choisie — sans l'avoir demandé. La règle proportionnelle garantit que chaque utilisateur reste dans le même profil de risque.</p>
+  </div>
+
+  <div class="example">
+    <div class="example-title">Exemple — Charlie retire 2 000 000 USDC (20% du vault de 10M)</div>
+    <div class="calc-row"><span class="label">Buffer (10%) → libère 20%</span><span class="value">200 000 USDC ✓ immédiat</span></div>
+    <div class="calc-row"><span class="label">Morpho (11,25%) → libère 20%</span><span class="value">225 000 USDC ✓ immédiat</span></div>
+    <div class="calc-row"><span class="label">sUSDS (11,25%) → libère 20%</span><span class="value">225 000 USDC ✓ immédiat</span></div>
+    <div class="calc-row" style="color:#9ca3af; font-style:italic;"><span class="label">…</span><span class="value">autres adapters</span></div>
+    <div class="calc-row" style="background:#f0fdf4; border-radius:6px; padding:8px 12px; margin-top:4px; border:none;">
+      <span class="label" style="font-weight:700;">Total reçu par Charlie</span>
+      <span class="value green">2 000 000 USDC ✓</span>
+    </div>
+  </div>
+
+  <h3>Le marché secondaire — quand la vente directe n'est pas possible</h3>
+  <p>Certains protocoles ne permettent pas de retirer instantanément (comme sUSDe ou thBILL). Dans ce cas, le protocole peut vendre ces positions sur un <strong>marché d'échange décentralisé</strong> (Uniswap, Curve) — à condition que le prix de vente ne soit pas trop éloigné de la valeur réelle (moins de 0,5% d'écart). Si les conditions ne sont pas bonnes, le vault attend le prochain harvest pour réessayer.</p>
+
+  <div class="box box-red">
+    <div class="box-title">⚠️ Fonctionnalité non disponible dans le MVP</div>
+    <p>Le marché secondaire ne sera pas implémenté dans la première version du protocole. En attendant, les adapters qui en dépendent (sUSDe, thBILL) ne seront pas connectés au MVP. Cette fonctionnalité sera ajoutée dans une prochaine version.</p>
+  </div>
+
+  <h3>Exemple de gain réel — Alice</h3>
+  <div class="example">
+    <div class="example-title">Bilan d'Alice après 1 an</div>
+    <div class="calc-row"><span class="label">Dépôt initial</span><span class="value">1 000 USDC à 1,000 USDC/part → 1 000 parts</span></div>
+    <div class="calc-row"><span class="label">Prix d'une part après 1 an</span><span class="value">1,052 USDC (5,2% APY net de frais)</span></div>
+    <div class="calc-row"><span class="label">Valeur au retrait</span><span class="value">1 000 × 1,052 = 1 052 USDC</span></div>
+    <div class="calc-row" style="background:#f0fdf4; border-radius:6px; padding:8px 12px; margin-top:4px; border:none;">
+      <span class="label" style="font-weight:700;">Gain net d'Alice</span>
+      <span class="value green">+ 52 USDC (+5,2%)</span>
+    </div>
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<!-- ══ ÉTAPE 5 : URGENCE ══════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-label">
+    <span class="section-num">Étape 5</span>
+    <span class="section-title">Les situations d'urgence</span>
+  </div>
+
+  <p>En cas de problème grave (piratage d'un protocole partenaire, anomalie détectée), le <strong>Guardian</strong> peut activer des mécanismes de protection. Le Guardian est un multisig 3/5 — c'est-à-dire qu'il faut la signature de 3 membres de l'équipe sur 5 pour valider toute action. Ces mécanismes ont été intentionnellement limités pour ne pas donner à l'équipe un contrôle excessif sur les fonds des utilisateurs.</p>
+
+  <div class="flow" style="gap:8px; margin:28px 0; justify-content:flex-start;">
+    <div class="flow-node" style="background:#fee2e2; border-color:#fca5a5;">
+      <span class="node-icon">🚨</span>
+      <span class="node-label">Anomalie détectée</span>
+    </div>
+    <div class="flow-arrow">
+      <span class="arrow-label">Guardian active</span>
+      <span class="arrow-line"></span>
+    </div>
+    <div class="flow-node" style="background:#fff7ed; border-color:#fed7aa;">
+      <span class="node-icon">⏸️</span>
+      <span class="node-label">Pause</span>
+      <span class="node-sub">Dépôts bloqués</span>
+    </div>
+    <div style="width:20px; display:flex; align-items:center; justify-content:center; color:#6b7280; font-size:18px;">+</div>
+    <div class="flow-node" style="background:#fff7ed; border-color:#fed7aa;">
+      <span class="node-icon">🔙</span>
+      <span class="node-label">Rapatriement</span>
+      <span class="node-sub">Fonds dans le vault</span>
+    </div>
+    <div class="flow-arrow">
+      <span class="arrow-label">Retraits toujours</span>
+      <span class="arrow-line"></span>
+    </div>
+    <div class="flow-node" style="background:var(--green-lt); border-color:#86efac;">
+      <span class="node-icon">✅</span>
+      <span class="node-label">Utilisateurs</span>
+      <span class="node-sub">Peuvent sortir</span>
+    </div>
+  </div>
+
+  <div class="box box-green">
+    <div class="box-title">Principe fondamental de sécurité</div>
+    <p>Même en cas de pause d'urgence, <strong>les retraits restent toujours possibles</strong>. Un utilisateur peut toujours récupérer ses fonds, quoi qu'il arrive. L'équipe ne peut jamais bloquer les sorties.</p>
+  </div>
+
+  <div class="box box-red">
+    <div class="box-title">Ce que l'équipe Guardian NE peut PAS faire</div>
+    <p>· Modifier les allocations ou les frais</p>
+    <p>· Ajouter ou retirer un protocole partenaire</p>
+    <p>· Envoyer les fonds vers une adresse externe</p>
+    <p>· Bloquer les retraits des utilisateurs</p>
+    <p>Toute décision au-delà de la pause d'urgence nécessite un <strong>vote de gouvernance + délai obligatoire de 48 heures</strong>.</p>
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<!-- ══ LA DAO ══════════════════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-label">
+    <span class="section-num">La gouvernance</span>
+    <span class="section-title">La DAO — qui décide quoi ?</span>
+  </div>
+
+  <p>DeFi Lantern est un protocole <strong>gouverné par sa communauté</strong>. Les décisions importantes ne sont pas prises unilatéralement par l'équipe — elles passent par un vote ouvert à tous les détenteurs du token <strong>GLOW</strong>.</p>
+
+  <div class="box box-navy">
+    <div class="box-title">GLOW vs glUSD — deux tokens très différents</div>
+    <p>· <strong>GLOW</strong> — le token de gouvernance. Il donne le droit de voter sur les décisions du protocole. Il ne représente pas un dépôt et ne génère pas de rendement en lui-même.</p>
+    <p>· <strong>glUSD-P / glUSD-B / glUSD-D / glUSD-RH</strong> — les tokens de parts (shares). Ils représentent votre dépôt dans un vault et prennent de la valeur avec les rendements. Ce ne sont pas des tokens de gouvernance.</p>
+    <p>Un utilisateur peut avoir des glUSD sans avoir de GLOW, et inversement.</p>
+  </div>
+
+  <h3>De quoi est composée la DAO ?</h3>
+  <p>La DAO est constituée de <strong>tous les détenteurs de tokens GLOW</strong>. Plus on détient de GLOW, plus on a de poids dans les votes — mais n'importe quel détenteur peut soumettre ou voter une proposition, à condition d'avoir au minimum <strong>1% de l'offre totale</strong> pour proposer et que le quorum de <strong>10%</strong> soit atteint pour valider.</p>
+
+  <h3>Ce que la DAO peut décider</h3>
+
+  <div class="fn-grid" style="grid-template-columns:1fr 1fr;">
+    <div class="fn-card">
+      <div class="fn-name"><span class="fn-icon">🔌</span><span class="fn-title">Ajouter un protocole</span></div>
+      <p>Autoriser un nouvel adapter pour déployer des fonds sur un protocole supplémentaire (ex : un nouveau vault Morpho).</p>
+    </div>
+    <div class="fn-card">
+      <div class="fn-name"><span class="fn-icon">🗑️</span><span class="fn-title">Retirer un protocole</span></div>
+      <p>Désactiver un adapter jugé trop risqué ou sous-performant. Les fonds sont rapatriés dans le vault avant la suppression.</p>
+    </div>
+    <div class="fn-card">
+      <div class="fn-name"><span class="fn-icon">⚖️</span><span class="fn-title">Modifier les allocations</span></div>
+      <p>Changer les pourcentages cibles de chaque protocole dans le vault (ex : augmenter la part d'Aave, réduire celle de sUSDS).</p>
+    </div>
+    <div class="fn-card">
+      <div class="fn-name"><span class="fn-icon">💸</span><span class="fn-title">Modifier les frais</span></div>
+      <p>Changer le taux de la performance fee (actuellement 5%). Toute modification s'applique uniquement aux gains futurs.</p>
+    </div>
+    <div class="fn-card">
+      <div class="fn-name"><span class="fn-icon">🔄</span><span class="fn-title">Déclencher un rééquilibrage</span></div>
+      <p>Appeler manuellement la fonction <code style="font-size:12px;background:#f1f5f9;padding:2px 6px;border-radius:4px;">rebalance()</code> pour redistribuer les fonds entre protocoles selon les allocations cibles. Passe par le processus de vote + timelock 48h.</p>
+    </div>
+  </div>
+
+  <h3>Comment fonctionne un vote ?</h3>
+
+  <div class="flow" style="margin:28px 0; flex-wrap:wrap; gap:8px;">
+    <div class="flow-node">
+      <span class="node-icon">✍️</span>
+      <span class="node-label">Proposition</span>
+      <span class="node-sub">≥ 1% GLOW requis</span>
+    </div>
+    <div class="flow-arrow">
+      <span class="arrow-label">1 jour</span>
+      <span class="arrow-line"></span>
+    </div>
+    <div class="flow-node">
+      <span class="node-icon">🗳️</span>
+      <span class="node-label">Vote ouvert</span>
+      <span class="node-sub">3 jours, quorum 10%</span>
+    </div>
+    <div class="flow-arrow">
+      <span class="arrow-label">Si adopté</span>
+      <span class="arrow-line"></span>
+    </div>
+    <div class="flow-node accent">
+      <span class="node-icon">⏳</span>
+      <span class="node-label">Timelock</span>
+      <span class="node-sub">48h obligatoires</span>
+    </div>
+    <div class="flow-arrow">
+      <span class="arrow-label">Puis</span>
+      <span class="arrow-line"></span>
+    </div>
+    <div class="flow-node dark">
+      <span class="node-icon">✅</span>
+      <span class="node-label">Exécution</span>
+      <span class="node-sub">On-chain automatique</span>
+    </div>
+  </div>
+
+  <p>Le délai de 48h (timelock) est une protection importante : il donne le temps à tout utilisateur de retirer ses fonds s'il n'est pas d'accord avec une décision votée.</p>
+
+  <div class="box box-red">
+    <div class="box-title">Ce que la DAO ne peut PAS faire</div>
+    <p>· Transférer directement les fonds des utilisateurs</p>
+    <p>· Contourner le timelock de 48h</p>
+    <p>· Bloquer les retraits individuels</p>
+    <p>· Modifier les contrats du vault sans passer par le processus de vote</p>
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<!-- ══ CHRONOLOGIE SEMAINE TYPE ══════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-label">
+    <span class="section-num">Exemple complet</span>
+    <span class="section-title">Une semaine dans la vie du protocole</span>
+  </div>
+
+  <div class="timeline-wrap">
+    <div class="tl-item">
+      <div class="tl-left">
+        <div class="tl-dot teal">L</div>
+        <div class="tl-line"></div>
+      </div>
+      <div class="tl-content">
+        <div class="tl-day">Lundi 9h — Dépôt d'Alice</div>
+        <div class="tl-text">Alice dépose <strong>10 000 USDC</strong> dans le vault Prudent. Le prix d'une part est de 1,040 USDC — elle reçoit donc <strong>9 615 parts glUSD-P</strong>. Ses USDC rejoignent la réserve de caisse (buffer) et n'y génèrent pas encore de rendement.</div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-left">
+        <div class="tl-dot" style="background:#dbeafe; color:#1d4ed8; font-size:11px;">L→V</div>
+        <div class="tl-line"></div>
+      </div>
+      <div class="tl-content">
+        <div class="tl-day">Lundi → Vendredi — Accumulation silencieuse</div>
+        <div class="tl-text">Les 10 protocoles du vault accumulent des intérêts automatiquement, sans aucune action. Le prix de chaque part monte imperceptiblement chaque seconde : <strong>1,0400 → 1,0408 USDC</strong>. Ni Alice ni l'équipe n'ont rien à faire.</div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-left">
+        <div class="tl-dot gold">V</div>
+        <div class="tl-line"></div>
+      </div>
+      <div class="tl-content">
+        <div class="tl-day">Vendredi 14h — Harvest (déclenché manuellement)</div>
+        <div class="tl-text">
+          L'équipe déclenche le harvest car le dépôt important de lundi nécessite d'être déployé.<br><br>
+          <strong>① Bilan des gains :</strong> la valeur totale du vault est passée de 10 000 000 à 10 042 000 USDC → <em>42 000 USDC de gains nets</em>.<br>
+          <strong>② Commission :</strong> 42 000 × 5% = 2 100 USDC → nouvelles parts créées pour le treasury.<br>
+          <strong>③ Rééquilibrage :</strong> seuls Morpho (−5,9%) et thBILL (−5,8%) s'écartent suffisamment → ajustements ciblés.<br>
+          <strong>④ Déploiement :</strong> les 10 000 USDC d'Alice (+ autres dépôts) sont distribués sur les protocoles selon les pourcentages cibles.
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-left">
+        <div class="tl-dot" style="background:var(--green); color:white;">S</div>
+        <div class="tl-line" style="background:transparent;"></div>
+      </div>
+      <div class="tl-content">
+        <div class="tl-day">Samedi — Retrait de Bob</div>
+        <div class="tl-text">Bob retire <strong>5 000 USDC</strong>. Le buffer est suffisant → retrait <strong>immédiat</strong>. Bob était entré il y a 6 mois à 1,000 USDC/part, il sort à <strong>1,041 USDC/part → gain de +4,1%</strong>.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<!-- ══ TOUTES LES FONCTIONS ══════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-label">
+    <span class="section-num">Référence</span>
+    <span class="section-title">Toutes les actions disponibles</span>
+  </div>
+
+  <p>Le protocole propose un ensemble d'actions bien définies. Chacune est accessible uniquement aux personnes habilitées à l'exercer.</p>
+
+  <h3>Actions ouvertes à tous les utilisateurs</h3>
+  <div class="fn-grid">
+    <div class="fn-card">
+      <div class="fn-name">
+        <span class="fn-icon">⬇️</span>
+        <span class="fn-title">Déposer</span>
+        <span class="fn-badge public">Public</span>
+      </div>
+      <p>Envoyer des USDC au vault et recevoir des parts (shares) en échange. Le nombre de parts reçues dépend du prix actuel de la part.</p>
+      <div class="fn-when">→ Quand : à tout moment (sauf si le vault est en pause)</div>
+    </div>
+    <div class="fn-card">
+      <div class="fn-name">
+        <span class="fn-icon">⬆️</span>
+        <span class="fn-title">Retirer</span>
+        <span class="fn-badge public">Public</span>
+      </div>
+      <p>Rendre ses parts pour récupérer des USDC (capital + gains). Possible <strong>en toutes circonstances</strong>, même si le vault est en pause.</p>
+      <div class="fn-when">→ Quand : à tout moment, sans restriction</div>
+    </div>
+  </div>
+
+  <h3>Actions réservées à l'équipe (harvest manuel — version 1)</h3>
+  <div class="fn-grid">
+    <div class="fn-card">
+      <div class="fn-name">
+        <span class="fn-icon">🌾</span>
+        <span class="fn-title">Harvest</span>
+        <span class="fn-badge auto">Équipe v1</span>
+      </div>
+      <p>Lance le bilan complet : mesure des gains, prélèvement de la commission, rééquilibrage des allocations, déploiement des fonds en attente. Combine les deux actions suivantes en une seule.</p>
+      <div class="fn-when">→ Quand : sur décision de l'équipe (dépôt important, gains suffisants)</div>
+    </div>
+    <div class="fn-card">
+      <div class="fn-name">
+        <span class="fn-icon">📊</span>
+        <span class="fn-title">Rééquilibrer</span>
+        <span class="fn-badge auto">Automatique</span>
+      </div>
+      <p>Ramène chaque protocole à son pourcentage cible si l'écart dépasse 5%. Appelé automatiquement à chaque harvest — pas d'appel manuel séparé prévu.</p>
+      <div class="fn-when">→ Quand : appelé automatiquement dans chaque harvest</div>
+    </div>
+  </div>
+
+  <h3>Actions réservées au Guardian (urgence)</h3>
+  <div class="fn-grid">
+    <div class="fn-card">
+      <div class="fn-name">
+        <span class="fn-icon">⏸️</span>
+        <span class="fn-title">Mettre en pause</span>
+        <span class="fn-badge guardian">Guardian</span>
+      </div>
+      <p>Bloque les nouveaux dépôts et les harvests. <strong>Les retraits restent toujours accessibles.</strong> Décision du Guardian (2 signatures sur 3 de l'équipe).</p>
+      <div class="fn-when">→ Quand : anomalie grave, piratage, comportement suspect</div>
+    </div>
+    <div class="fn-card">
+      <div class="fn-name">
+        <span class="fn-icon">🔙</span>
+        <span class="fn-title">Rapatrier un protocole</span>
+        <span class="fn-badge guardian">Guardian</span>
+      </div>
+      <p>Retire tous les fonds d'un protocole spécifique (ex: Aave) et les ramène dans le buffer du vault. Les autres protocoles continuent normalement.</p>
+      <div class="fn-when">→ Quand : un protocole partenaire est compromis</div>
+    </div>
+    <div class="fn-card">
+      <div class="fn-name">
+        <span class="fn-icon">▶️</span>
+        <span class="fn-title">Reprendre</span>
+        <span class="fn-badge dao">Gouvernance</span>
+      </div>
+      <p>Lève la pause et réactive le fonctionnement normal du vault. Nécessite un vote de gouvernance et un délai obligatoire de 48 heures.</p>
+      <div class="fn-when">→ Quand : après résolution du problème, suite à un vote</div>
+    </div>
+  </div>
+
+  <h3>Actions réservées à la gouvernance (vote GLOW + délai 48h)</h3>
+  <div class="fn-grid">
+    <div class="fn-card">
+      <div class="fn-name">
+        <span class="fn-icon">➕</span>
+        <span class="fn-title">Ajouter un protocole</span>
+        <span class="fn-badge dao">Gouvernance</span>
+      </div>
+      <p>Intègre un nouveau protocole de rendement au vault (ex : un nouveau protocole de prêt). Toute modification des partenaires passe par un vote.</p>
+      <div class="fn-when">→ Quand : opportunité identifiée + vote + 48h de délai</div>
+    </div>
+    <div class="fn-card">
+      <div class="fn-name">
+        <span class="fn-icon">➖</span>
+        <span class="fn-title">Retirer un protocole</span>
+        <span class="fn-badge dao">Gouvernance</span>
+      </div>
+      <p>Supprime un protocole des allocations du vault (ex : après un incident, ou si le rendement n'est plus compétitif).</p>
+      <div class="fn-when">→ Quand : dégradation d'un partenaire + vote + 48h de délai</div>
+    </div>
+    <div class="fn-card">
+      <div class="fn-name">
+        <span class="fn-icon">⚖️</span>
+        <span class="fn-title">Modifier les allocations</span>
+        <span class="fn-badge dao">Gouvernance</span>
+      </div>
+      <p>Change les pourcentages cibles de chaque protocole (ex : augmenter Morpho de 11% à 15%, réduire Aave en conséquence).</p>
+      <div class="fn-when">→ Quand : optimisation de la stratégie + vote + 48h de délai</div>
+    </div>
+    <div class="fn-card">
+      <div class="fn-name">
+        <span class="fn-icon">💸</span>
+        <span class="fn-title">Modifier les frais</span>
+        <span class="fn-badge dao">Gouvernance</span>
+      </div>
+      <p>Change le taux de la commission de performance (actuellement 5%). Plafonné à 20% par le contrat — impossible d'aller au-delà même avec un vote.</p>
+      <div class="fn-when">→ Quand : décision stratégique de l'équipe + vote + 48h de délai</div>
+    </div>
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<!-- ══ GLOSSAIRE ══════════════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-label">
+    <span class="section-num">Glossaire</span>
+    <span class="section-title">Définitions des termes clés</span>
+  </div>
+
+  <div class="glossary-grid">
+    <div class="glossary-item">
+      <div class="glossary-term">USDC</div>
+      <div class="glossary-def">Monnaie numérique stable (stablecoin) émise par Circle. 1 USDC = toujours 1 dollar américain. C'est la monnaie utilisée par DeFi Lantern.</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">Part / Share (glUSD-P, glUSD-B…)</div>
+      <div class="glossary-def">Titre de propriété représentant votre quote-part du vault. Comme une part de fonds commun de placement. glUSD-P = Prudent, glUSD-B = Balanced, etc.</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">Prix d'une part (Share Price)</div>
+      <div class="glossary-def">Valeur en USDC d'une seule part. Il augmente au fil du temps à mesure que les rendements s'accumulent. Commence à 1,000 et monte.</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">Vault</div>
+      <div class="glossary-def">Le "coffre-fort" central du protocole. Programme informatique qui reçoit les dépôts, émet les parts, gère les allocations et les retraits.</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">Buffer (réserve de caisse)</div>
+      <div class="glossary-def">Portion des USDC conservée disponible dans le vault (≈10% du total). Permet les retraits immédiats sans toucher aux protocoles. Comme la caisse d'une banque.</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">Adapter (connecteur)</div>
+      <div class="glossary-def">Module informatique qui fait le lien entre le vault et un protocole externe (Aave, Morpho…). Un adapter par protocole partenaire.</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">Harvest (récolte)</div>
+      <div class="glossary-def">Opération périodique de bilan : mesure des gains, prélèvement de la commission, rééquilibrage, déploiement des fonds en attente.</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">Rééquilibrage</div>
+      <div class="glossary-def">Opération qui remet chaque protocole à son pourcentage cible si l'écart dépasse 5%. Déclenché automatiquement à chaque harvest.</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">ERC-4626</div>
+      <div class="glossary-def">Standard international pour les vaults de rendement sur Ethereum. Garantit que tous les vaults qui le respectent fonctionnent de manière compatible et prévisible.</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">Token GLOW</div>
+      <div class="glossary-def">Le token de gouvernance du protocole. Les détenteurs de GLOW peuvent voter sur les décisions importantes (allocations, frais, nouveaux protocoles).</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">Guardian (gardien)</div>
+      <div class="glossary-def">Comité de sécurité (3 signatures sur 5). Peut uniquement mettre le vault en pause et rapatrier les fonds d'un protocole compromis — rien d'autre.</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">Timelock (délai obligatoire)</div>
+      <div class="glossary-def">Délai de 48 heures imposé entre le vote d'une décision et son application. Donne le temps aux utilisateurs de réagir s'ils ne sont pas d'accord.</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">Treasury (trésorerie)</div>
+      <div class="glossary-def">Adresse de la DAO (TimelockController). Reçoit les commissions sous forme de parts — jamais d'USDC directement. Toute dépense nécessite un vote de gouvernance + délai 48h.</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">Performance fee (commission)</div>
+      <div class="glossary-def">5% des gains nets prélevés au harvest. Payés uniquement si les utilisateurs gagnent. Aucun frais d'entrée ni de sortie.</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">Blockchain / Ethereum</div>
+      <div class="glossary-def">Registre informatique public et infalsifiable sur lequel tourne le protocole. Toutes les transactions sont visibles et vérifiables par n'importe qui.</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">Gnosis Safe (multisignature)</div>
+      <div class="glossary-def">Coffre-fort numérique nécessitant plusieurs signatures (ici 3 sur 5) pour valider toute action. Empêche une seule personne d'agir seule.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ FOOTER ══════════════════════════════════════════════════════════════ -->
+<div class="footer">
+  <p>DeFi Lantern Protocol · Document interne équipe · Avril 2026</p>
+  <p>Version accessible — sans code technique</p>
+</div>
+
+</div>
+</body>
+</html>

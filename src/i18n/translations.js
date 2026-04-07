@@ -224,7 +224,7 @@ export const translations = {
     footer: {
       tagline: 'Agrégateur de rendement stablecoin non-custodial',
       whitepaper: 'Whitepaper',
-      mvpDoc: 'Fonctionnement MVP V1',
+      mvpDoc: 'Comment ça marche',
       github: 'GitHub',
       twitter: 'Twitter / X',
       builtOn: 'Construit sur Ethereum',
@@ -548,7 +548,7 @@ export const translations = {
     footer: {
       tagline: 'Non-custodial stablecoin yield aggregator',
       whitepaper: 'Whitepaper',
-      mvpDoc: 'MVP V1 Overview',
+      mvpDoc: 'How it works',
       github: 'GitHub',
       twitter: 'Twitter / X',
       builtOn: 'Built on Ethereum',
