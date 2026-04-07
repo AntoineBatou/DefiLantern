@@ -46,7 +46,7 @@ function TwitterIcon() {
 
 export default function Footer({ navigateTo }) {
   const { t } = useLang()
-  // Logo blanc sur fonds sombres (dynamic + airdropHunter), noir sur fond clair
+  // Logo blanc sur fonds sombres (dynamic + rewardsHunter), noir sur fond clair
   const { isDark } = useRiskProfile()
   const logoFile = isDark ? 'lantern-logo-black.svg' : 'lantern-logo-white.svg'
 

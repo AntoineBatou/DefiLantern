@@ -1,6 +1,6 @@
-// LanternCursor.jsx — Curseur lanterne avec spotlight pour les profils Dynamic et Airdrop Hunter
+// LanternCursor.jsx — Curseur lanterne avec spotlight pour les profils Dynamic et Rewards Hunter
 //
-// Visible quand le profil actif est 'dynamic' (halo violet) ou 'airdropHunter' (halo or).
+// Visible quand le profil actif est 'dynamic' (halo violet) ou 'rewardsHunter' (halo or).
 // Deux éléments visuels suivent la souris avec un léger décalage (lerp = interpolation
 // linéaire) pour un effet fluide et organique :
 //   1. Un halo radial coloré (spotlight)
@@ -19,7 +19,7 @@ const cursorTheme = {
     glow: 'drop-shadow(0 0 8px rgba(124,58,237,0.8))',
     logo: 'lantern-logo-white.svg',
   },
-  airdropHunter: {
+  rewardsHunter: {
     spotlight: 'radial-gradient(circle, rgba(255,215,0,0.15) 0%, transparent 65%)',
     glow: 'drop-shadow(0 0 8px rgba(255,215,0,0.9))',
     logo: 'lantern-logo-black.svg',
@@ -39,8 +39,8 @@ export default function LanternCursor() {
   const rafRef = useRef(null)
 
   useEffect(() => {
-    // Ne s'active que pour Dynamic et Airdrop Hunter
-    if (profile !== 'dynamic' && profile !== 'airdropHunter') return
+    // Ne s'active que pour Dynamic et Rewards Hunter
+    if (profile !== 'dynamic' && profile !== 'rewardsHunter') return
 
     // Capture la position de la souris à chaque mouvement
     const handleMouseMove = (e) => {
@@ -79,7 +79,7 @@ export default function LanternCursor() {
   }, [profile])
 
   // Ne rien afficher hors des profils concernés
-  if (profile !== 'dynamic' && profile !== 'airdropHunter') return null
+  if (profile !== 'dynamic' && profile !== 'rewardsHunter') return null
 
   const theme = cursorTheme[profile]
 

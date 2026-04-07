@@ -75,7 +75,7 @@ export default function Header({ currentPage, navigateTo, navigateToSection }) {
     prudent:       t('profile.prudent'),
     balanced:      t('profile.balanced'),
     dynamic:       t('profile.dynamic'),
-    airdropHunter: t('profile.airdropHunter'),
+    rewardsHunter: t('profile.rewardsHunter'),
   }
 
   // Nombre de protocoles par profil (issu des listes explicites dans profiles.js)
@@ -83,7 +83,7 @@ export default function Header({ currentPage, navigateTo, navigateToSection }) {
     prudent:       8,   // tier 1 + sUSDe + reUSD
     balanced:      15,  // 50% Prudent + 50% Dynamic
     dynamic:       7,   // tranches junior (reUSDe inclus)
-    airdropHunter: 1,   // Sierra Money (liste évolutive)
+    rewardsHunter: 1,   // Sierra Money (liste évolutive)
   }
 
   return (

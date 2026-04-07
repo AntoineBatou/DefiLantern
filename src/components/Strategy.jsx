@@ -103,7 +103,7 @@ export default function Strategy({ apyData, averageApy, historicalApy }) {
                 fr: 'Rendement maximisé — stratégies avancées pour investisseurs avertis, avec une gestion rigoureuse du risque.',
                 en: 'Maximised yield — advanced strategies for experienced investors, with rigorous risk management.',
               },
-              airdropHunter: {
+              rewardsHunter: {
                 fr: "Protocoles innovants sélectionnés pour leur rendement compétitif et leur potentiel d'airdrop.",
                 en: 'Innovative protocols selected for their competitive yield and airdrop potential.',
               },
@@ -132,8 +132,8 @@ export default function Strategy({ apyData, averageApy, historicalApy }) {
             <p className="text-sm leading-relaxed text-navy/70">
               {t(profileDescKey(profile))}
             </p>
-            {/* Avertissement spécifique Airdrop Hunter */}
-            {profile === 'airdropHunter' && (
+            {/* Avertissement spécifique Rewards Hunter */}
+            {profile === 'rewardsHunter' && (
               <p className="mt-2 text-xs font-medium" style={{ color: '#FFD700' }}>
                 {t('strategy.airdropDisclaimerShort')}
               </p>

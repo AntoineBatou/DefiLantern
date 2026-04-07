@@ -1,6 +1,6 @@
 // ParachuteOverlay.jsx — Overlay de parachutes décoratifs
 //
-// Rendu uniquement quand le thème actif est 'christmas' (profil Airdrop Hunter).
+// Rendu uniquement quand le thème actif est 'christmas' (profil Rewards Hunter).
 // Les parachutes tombent lentement depuis le haut de l'écran avec des délais variés
 // pour créer un effet de profondeur et de mouvement organique.
 // position: fixed → les parachutes restent à l'écran pendant le scroll.

@@ -24,7 +24,7 @@ export const CONTRACT_ADDRESSES = {
     // Futurs vaults (v2)
     vaultBalanced:        null,
     vaultDynamic:         null,
-    vaultAirdropHunter:   null,
+    vaultRewardsHunter:   null,
   },
 
   // ── Ethereum mainnet (production future — pas encore déployé) ────────────
@@ -33,7 +33,7 @@ export const CONTRACT_ADDRESSES = {
     vaultPrudent:         null,
     vaultBalanced:        null,
     vaultDynamic:         null,
-    vaultAirdropHunter:   null,
+    vaultRewardsHunter:   null,
   },
 }
 

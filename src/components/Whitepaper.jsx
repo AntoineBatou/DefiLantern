@@ -95,7 +95,7 @@ function WhitepaperFR() {
           Il est <strong>non-custodial</strong> : vos fonds ne transitent jamais par nos mains — ils restent
           dans les protocoles sous-jacents à tout moment.
           Les utilisateurs déposent des USDC et reçoivent en échange des parts —
-          <strong>glUSD-P</strong>, <strong>glUSD-B</strong>, <strong>glUSD-D</strong> ou <strong>glUSD-AH</strong> selon le profil
+          <strong>glUSD-P</strong>, <strong>glUSD-B</strong>, <strong>glUSD-D</strong> ou <strong>glUSD-RH</strong> selon le profil
           de risque choisi — dont la valeur augmente au fil du temps à mesure que le protocole
           collecte les rendements d'une sélection de protocoles DeFi éprouvés.
         </p>
@@ -139,7 +139,7 @@ function WhitepaperFR() {
           <p className="text-navy/70 leading-relaxed mb-3">
             DeFi Lantern agrège le rendement de plusieurs protocoles via quatre vaults spécialisés.
             L'utilisateur choisit un profil de risque, dépose ses USDC dans le vault correspondant
-            et reçoit des parts ERC-4626 (glUSD-P, glUSD-B, glUSD-D ou glUSD-AH) dont la valeur
+            et reçoit des parts ERC-4626 (glUSD-P, glUSD-B, glUSD-D ou glUSD-RH) dont la valeur
             s'apprécie passivement. DeFi Lantern gère l'allocation, la collecte des rendements
             et le rééquilibrage.
           </p>
@@ -159,7 +159,7 @@ function WhitepaperFR() {
             rows={[
               ['Blockchain', 'Ethereum mainnet'],
               ['Actif de dépôt', 'USDC'],
-              ['Tokens de part', 'glUSD-P / glUSD-B / glUSD-D / glUSD-AH — un vault ERC-4626 par profil (standard de vault Ethereum)'],
+              ['Tokens de part', 'glUSD-P / glUSD-B / glUSD-D / glUSD-RH — un vault ERC-4626 par profil (standard de vault Ethereum)'],
               ['Token de gouvernance', 'GLOW — permet de voter les décisions du protocole'],
               ['Frais', '5% de frais de performance sur les gains nets'],
               ['Garde', 'Non-custodial'],
@@ -171,7 +171,7 @@ function WhitepaperFR() {
 
         <SubSection title="2.2 Caractéristiques clés">
           <p className="text-navy/70 text-sm mb-2"><strong className="text-navy">Rendement à entrée unique.</strong> Un seul dépôt USDC donne accès à de multiples stratégies de rendement simultanées.</p>
-          <p className="text-navy/70 text-sm mb-2"><strong className="text-navy">Standard ERC-4626.</strong> glUSD-P, glUSD-B, glUSD-D et glUSD-AH suivent le standard de vault Ethereum ERC-4626 — compatibles avec tout protocole DeFi supportant ce format.</p>
+          <p className="text-navy/70 text-sm mb-2"><strong className="text-navy">Standard ERC-4626.</strong> glUSD-P, glUSD-B, glUSD-D et glUSD-RH suivent le standard de vault Ethereum ERC-4626 — compatibles avec tout protocole DeFi supportant ce format.</p>
           <p className="text-navy/70 text-sm mb-2"><strong className="text-navy">Non-custodial.</strong> Aucune clé admin ne peut déplacer les fonds des utilisateurs vers une adresse externe. En cas d'urgence, le Guardian peut retirer les fonds d'un protocole compromis pour les rapatrier dans le vault — seuls les utilisateurs peuvent ensuite les récupérer. Les retraits restent possibles en permanence.</p>
           <p className="text-navy/70 text-sm mb-2"><strong className="text-navy">Stratégie transparente.</strong> Les allocations par protocole sont inscrites sur la blockchain et vérifiables par tout détenteur de GLOW.</p>
           <p className="text-navy/70 text-sm"><strong className="text-navy">Gouvernance on-chain.</strong> Tous les changements de paramètres passent par un vote communautaire suivi d'un délai obligatoire de 48 heures avant exécution.</p>
@@ -209,25 +209,25 @@ function WhitepaperFR() {
 
       {/* 3. ARCHITECTURE */}
       <Section id="architecture" title="3. Architecture">
-        <SubSection title="3.1 Quatre vaults ERC-4626 — glUSD-P / glUSD-B / glUSD-D / glUSD-AH">
+        <SubSection title="3.1 Quatre vaults ERC-4626 — glUSD-P / glUSD-B / glUSD-D / glUSD-RH">
           <p className="text-navy/70 leading-relaxed mb-3">
             DeFi Lantern déploie <strong>quatre vaults distincts</strong>, un par profil de risque,
             chacun avec ses propres protocoles et poids d'allocation. Chaque vault émet un token distinct
-            (glUSD-P, glUSD-B, glUSD-D, glUSD-AH) représentant une part du capital déposé.
+            (glUSD-P, glUSD-B, glUSD-D, glUSD-RH) représentant une part du capital déposé.
             L'utilisateur choisit son profil, dépose ses USDC dans le vault correspondant
             et reçoit des parts dont la valeur augmente avec les rendements accumulés.
           </p>
           <p className="text-navy/70 text-sm mb-2"><strong className="text-navy">Flux de dépôt :</strong></p>
           <ol className="list-decimal list-inside text-navy/70 text-sm space-y-1 mb-3">
-            <li>L'utilisateur choisit son profil (Prudent / Équilibré / Dynamique / Airdrop Hunter) et sélectionne le vault correspondant</li>
+            <li>L'utilisateur choisit son profil (Prudent / Équilibré / Dynamique / Rewards Hunter) et sélectionne le vault correspondant</li>
             <li>Il appelle <code className="bg-navy/10 px-1 rounded">deposit(amount, receiver)</code> sur ce vault</li>
-            <li>Le vault mint des parts (glUSD-P/B/D/AH) proportionnelles à <code className="bg-navy/10 px-1 rounded">amount / pricePerShare</code></li>
+            <li>Le vault mint des parts (glUSD-P/B/D/RH) proportionnelles à <code className="bg-navy/10 px-1 rounded">amount / pricePerShare</code></li>
             <li>Les USDC sont alloués aux protocoles du profil selon les poids cibles</li>
           </ol>
           <p className="text-navy/70 text-sm mb-2"><strong className="text-navy">Flux de retrait :</strong></p>
           <ol className="list-decimal list-inside text-navy/70 text-sm space-y-1 mb-3">
             <li>L'utilisateur appelle <code className="bg-navy/10 px-1 rounded">redeem(shares, receiver, owner)</code></li>
-            <li>Le vault brûle les parts glUSD-P/B/D/AH</li>
+            <li>Le vault brûle les parts glUSD-P/B/D/RH</li>
             <li>Le vault récupère les USDC des protocoles sous-jacents (en respectant les contraintes de cooldown)</li>
             <li>Les USDC sont envoyés à l'utilisateur</li>
           </ol>
@@ -262,7 +262,7 @@ function WhitepaperFR() {
           <WpTable
             headers={['Contrat', 'Rôle']}
             rows={[
-              ['DeFiLanternVaultPrudent/Balanced/Dynamic/AH', 'Vault ERC-4626 — reçoit les dépôts, émet les parts, orchestre les adapters'],
+              ['DeFiLanternVaultPrudent/Balanced/Dynamic/RH', 'Vault ERC-4626 — reçoit les dépôts, émet les parts, orchestre les adapters'],
               ['IAdapter + 15 adapters', 'Un adapter par protocole sous-jacent — isole la logique propre à chaque intégration'],
               ['GlowToken.sol', 'Token de gouvernance GLOW (ERC-20Votes, 100M supply fixe)'],
               ['DeFiLanternGovernor.sol', 'Contrat de vote on-chain (OZ Governor)'],
@@ -282,9 +282,9 @@ function WhitepaperFR() {
             <code className="bg-navy/10 px-1 rounded">rebalance()</code> les ajuste via vote de gouvernance.
           </p>
           <WpTable
-            headers={['', '🛡️ Prudent', '⚖️ Balanced', '⚡ Dynamic', '🪂 Airdrop Hunter']}
+            headers={['', '🛡️ Prudent', '⚖️ Balanced', '⚡ Dynamic', '🪂 Rewards Hunter']}
             rows={[
-              ['Token', 'glUSD-P', 'glUSD-B', 'glUSD-D', 'glUSD-AH'],
+              ['Token', 'glUSD-P', 'glUSD-B', 'glUSD-D', 'glUSD-RH'],
               ['APY cible', '3–7%', '5–10%', '8–15%', 'Variable'],
               ['Nb protocoles', '10', '20', '10', '4'],
               ['Composition', 'Lending conservateur + RWA', 'Mix égal Prudent & Dynamic', 'Haut rendement, risque élevé', 'Early-stage, upside tokenomics'],
@@ -319,7 +319,7 @@ function WhitepaperFR() {
             exclusif au Balanced.
           </p>
 
-          <h4 className="font-semibold text-navy mb-2">🪂 glUSD-AH — Airdrop Hunter</h4>
+          <h4 className="font-semibold text-navy mb-2">🪂 glUSD-RH — Rewards Hunter</h4>
           <p className="text-navy/70 text-sm">
             Se positionner sur des protocoles early-stage qui combinent un rendement compétitif avec
             un événement tokenomics crédible (airdrop, programme de points, TGE imminent). Le rendement
@@ -389,7 +389,7 @@ function WhitepaperFR() {
             Le profil Balanced est un mix pur : 50% des allocations Prudent + 50% des allocations Dynamic.
             Il ne contient aucun protocole exclusif — tous les protocoles sont partagés avec Prudent ou Dynamic.
           </p>
-          <p className="text-navy/70 text-sm mb-3 font-semibold">🪂 Airdrop Hunter — 4 protocoles</p>
+          <p className="text-navy/70 text-sm mb-3 font-semibold">🪂 Rewards Hunter — 4 protocoles</p>
           <div className="space-y-4">
             {[
               { name: 'Sierra Money', cat: 'Liquid Yield Token', desc: 'Hybride RWA + DeFi. T-bills + Aave/Morpho/Pendle. Natif Avalanche, ETH via LayerZero. TGE probable.' },
@@ -667,7 +667,7 @@ function WhitepaperFR() {
             rows={[
               ['Équipe (5 fondateurs)', '20%', '4 000 000 chacun', 'Cliff 12 mois (aucun token débloqué pendant la première année) puis libération progressive sur 24 mois', 'Les fondateurs ne peuvent pas vendre au lancement'],
               ['Treasury / DAO', '40%', '40 000 000', 'Gouverné par la DAO', 'Finance les audits, l\'infrastructure, le développement'],
-              ['Communauté / Liquidity Mining', '30%', '30 000 000', 'Émission sur 48 mois aux déposants des 4 vaults (glUSD-P/B/D/AH)', 'Bootstrap de l\'adoption par récompense des premiers utilisateurs'],
+              ['Communauté / Liquidity Mining', '30%', '30 000 000', 'Émission sur 48 mois aux déposants des 4 vaults (glUSD-P/B/D/RH)', 'Bootstrap de l\'adoption par récompense des premiers utilisateurs'],
               ['Écosystème / Grants', '10%', '10 000 000', 'Discrétionnaire, gouverné par la DAO', 'Intégrations, hackathons, partenariats tiers'],
             ]}
           />
@@ -719,7 +719,7 @@ function WhitepaperFR() {
         <p className="text-navy/70 leading-relaxed mb-4">
           Notre réponse est un vault ERC-4626 non-custodial qui agrège de multiples sources de rendement
           complémentaires en un seul point d'entrée. L'utilisateur dépose une fois et reçoit des
-          glUSD-P, glUSD-B, glUSD-D ou glUSD-AH dont la valeur s'apprécie automatiquement. DeFi Lantern gère l'allocation,
+          glUSD-P, glUSD-B, glUSD-D ou glUSD-RH dont la valeur s'apprécie automatiquement. DeFi Lantern gère l'allocation,
           le harvest et le rééquilibrage — sans jamais prendre la garde des fonds.
         </p>
         <p className="text-navy/70 leading-relaxed mb-4">
@@ -751,7 +751,7 @@ function WhitepaperFR() {
       </Section>
 
       {/* 11. REWARDS HUNTER */}
-      <Section id="rewards-hunter" title="11. Détail du fonctionnement Rewards Hunter (glUSD-AH)">
+      <Section id="rewards-hunter" title="11. Détail du fonctionnement Rewards Hunter (glUSD-RH)">
         <p className="text-navy/70 text-sm leading-relaxed mb-4">
           Le vault Rewards Hunter est un agrégateur de positions de rendement ciblant spécifiquement les protocoles qui
           proposent des campagnes d'incentives — émissions de tokens en temps réel ou systèmes de points à long terme
@@ -872,7 +872,7 @@ function WhitepaperFR() {
         <WarningBox>
           DeFi Lantern est un projet logiciel expérimental et open-source développé à des fins académiques.
           Ce n'est pas un produit financier enregistré ni un véhicule d'investissement. Les parts glUSD-P,
-          glUSD-B, glUSD-D et glUSD-AH ne sont pas des titres financiers. Déposer des actifs dans DeFi Lantern implique des risques
+          glUSD-B, glUSD-D et glUSD-RH ne sont pas des titres financiers. Déposer des actifs dans DeFi Lantern implique des risques
           significatifs incluant, sans s'y limiter : des vulnérabilités de smart contracts, des défaillances
           d'oracle, des défaillances des protocoles sous-jacents, des contraintes de liquidité et des
           changements réglementaires.
@@ -912,7 +912,7 @@ function WhitepaperEN() {
         <p className="text-navy/70 leading-relaxed">
           DeFi Lantern is a non-custodial, multi-protocol yield aggregator for stablecoins deployed on
           Ethereum mainnet. Users deposit USDC and receive ERC-4626 share tokens —
-          <strong>glUSD-P</strong>, <strong>glUSD-B</strong>, <strong>glUSD-D</strong>, or <strong>glUSD-AH</strong> depending
+          <strong>glUSD-P</strong>, <strong>glUSD-B</strong>, <strong>glUSD-D</strong>, or <strong>glUSD-RH</strong> depending
           on their chosen risk profile — whose value appreciates over time as the protocol harvests
           yield from a curated set of battle-tested DeFi protocols.
         </p>
@@ -946,7 +946,7 @@ function WhitepaperEN() {
         <SubSection title="1.2 The DeFi Lantern Answer">
           <p className="text-navy/70 leading-relaxed">
             DeFi Lantern aggregates yield from multiple protocols into a single vault. The user deposits USDC
-            once into their chosen vault and receives glUSD-P/B/D/AH shares that appreciate passively. DeFi Lantern handles allocation,
+            once into their chosen vault and receives glUSD-P/B/D/RH shares that appreciate passively. DeFi Lantern handles allocation,
             harvesting, and rebalancing. DeFi Lantern does not take custody of user funds — assets remain
             in the underlying protocols at all times, accessible only through the vault's non-custodial
             withdrawal mechanism.
@@ -973,7 +973,7 @@ function WhitepaperEN() {
         </SubSection>
         <SubSection title="2.2 Key Features">
           <p className="text-navy/70 text-sm mb-2"><strong className="text-navy">Single-entry yield.</strong> One USDC deposit gives exposure to up to sixteen yield strategies simultaneously.</p>
-          <p className="text-navy/70 text-sm mb-2"><strong className="text-navy">ERC-4626 compliant.</strong> glUSD-P, glUSD-B, glUSD-D, and glUSD-AH are fully standard ERC-4626 vault tokens, composable with any protocol supporting the standard. Each token is fully fungible within its vault — a secondary market buyer immediately knows their exact risk exposure.</p>
+          <p className="text-navy/70 text-sm mb-2"><strong className="text-navy">ERC-4626 compliant.</strong> glUSD-P, glUSD-B, glUSD-D, and glUSD-RH are fully standard ERC-4626 vault tokens, composable with any protocol supporting the standard. Each token is fully fungible within its vault — a secondary market buyer immediately knows their exact risk exposure.</p>
           <p className="text-navy/70 text-sm mb-2"><strong className="text-navy">Non-custodial by design.</strong> No admin key can move user funds. The Guardian multisig can only pause new deposits — withdrawals remain open at all times.</p>
           <p className="text-navy/70 text-sm mb-2"><strong className="text-navy">Transparent allocation.</strong> Target weights per protocol are stored on-chain in basis points (sum = 10,000). Any GLOW holder can verify the strategy at any time.</p>
           <p className="text-navy/70 text-sm"><strong className="text-navy">On-chain governance.</strong> All parameter changes go through a Governor contract with a 48-hour Timelock.</p>
@@ -1002,7 +1002,7 @@ function WhitepaperEN() {
 
       {/* 3. ARCHITECTURE */}
       <Section id="architecture-en" title="3. Architecture">
-        <SubSection title="3.1 Four ERC-4626 Vaults — glUSD-P / glUSD-B / glUSD-D / glUSD-AH">
+        <SubSection title="3.1 Four ERC-4626 Vaults — glUSD-P / glUSD-B / glUSD-D / glUSD-RH">
           <p className="text-navy/70 leading-relaxed mb-3">
             The central contract <code className="bg-navy/10 px-1 rounded">DeFiLanternVault.sol</code> implements
             the ERC-4626 tokenized vault standard. Users interact exclusively with this contract.
@@ -1080,7 +1080,7 @@ totalAssets() : shares × pricePerShare (Chainlink oracle) → USDC equivalent`}
           />
           <p className="text-navy/70 text-sm mt-4">
             <strong>⚖️ glUSD-B (Balanced)</strong>: 50% Prudent + 50% Dynamic — no exclusive protocols.
-            <br/><strong>🪂 glUSD-AH (Airdrop Hunter)</strong>: Sierra Money 25% + Cap stcUSD 25% + sUSDai 25% + thBill 25%.
+            <br/><strong>🪂 glUSD-RH (Rewards Hunter)</strong>: Sierra Money 25% + Cap stcUSD 25% + sUSDai 25% + thBill 25%.
           </p>
         </SubSection>
 
@@ -1090,9 +1090,9 @@ totalAssets() : shares × pricePerShare (Chainlink oracle) → USDC equivalent`}
             DeFi Lantern offers <strong>4 independent vaults</strong>, each with its own share token, target protocol set, and risk philosophy. Users can hold multiple profiles simultaneously — they are fully isolated from each other.
           </p>
           <WpTable
-            headers={['', '🛡️ Prudent', '⚖️ Balanced', '⚡ Dynamic', '🪂 Airdrop Hunter']}
+            headers={['', '🛡️ Prudent', '⚖️ Balanced', '⚡ Dynamic', '🪂 Rewards Hunter']}
             rows={[
-              ['Token', 'glUSD-P', 'glUSD-B', 'glUSD-D', 'glUSD-AH'],
+              ['Token', 'glUSD-P', 'glUSD-B', 'glUSD-D', 'glUSD-RH'],
               ['APY target', '3–7%', '5–10%', '8–15%', 'Variable'],
               ['# protocols', '10', '20', '10', '4'],
               ['Composition', 'Conservative lending + RWA', 'Equal blend of Prudent & Dynamic', 'High-yield, higher risk', 'Early-stage, tokenomics upside'],
@@ -1120,7 +1120,7 @@ totalAssets() : shares × pricePerShare (Chainlink oracle) → USDC equivalent`}
             A pure mechanical blend: every USDC deposited is split 50/50 between Prudent and Dynamic allocations, giving simultaneous exposure to all 20 protocols. There are no protocols exclusive to Balanced.
           </p>
 
-          <h4 className="font-semibold text-navy mb-2">🪂 glUSD-AH — Airdrop Hunter</h4>
+          <h4 className="font-semibold text-navy mb-2">🪂 glUSD-RH — Rewards Hunter</h4>
           <p className="text-navy/70 text-sm mb-4 leading-relaxed">
             Position on early-stage protocols that combine competitive yield with a credible tokenomics event (airdrop, points program, or upcoming TGE). The yield is real and primary — the airdrop potential is a documented bonus, never a promised return. Positions are reviewed quarterly; any protocol whose tokenomics event has passed and whose rationale has expired is replaced.
           </p>
@@ -1242,7 +1242,7 @@ totalAssets() : shares × pricePerShare (Chainlink oracle) → USDC equivalent`}
             ]}
           />
 
-          <p className="text-navy/70 text-sm font-semibold mb-2 mt-6">🪂 Airdrop Hunter — 4 protocols — APY variable</p>
+          <p className="text-navy/70 text-sm font-semibold mb-2 mt-6">🪂 Rewards Hunter — 4 protocols — APY variable</p>
           <WpTable
             headers={['Protocol', 'Category', 'Weight', 'APY', 'Tokenomics Event', 'Notes']}
             rows={[
@@ -1293,7 +1293,7 @@ totalAssets() : shares × pricePerShare (Chainlink oracle) → USDC equivalent`}
           </p>
           <InfoBox>
             <strong>Implementation:</strong> the fee is never transferred as USDC. At each harvest,
-            the FeeManager mints new glUSD-P/B/D/AH shares to the treasury proportional to the gain,
+            the FeeManager mints new glUSD-P/B/D/RH shares to the treasury proportional to the gain,
             diluting existing shareholders by 5% of the yield produced.
             This mechanism aligns the treasury's interests with those of users —
             the treasury only earns when users earn.
@@ -1550,7 +1550,7 @@ new_shares  = fee_in_usd / pricePerShare_after_yield`}</CodeBlock>
             rows={[
               ['Team (5 founders)', '20%', '4,000,000 each', '12-month cliff + 24-month linear', 'Founders cannot sell at launch'],
               ['Treasury / DAO', '40%', '40,000,000', 'DAO-governed', 'Funds audits, infrastructure, development'],
-              ['Community / Liquidity Mining', '30%', '30,000,000', '48-month emission to depositors across all 4 vaults (glUSD-P/B/D/AH)', 'Bootstraps adoption, rewards early users'],
+              ['Community / Liquidity Mining', '30%', '30,000,000', '48-month emission to depositors across all 4 vaults (glUSD-P/B/D/RH)', 'Bootstraps adoption, rewards early users'],
               ['Ecosystem / Grants', '10%', '10,000,000', 'Discretionary, DAO-governed', 'Integrations, hackathons, partnerships'],
             ]}
           />
@@ -1603,7 +1603,7 @@ new_shares  = fee_in_usd / pricePerShare_after_yield`}</CodeBlock>
               ['Prudent 🛡️', '100% ETH mainnet — no cross-chain'],
               ['Balanced ⚖️', '100% ETH mainnet — no cross-chain'],
               ['Dynamic ⚡', 'Architecture 0 first → Architecture 1a if protocol is on an EVM L2'],
-              ['Airdrop Hunter 🪂', 'Architecture 0 (Sierra Money, already decided) → Architecture 1b for new protocols'],
+              ['Rewards Hunter 🪂', 'Architecture 0 (Sierra Money, already decided) → Architecture 1b for new protocols'],
             ]}
           />
           <InfoBox>
@@ -1639,7 +1639,7 @@ new_shares  = fee_in_usd / pricePerShare_after_yield`}</CodeBlock>
         </p>
         <p className="text-navy/70 leading-relaxed mb-4">
           Our answer is a non-custodial ERC-4626 vault that aggregates yield across four specialized vaults.
-          Users deposit once into their chosen vault and receive glUSD-P/B/D/AH shares
+          Users deposit once into their chosen vault and receive glUSD-P/B/D/RH shares
           that appreciate automatically. DeFi Lantern handles allocation, harvesting, and
           rebalancing — without ever taking custody of funds.
         </p>
@@ -1672,7 +1672,7 @@ new_shares  = fee_in_usd / pricePerShare_after_yield`}</CodeBlock>
       </Section>
 
       {/* 11. REWARDS HUNTER EN */}
-      <Section id="rewards-hunter-en" title="11. Rewards Hunter Vault — Mechanics (glUSD-AH)">
+      <Section id="rewards-hunter-en" title="11. Rewards Hunter Vault — Mechanics (glUSD-RH)">
         <p className="text-navy/70 text-sm leading-relaxed mb-4">
           The Rewards Hunter vault is an aggregator of yield positions specifically targeting protocols that
           offer access to incentive campaigns — live token emissions or long-term point accumulation systems
@@ -1792,7 +1792,7 @@ new_shares  = fee_in_usd / pricePerShare_after_yield`}</CodeBlock>
       <Section id="legal-en" title="13. Legal Disclaimer">
         <WarningBox>
           DeFi Lantern is an experimental, open-source software project developed for academic purposes.
-          It is not a registered financial product or investment vehicle. glUSD-P, glUSD-B, glUSD-D, and glUSD-AH shares are not securities.
+          It is not a registered financial product or investment vehicle. glUSD-P, glUSD-B, glUSD-D, and glUSD-RH shares are not securities.
           Depositing assets into DeFi Lantern involves significant risks including, but not limited to:
           smart contract vulnerabilities, oracle failures, underlying protocol failures, liquidity constraints,
           and regulatory changes.

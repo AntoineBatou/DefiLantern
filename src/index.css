@@ -303,7 +303,7 @@ section {
   transition: background-color 300ms ease, border-color 300ms ease, color 300ms ease !important;
 }
 
-/* ── Thème Christmas (Airdrop Hunter) ────────── */
+/* ── Thème Christmas (Rewards Hunter) ────────── */
 /* Activé via la classe .theme-christmas sur le wrapper racine dans App.jsx */
 .theme-christmas {
   background-color: #1A0A0A;
@@ -465,7 +465,7 @@ section {
 /* Cacher les éléments luciole dans ce thème */
 .theme-christmas .firefly-element { display: none !important; }
 
-/* ── Animation parachutes (Airdrop Hunter) ─── */
+/* ── Animation parachutes (Rewards Hunter) ─── */
 @keyframes parachuteFall {
   0%   { transform: translateY(-80px) translateX(0px) rotate(-3deg); opacity: 0; }
   8%   { opacity: 0.18; }

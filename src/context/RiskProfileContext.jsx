@@ -1,6 +1,6 @@
 // RiskProfileContext.jsx — Contexte global pour le profil de risque
 //
-// State : profile ('prudent' | 'balanced' | 'dynamic' | 'airdropHunter')
+// State : profile ('prudent' | 'balanced' | 'dynamic' | 'rewardsHunter')
 // Dérivé : isDark (true si theme !== 'light'), profileConfig,
 //          profileProtocols (liste filtrée), profileWeights (poids d'allocation)
 // Persistance : localStorage pour retrouver le profil au retour
@@ -26,7 +26,7 @@ export function RiskProfileProvider({ children }) {
 
   const profileConfig = PROFILES[profile]
 
-  // Mode sombre pour tous les profils avec theme !== 'light' (dynamic + airdropHunter)
+  // Mode sombre pour tous les profils avec theme !== 'light' (dynamic + rewardsHunter)
   const isDark = profileConfig.theme !== 'light'
 
   // Protocoles du profil actif — filtrés par liste explicite d'IDs

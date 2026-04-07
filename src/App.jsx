@@ -110,7 +110,7 @@ function AppContent() {
   // Calcule la classe de thème selon le profil actif :
   // - 'light'     → pas de classe (thème clair par défaut)
   // - 'dark'      → classe .dark (mode Cyber/Neon pour Dynamic)
-  // - 'christmas' → classe .theme-christmas (mode Rouge & Or pour Airdrop Hunter)
+  // - 'christmas' → classe .theme-christmas (mode Rouge & Or pour Rewards Hunter)
   const themeClass = profileConfig.theme === 'light' ? ''
     : profileConfig.theme === 'dark' ? 'dark'
     : `theme-${profileConfig.theme}` // → 'theme-christmas'
@@ -119,7 +119,7 @@ function AppContent() {
     // Wrapper racine : la classe de thème active le mode visuel sur tout l'arbre
     // theme-transition = transitions douces sur background-color/color/border
     <div className={`${themeClass} theme-transition min-h-screen`}>
-      {/* Overlay parachutes — visible uniquement en mode Airdrop Hunter */}
+      {/* Overlay parachutes — visible uniquement en mode Rewards Hunter */}
       <ParachuteOverlay />
       {/* Curseur lanterne — visible uniquement en mode Dynamic */}
       <LanternCursor />
