@@ -11,12 +11,15 @@
 // Matching en deux passes :
 //   1. Par fullPoolId (UUID complet) — le plus fiable
 //   2. Par project + chain + symbol + contains — fallback
+//
+// Note : DeFiLlama autorise access-control-allow-origin: * → pas besoin de proxy.
+// L'ancien proxy Vite (/api/llama) causait un bug en production : Vercel renvoyait
+// index.html (200 OK) au lieu d'un 404, ce qui faisait échouer le JSON.parse.
 
 import { useState, useEffect } from 'react'
 import { RETAINED_PROTOCOLS } from '../data/protocols'
 
-const DEFILLAMA_URL = '/api/llama/pools'
-const DEFILLAMA_DIRECT_URL = 'https://yields.llama.fi/pools'
+const DEFILLAMA_URL = 'https://yields.llama.fi/pools'
 
 // ── Matching de pool ──────────────────────────────────────────────────────────
 function findPool(pools, config) {
@@ -59,15 +62,7 @@ export function useDefiLlama() {
       setError(null)
 
       try {
-        let response
-        try {
-          response = await fetch(DEFILLAMA_URL, { signal: AbortSignal.timeout(8000) })
-          // En production le proxy n'existe pas → 404 → on bascule sur l'URL directe
-          if (!response.ok) throw new Error(`proxy ${response.status}`)
-        } catch {
-          response = await fetch(DEFILLAMA_DIRECT_URL, { signal: AbortSignal.timeout(8000) })
-        }
-
+        const response = await fetch(DEFILLAMA_URL, { signal: AbortSignal.timeout(10000) })
         if (!response.ok) throw new Error(`DeFiLlama API error: ${response.status}`)
 
         const json = await response.json()
