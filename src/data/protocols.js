@@ -51,7 +51,7 @@ export const RETAINED_PROTOCOLS = [
     id: 'aave-v3',
     name: 'Aave v3',
     category: 'Lending',
-    fallbackApy: 2.5,
+    fallbackApy: 2.4,
     llamaConfig: {
       fullPoolId: 'aa70268e-4b52-42bf-a116-608b370f9501',
       project: 'aave-v3',
@@ -67,7 +67,7 @@ export const RETAINED_PROTOCOLS = [
     id: 'morpho-gauntlet',
     name: 'Morpho (Gauntlet USDC Prime)',
     category: 'Lending',
-    fallbackApy: 3.2,
+    fallbackApy: 2.3,
     llamaConfig: {
       fullPoolId: '71b34441-5a46-431b-a9b3-8c081cd0d74c',
       project: 'morpho-v1',
@@ -83,7 +83,7 @@ export const RETAINED_PROTOCOLS = [
     id: 'morpho-steakhouse',
     name: 'Morpho (Steakhouse USDC)',
     category: 'Lending',
-    fallbackApy: 6.0,
+    fallbackApy: 2.0,
     llamaConfig: {
       fullPoolId: 'b55f43a8-f444-4cd8-a3a4-0a4e786ba566',
       project: 'morpho-v1',
@@ -99,7 +99,7 @@ export const RETAINED_PROTOCOLS = [
     id: 'susds',
     name: 'sUSDS (Sky)',
     category: 'Savings Rate',
-    fallbackApy: 4.5,
+    fallbackApy: 3.75,
     llamaConfig: {
       fullPoolId: 'd8c4eff5-c8a9-46fc-a888-057c4c668e72',
       project: 'sky-lending',
@@ -115,7 +115,7 @@ export const RETAINED_PROTOCOLS = [
     id: 'susde',
     name: 'sUSDe (Ethena)',
     category: 'Delta-Neutral',
-    fallbackApy: 5.5,
+    fallbackApy: 3.5,
     llamaConfig: {
       fullPoolId: '66985a81-9c51-46ca-9977-42b4fe7bc6df',
       project: 'ethena-usde',
@@ -131,12 +131,12 @@ export const RETAINED_PROTOCOLS = [
     id: 'cusdo',
     name: 'cUSDO (OpenEden)',
     category: 'RWA T-bills',
-    fallbackApy: 4.5,
+    fallbackApy: 3.25,
     llamaConfig: {
-      fullPoolId: '12169161-7815-4160-bd77-a4202cf7c2c1',
+      fullPoolId: 'f083596e-032d-4d6b-a7a8-1836d3f99bcd', // Ethereum (USDO) — ancienne ID était Solana
       project: 'openeden-usdo',
       chain: 'Ethereum',
-      symbol: 'CUSDO',
+      symbol: 'USDO',
     },
     descFr: '100% bons du Trésor américains. Le seul produit T-bills pur natif sur Ethereum, avec prix vérifié par Chainlink.',
     descEn: '100% US Treasury bills. The only pure T-bill product native on Ethereum, with Chainlink-verified pricing.',
@@ -147,7 +147,7 @@ export const RETAINED_PROTOCOLS = [
     id: 'sbold',
     name: 'sBOLD (Liquity v2)',
     category: 'Stability Pool',
-    fallbackApy: 5.5,
+    fallbackApy: 2.7,
     llamaConfig: {
       fullPoolId: 'a635df9a-4cfc-4d17-86d0-934ea441e79f',
       project: 'liquity-v2',
@@ -163,7 +163,7 @@ export const RETAINED_PROTOCOLS = [
     id: 'scrvusd',
     name: 'scrvUSD (Curve)',
     category: 'Savings Rate',
-    fallbackApy: 5.4,
+    fallbackApy: 3.4,
     llamaConfig: {
       fullPoolId: '5fd328af-4203-471b-bd16-1705c726d926',
       project: 'crvusd',
@@ -179,7 +179,7 @@ export const RETAINED_PROTOCOLS = [
     id: 'fxsave',
     name: 'fxSAVE (f(x) Protocol)',
     category: 'Stability Pool',
-    fallbackApy: 4.5,
+    fallbackApy: 3.5,
     llamaConfig: {
       fullPoolId: 'ee0b7069-f8f3-4aa2-a415-728f13e6cc3d',
       project: 'concentrator',
@@ -236,7 +236,7 @@ export const RETAINED_PROTOCOLS = [
     id: 'syrupusdc',
     name: 'syrupUSDC (Maple)',
     category: 'Institutional Credit',
-    fallbackApy: 7.5,
+    fallbackApy: 4.4,
     llamaConfig: {
       fullPoolId: '43641cf5-a92e-416b-bce9-27113d3c0db6',
       project: 'maple',
@@ -252,7 +252,7 @@ export const RETAINED_PROTOCOLS = [
     id: 'jrusde',
     name: 'jrUSDe (Strata)',
     category: 'Market Neutral',
-    fallbackApy: 10.0,
+    fallbackApy: 5.9,
     llamaConfig: {
       fullPoolId: '8352355c-5ad7-45c5-aca2-628de224f8d8',
       project: 'strata-markets',
@@ -268,7 +268,7 @@ export const RETAINED_PROTOCOLS = [
     id: 'susd3',
     name: 'sUSD3 (3Jane)',
     category: 'Institutional Credit',
-    fallbackApy: 10.0,
+    fallbackApy: 8.2,
     llamaConfig: {
       fullPoolId: 'a99bb965-ebaa-4d98-9ed2-fa18de52c605',
       project: '3jane-lending',
@@ -284,7 +284,7 @@ export const RETAINED_PROTOCOLS = [
     id: 'imusd',
     name: 'mPT-sUSDe (mStable)',
     category: 'Fixed Rate',
-    fallbackApy: 12.0,
+    fallbackApy: 13.6,
     llamaConfig: {
       fullPoolId: '6d177bd3-fafa-4d2e-b86f-4fb14ea73c7c',
       project: 'mstable-v2',
@@ -333,7 +333,7 @@ export const RETAINED_PROTOCOLS = [
     id: 'susdai',
     name: 'sUSDai (USD.AI)',
     category: 'RWA / AI Credit',
-    fallbackApy: 13.0,
+    fallbackApy: 6.8,
     llamaConfig: {
       fullPoolId: '712ce948-bd9e-4f4a-8916-b72c447f7578',
       project: 'usd-ai',
@@ -404,7 +404,7 @@ export const RETAINED_PROTOCOLS = [
     id: 'cap',
     name: 'stcUSD (Cap)',
     category: 'Institutional Credit',
-    fallbackApy: 5.6,
+    fallbackApy: 3.9,
     llamaConfig: {
       fullPoolId: 'bf6ca887-e357-49ec-8031-0d1a6141c455',
       project: 'cap',
