@@ -35,7 +35,7 @@ export const DONUT_COLORS = [
 
 // ── PROTOCOLES RETENUS ──────────────────────────────────────────────────────
 //
-// 10 Prudent + 10 Dynamic + 4 Airdrop Hunter
+// 10 Prudent + 10 Dynamic + 4 Rewards Hunter
 // Balanced = mix 50% Prudent + 50% Dynamic (aucun protocole exclusif)
 // (certains protocoles apparaissent dans plusieurs profils)
 //
@@ -200,6 +200,7 @@ export const RETAINED_PROTOCOLS = [
     // Source externe : https://app.rwa.xyz/assets/thBILL (APY 7D ~2.53%)
     // DeFiLlama ne liste pas thBill dans l'API yields/pools (protocol-level uniquement)
     // → fallbackApy utilisé ; à remplacer par un appel on-chain convertToAssets() en v2
+    tooRecent: true,  // Lancé juil 2025, non indexé DeFiLlama yields
     llamaConfig: {
       fullPoolId: null,
       project: 'theo-network',
@@ -219,6 +220,7 @@ export const RETAINED_PROTOCOLS = [
     name: 'sNUSD (Neutrl)',
     category: 'Delta-Neutral',
     fallbackApy: 8.7,
+    tooRecent: true,  // Lancé 2025, non indexé DeFiLlama yields
     llamaConfig: {
       fullPoolId: null,
       project: 'neutrl',
@@ -315,6 +317,7 @@ export const RETAINED_PROTOCOLS = [
     name: 'stkUSDC (Aave Umbrella)',
     category: 'Safety Module',
     fallbackApy: 6.0,
+    tooRecent: true,  // Aave Umbrella lancé 2025, non indexé DeFiLlama yields
     llamaConfig: {
       fullPoolId: null,
       project: 'aave-umbrella',
@@ -378,12 +381,13 @@ export const RETAINED_PROTOCOLS = [
     link: 'https://app.reservoir.xyz',
   },
 
-  // ── Airdrop Hunter 🪂 ──────────────────────────────────────────────────────
+  // ── Rewards Hunter 🪂 ──────────────────────────────────────────────────────
   {
     id: 'sierra',
     name: 'Sierra Money',
     category: 'Liquid Yield Token',
     fallbackApy: 4.78,
+    tooRecent: true,  // Lancé nov 2025, natif Avalanche — non indexé DeFiLlama ETH yields
     llamaConfig: {
       fullPoolId: null,
       project: 'sierra-money',
@@ -413,7 +417,7 @@ export const RETAINED_PROTOCOLS = [
     link: 'https://cap.app',
     airdropPotential: true,
   },
-  // thbill et susdai sont aussi dans Airdrop Hunter (défini dans profiles.js)
+  // thbill et susdai sont aussi dans Rewards Hunter (défini dans profiles.js)
 ]
 
 // ── Les protocoles EN ÉVALUATION (coming soon) ────────────────────────────────

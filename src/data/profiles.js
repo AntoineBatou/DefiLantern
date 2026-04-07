@@ -6,7 +6,7 @@
 // Prudent       : 10 protocoles (lending, savings, RWA, delta-neutral audité)
 // Dynamic       : 10 protocoles (fractional reserve, crédit institutionnel, tranches junior)
 // Balanced      : 50% capital Prudent + 50% capital Dynamic (20 protocoles, aucun exclusif)
-// AirdropHunter : 4 protocoles innovants avec potentiel tokenomics
+// RewardsHunter : 4 protocoles innovants avec potentiel tokenomics
 //
 // Note : la répartition par profil est basée sur le RISQUE de la stratégie
 // (levier, collatéral, ancienneté, mécanisme) et NON sur le yield.
@@ -14,7 +14,7 @@
 // Règle de pondération :
 //   - Poids égaux pour tous les protocoles standard (≤ 15% max)
 //   - Exceptions (score < 8/12 ou TVL insuffisante) → allocation réduite à 5%
-//   - AirdropHunter : 25% par protocole (répartition équitable)
+//   - RewardsHunter : 25% par protocole (répartition équitable)
 
 // ── Listes de protocoles par profil ────────────────────────────────────────
 // Les IDs correspondent au champ `id` dans protocols.js
@@ -40,12 +40,12 @@ const DYNAMIC_PROTOCOL_IDS = [
   'imusd',
   'reusde',
   'stkusdc',
-  'susdai',            // Aussi dans Airdrop Hunter (CHIP token)
+  'susdai',            // Aussi dans Rewards Hunter (CHIP token)
   'infinifi',          // siUSD fractional reserve — TGE 2026
   'reservoir',         // srUSD CDP stablecoin — token DAM lancé
 ]
 
-const AIRDROP_HUNTER_PROTOCOL_IDS = [
+const REWARDS_HUNTER_PROTOCOL_IDS = [
   'sierra',
   'cap',               // stcUSD, pas de token → TGE probable
   'thbill',            // Aussi en Prudent — potentiel tokenomics Theo
@@ -71,18 +71,21 @@ const PRUDENT_WEIGHTS = {
 }
 
 // Dynamic (sum = 1.0)
-// 10 protocoles × 10% chacun = 1.00 ✓
+// Poids différenciés selon le niveau de risque de chaque stratégie
+// Source : Whitepaper.jsx section EN §3.3 (lignes 1069–1079)
+// Stratégies plus risquées = poids réduit ; plus établies = poids plus élevé
 const DYNAMIC_WEIGHTS = {
-  'snusd':     0.10,
-  'syrupusdc': 0.10,
-  'jrusde':    0.10,
-  'susd3':     0.10,
-  'imusd':     0.10,
-  'reusde':    0.10,
-  'stkusdc':   0.10,
-  'susdai':    0.10,
-  'infinifi':  0.10,
-  'reservoir': 0.10,
+  'syrupusdc': 0.15,  // 15% — Crédit institutionnel (KYC, track record Maple)
+  'snusd':     0.15,  // 15% — Delta-neutre multi-exchanges (funding rate)
+  'jrusde':    0.13,  // 13% — Tranche junior Ethena (rendement amplifié)
+  'susd3':     0.12,  // 12% — Crédit institutionnel non-sécurisé (zkTLS)
+  'susdai':    0.12,  // 12% — Prêts GPU/IA collatéralisés (CHIP token)
+  'infinifi':  0.10,  // 10% — Banque fractionnaire on-chain (Certora)
+  'reservoir': 0.08,  //  8% — CDP stablecoin + savings rate
+  'stkusdc':   0.07,  //  7% — Safety module Aave Umbrella (liquidation risk)
+  'imusd':     0.05,  //  5% — Levier sUSDe + Pendle + Aave (stratégie avancée)
+  'reusde':    0.03,  //  3% — Réassurance junior tranche (premier-loss)
+  // Somme = 1.00 ✓
 }
 
 // Balanced = 50% Prudent + 50% Dynamic (sum = 1.0)
@@ -92,8 +95,8 @@ const BALANCED_WEIGHTS = Object.fromEntries([
   ...Object.entries(DYNAMIC_WEIGHTS).map(([id, w]) => [id, w * 0.50]),
 ])
 
-// Airdrop Hunter (sum = 1.0) — répartition équitable
-const AIRDROP_HUNTER_WEIGHTS = {
+// Rewards Hunter (sum = 1.0) — répartition équitable
+const REWARDS_HUNTER_WEIGHTS = {
   'sierra': 0.25,
   'cap':    0.25,
   'thbill': 0.25,
@@ -130,12 +133,12 @@ export const PROFILES = {
     apyRange: '8–15%',
     theme: 'dark',
   },
-  airdropHunter: {
-    id: 'airdropHunter',
+  rewardsHunter: {
+    id: 'rewardsHunter',
     icon: '🪂',
-    shareToken: 'glUSD-AH',
-    protocolIds: AIRDROP_HUNTER_PROTOCOL_IDS,
-    weights: AIRDROP_HUNTER_WEIGHTS,
+    shareToken: 'glUSD-RH',
+    protocolIds: REWARDS_HUNTER_PROTOCOL_IDS,
+    weights: REWARDS_HUNTER_WEIGHTS,
     apyRange: 'Variable',
     theme: 'christmas',
   },
@@ -161,7 +164,7 @@ export const PROFILE_PILL_COLORS = {
     dot: '#7C3AED',
     darkInactive: 'dark:bg-violet-900/30 dark:text-violet-300 dark:border-violet-700',
   },
-  airdropHunter: {
+  rewardsHunter: {
     inactive: 'bg-red-50 text-red-800 border border-red-200 hover:bg-red-100',
     active: 'bg-[#C0392B] text-white shadow-sm',
     dot: '#C0392B',

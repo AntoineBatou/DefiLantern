@@ -14,6 +14,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { useLang } from '../context/LangContext'
+import { useRiskProfile } from '../context/RiskProfileContext'
 import { CATEGORY_COLORS } from '../data/protocols'
 
 // ── Constantes ────────────────────────────────────────────────────────────────
@@ -110,6 +111,7 @@ function computeAvg12m(history) {
 // ── Modal principal ────────────────────────────────────────────────────────────
 export default function ProtocolModal({ protocol, apyInfo, onClose }) {
   const { t, lang } = useLang()
+  const { profileWeights } = useRiskProfile()
   const overlayRef = useRef(null)
 
   const [histResult, setHistResult] = useState({ avg: null, tooRecent: false, dataPoints: 0 })
@@ -120,6 +122,13 @@ export default function ProtocolModal({ protocol, apyInfo, onClose }) {
 
     // On utilise le poolId disponible dans apyInfo (live ou connu depuis protocols.js)
     const poolId = apyInfo?.poolId ?? null
+
+    // Si pas de poolId mais protocole connu comme récent → tooRecent statique
+    if (!poolId && protocol.tooRecent) {
+      setHistResult({ avg: null, tooRecent: true, dataPoints: 0 })
+      setLoadingHistory(false)
+      return
+    }
 
     if (poolId) {
       setLoadingHistory(true)
@@ -251,7 +260,9 @@ export default function ProtocolModal({ protocol, apyInfo, onClose }) {
         <div className="flex items-center justify-between border-t border-lgrey pt-4">
           <div className="text-center">
             <div className="text-xs text-navy/40 mb-1">{t('modal.allocationLabel')}</div>
-            <div className="text-2xl font-bold text-navy">{protocol.allocation}%</div>
+            <div className="text-2xl font-bold text-navy">
+              {((profileWeights[protocol.id] ?? 0) * 100).toFixed(1)}%
+            </div>
           </div>
           <div className="text-center">
             <div className="text-xs text-navy/40 mb-1">{t('modal.riskLabel')}</div>
