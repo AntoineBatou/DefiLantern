@@ -34,7 +34,7 @@ import Learn from './components/Learn'
 import ParachuteOverlay from './components/ParachuteOverlay'
 import LanternCursor from './components/LanternCursor'
 
-const IS_DEPOSIT_ONLY = false // app.cryptoluciole.com affiche le site complet
+const IS_APP = window.location.hostname === 'app.cryptoluciole.com'
 
 // ── Composant interne qui utilise les deux contextes ──────────────────────────
 function AppContent() {
@@ -119,7 +119,7 @@ function AppContent() {
     : `theme-${profileConfig.theme}` // → 'theme-christmas'
 
   // ── app.cryptoluciole.com : page dépôt uniquement ────────────────────────
-  if (IS_DEPOSIT_ONLY) {
+  if (IS_APP) {
     return (
       <div className="theme-transition min-h-screen">
         <header className="sticky top-0 z-50 bg-white border-b border-lgrey shadow-sm">
