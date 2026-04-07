@@ -665,7 +665,7 @@ function WhitepaperFR() {
           <WpTable
             headers={['Allocation', '%', 'Montant', 'Vesting', 'Justification']}
             rows={[
-              ['Équipe — Genesis Gouvernance (5 fondateurs)', '10%', '2 000 000 chacun', 'Pas de cliff — libération linéaire sur 24 mois dès le lancement', 'Permet le vote dès J+0 pour bootstrapper la gouvernance'],
+              ['Équipe — Genesis Gouvernance (5 fondateurs)', '10%', '2 000 000 chacun', 'Attribués immédiatement — non cessibles pendant 24 mois', 'Permet le vote dès le premier jour pour assurer le fonctionnement de la gouvernance'],
               ['Équipe — Vesting long terme (5 fondateurs)', '10%', '2 000 000 chacun', 'Cliff 12 mois puis libération linéaire sur 24 mois', 'Alignement long terme — les fondateurs ne peuvent pas vendre au lancement'],
               ['Treasury / DAO', '40%', '40 000 000', 'Gouverné par la DAO', 'Finance les audits, l\'infrastructure, le développement'],
               ['Communauté / Liquidity Mining', '30%', '30 000 000', 'Émission sur 48 mois aux déposants des 4 vaults (glUSD-P/B/D/RH)', 'Bootstrap de l\'adoption par récompense des premiers utilisateurs'],
@@ -1549,7 +1549,7 @@ new_shares  = fee_in_usd / pricePerShare_after_yield`}</CodeBlock>
           <WpTable
             headers={['Allocation', '%', 'Amount', 'Vesting', 'Rationale']}
             rows={[
-              ['Team — Genesis Governance (5 founders)', '10%', '2,000,000 each', 'No cliff — 24-month linear vesting from launch', 'Voting rights available from day 0 to bootstrap governance'],
+              ['Team — Genesis Governance (5 founders)', '10%', '2,000,000 each', 'Granted immediately — non-transferable for 24 months', 'Enables voting from day one to ensure governance operates from launch'],
               ['Team — Long-term vesting (5 founders)', '10%', '2,000,000 each', '12-month cliff + 24-month linear', 'Long-term alignment — founders cannot sell at launch'],
               ['Treasury / DAO', '40%', '40,000,000', 'DAO-governed', 'Funds audits, infrastructure, development'],
               ['Community / Liquidity Mining', '30%', '30,000,000', '48-month emission to depositors across all 4 vaults (glUSD-P/B/D/RH)', 'Bootstraps adoption, rewards early users'],
