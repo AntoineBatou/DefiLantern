@@ -38,6 +38,8 @@ export default function Header({ currentPage, navigateTo, navigateToSection }) {
 
   const closeMenu = () => setMenuOpen(false)
 
+  const isPrezMode = import.meta.env.VITE_PREZ_MODE === 'true'
+
   const navLinks = [
     { label: t('nav.howItWorks'), type: 'section',  target: 'how-it-works' },
     { label: t('nav.protocols'),  type: 'section',  target: 'protocols' },
@@ -45,7 +47,9 @@ export default function Header({ currentPage, navigateTo, navigateToSection }) {
     { label: t('nav.simulator'),  type: 'page',     target: 'simulator' },
     { label: t('nav.learn'),      type: 'page',     target: 'learn' },
     { label: t('nav.governance'), type: 'page',     target: 'governance' },
-    { label: t('nav.deposit'),    type: 'external', href: 'https://app.cryptoluciole.com', cta: true },
+    isPrezMode
+      ? { label: t('nav.connect'), type: 'external', href: 'https://dapp.cryptoluciole.com', cta: true }
+      : { label: t('nav.deposit'), type: 'external', href: 'https://app.cryptoluciole.com', cta: true },
   ]
 
   const handleLinkClick = (link) => {

@@ -14,6 +14,7 @@ export const translations = {
       dashboard: 'Dashboard',
       governance: 'Gouvernance',
       deposit: 'Déposer',
+      connect: 'Se connecter',
       learn: 'Apprendre',
     },
 
@@ -338,6 +339,7 @@ export const translations = {
       dashboard: 'Dashboard',
       governance: 'Governance',
       deposit: 'Deposit',
+      connect: 'Log in',
       learn: 'Learn',
     },
 
