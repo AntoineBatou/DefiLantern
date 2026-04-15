@@ -1,32 +1,79 @@
-// useVault.js — Hook wagmi v2 pour interagir avec DeFiLanternVaultPrudent sur Sepolia
+// useVault.js — Hook wagmi v2 pour interagir avec VaultPrudentGlUSDP (Didier — DDA209/Crypto-Lantern)
 //
-// Flux dépôt en 2 étapes :
-//   1. approve(vaultAddress, amount) sur MockUSDC  → autorise le vault à prendre nos USDC
-//   2. deposit(amount, userAddress) sur le vault   → dépose et reçoit des glUSD-P
+// Contrat : VaultPrudentGlUSDP.sol (avril 2026)
+// USDC Sepolia : 0x94a9D9AC8a22534E3FaCa9F4e7F2E2cf85d5E4C8 (Aave testnet)
+// Faucet USDC  : https://app.aave.com/faucet/ → USDC sur Sepolia
 //
-// On utilise useWriteContract (wagmi v2) qui gère signature + broadcast.
+// Flux dépôt (2 étapes) :
+//   1. approve(vaultAddress, amount) sur USDC → autorise le vault
+//   2. deposit(amount, userAddress) sur le vault → reçoit glUSD-P
+//
+// Flux retrait (2 étapes) :
+//   1. Si le caller n'est pas l'owner : approve de shares requis (ERC-4626)
+//   2. withdraw(amount, receiver, owner) sur le vault → récupère USDC
 
 import { useWriteContract, useReadContract, useAccount, useChainId } from 'wagmi'
 import { parseUnits, formatUnits } from 'viem'
-import { CONTRACT_ADDRESSES } from '../contracts/addresses'
-import MockUSDCABI from '../contracts/MockUSDC.json'
+import { CONTRACT_ADDRESSES, USDC_ADDRESSES } from '../contracts/addresses'
 import VaultABI from '../contracts/DeFiLanternVaultPrudent.json'
+
+// ABI minimal ERC-20 — inclut mint() pour le faucet testnet (Aave TestnetERC20)
+const ERC20_ABI = [
+  {
+    name: 'approve',
+    type: 'function',
+    stateMutability: 'nonpayable',
+    inputs: [
+      { name: 'spender', type: 'address' },
+      { name: 'amount', type: 'uint256' },
+    ],
+    outputs: [{ name: '', type: 'bool' }],
+  },
+  {
+    name: 'balanceOf',
+    type: 'function',
+    stateMutability: 'view',
+    inputs: [{ name: 'account', type: 'address' }],
+    outputs: [{ name: '', type: 'uint256' }],
+  },
+  {
+    name: 'allowance',
+    type: 'function',
+    stateMutability: 'view',
+    inputs: [
+      { name: 'owner', type: 'address' },
+      { name: 'spender', type: 'address' },
+    ],
+    outputs: [{ name: '', type: 'uint256' }],
+  },
+  {
+    name: 'mint',
+    type: 'function',
+    stateMutability: 'nonpayable',
+    inputs: [
+      { name: 'to', type: 'address' },
+      { name: 'amount', type: 'uint256' },
+    ],
+    outputs: [],
+  },
+]
 
 export function useVault() {
   const { address } = useAccount()
   const chainId = useChainId()
   const addrs = CONTRACT_ADDRESSES[chainId]
+  const usdcAddress = USDC_ADDRESSES[chainId]
 
   // ── Écriture on-chain ────────────────────────────────────────────────────
   const { writeContractAsync, isPending, isSuccess, error } = useWriteContract()
 
-  // ── Lecture : solde MockUSDC du wallet ──────────────────────────────────
-  const { data: mockUsdcBalance, refetch: refetchBalance } = useReadContract({
-    address: addrs?.mockUSDC,
-    abi: MockUSDCABI.abi,
+  // ── Lecture : solde USDC du wallet ──────────────────────────────────────
+  const { data: usdcBalance, refetch: refetchBalance } = useReadContract({
+    address: usdcAddress,
+    abi: ERC20_ABI,
     functionName: 'balanceOf',
     args: [address],
-    query: { enabled: !!address && !!addrs?.mockUSDC },
+    query: { enabled: !!address && !!usdcAddress, refetchInterval: 4000 },
   })
 
   // ── Lecture : solde de shares glUSD-P du wallet ────────────────────────
@@ -35,7 +82,7 @@ export function useVault() {
     abi: VaultABI.abi,
     functionName: 'balanceOf',
     args: [address],
-    query: { enabled: !!address && !!addrs?.vaultPrudent },
+    query: { enabled: !!address && !!addrs?.vaultPrudent, refetchInterval: 4000 },
   })
 
   // ── Lecture : totalAssets du vault ──────────────────────────────────────
@@ -46,29 +93,57 @@ export function useVault() {
     query: { enabled: !!addrs?.vaultPrudent },
   })
 
-  // ── Action : faucet MockUSDC (demander 1 000 USDC de test) ──────────────
+  // ── Lecture : buffer USDC idle dans le vault ────────────────────────────
+  const { data: bufferAssets } = useReadContract({
+    address: addrs?.vaultPrudent,
+    abi: VaultABI.abi,
+    functionName: 'getBufferTotalAssets',
+    query: { enabled: !!addrs?.vaultPrudent },
+  })
+
+  // ── Lecture : timestamp de déploiement (pour calcul APY) ────────────────
+  const { data: deploymentTimestamp } = useReadContract({
+    address: addrs?.vaultPrudent,
+    abi: VaultABI.abi,
+    functionName: 'deploymentTimestamp',
+    query: { enabled: !!addrs?.vaultPrudent },
+  })
+
+  // ── Lecture : convertToAssets(1e6) → prix d'un share en USDC ────────────
+  const { data: sharePrice } = useReadContract({
+    address: addrs?.vaultPrudent,
+    abi: VaultABI.abi,
+    functionName: 'convertToAssets',
+    args: [BigInt(1_000_000)], // 1 glUSD-P (6 décimales)
+    query: { enabled: !!addrs?.vaultPrudent },
+  })
+
+  // ── Action : faucet — mint 1 000 USDC de test ───────────────────────────
   const faucet = async () => {
-    return writeContractAsync({
-      address: addrs.mockUSDC,
-      abi: MockUSDCABI.abi,
-      functionName: 'faucet',
+    const amountRaw = parseUnits('1000', 6) // 1 000 USDC
+    await writeContractAsync({
+      address: usdcAddress,
+      abi: ERC20_ABI,
+      functionName: 'mint',
+      args: [address, amountRaw],
     })
+    refetchBalance()
   }
 
-  // ── Action : dépôt (approve + deposit) ──────────────────────────────────
+  // ── Action : dépôt (approve USDC + deposit) ─────────────────────────────
   const deposit = async (amountUsdc) => {
     // USDC a 6 décimales — 100 USDC = 100_000_000 en unités brutes
     const amountRaw = parseUnits(String(amountUsdc), 6)
 
-    // Étape 1 : approuver le vault
+    // Étape 1 : approuver le vault sur le contrat USDC
     await writeContractAsync({
-      address: addrs.mockUSDC,
-      abi: MockUSDCABI.abi,
+      address: usdcAddress,
+      abi: ERC20_ABI,
       functionName: 'approve',
       args: [addrs.vaultPrudent, amountRaw],
     })
 
-    // Étape 2 : déposer
+    // Étape 2 : déposer → reçoit des shares glUSD-P
     await writeContractAsync({
       address: addrs.vaultPrudent,
       abi: VaultABI.abi,
@@ -76,14 +151,30 @@ export function useVault() {
       args: [amountRaw, address],
     })
 
-    // Rafraîchir les soldes
+    refetchBalance()
+    refetchShares()
+  }
+
+  // ── Action : retrait (withdraw) ──────────────────────────────────────────
+  // withdraw(assetAmount, receiver, owner)
+  // Pour l'utilisateur retirant ses propres fonds : owner = receiver = address
+  const withdraw = async (amountUsdc) => {
+    const amountRaw = parseUnits(String(amountUsdc), 6)
+
+    await writeContractAsync({
+      address: addrs.vaultPrudent,
+      abi: VaultABI.abi,
+      functionName: 'withdraw',
+      args: [amountRaw, address, address],
+    })
+
     refetchBalance()
     refetchShares()
   }
 
   // ── Helpers de formatage ─────────────────────────────────────────────────
-  const formattedMockUsdcBalance = mockUsdcBalance
-    ? parseFloat(formatUnits(mockUsdcBalance, 6)).toFixed(2)
+  const formattedUsdcBalance = usdcBalance
+    ? parseFloat(formatUnits(usdcBalance, 6)).toFixed(2)
     : '0.00'
 
   const formattedSharesBalance = sharesBalance
@@ -94,18 +185,32 @@ export function useVault() {
     ? parseFloat(formatUnits(totalAssets, 6)).toFixed(2)
     : '0.00'
 
+  const formattedBufferAssets = bufferAssets
+    ? parseFloat(formatUnits(bufferAssets, 6)).toFixed(2)
+    : '0.00'
+
+  // Prix d'un share en USDC (démarre à 1.000000, augmente avec les rendements)
+  const formattedSharePrice = sharePrice
+    ? parseFloat(formatUnits(sharePrice, 6)).toFixed(6)
+    : '1.000000'
+
   const isSepoliaSupported = !!addrs?.vaultPrudent
 
   return {
     deposit,
+    withdraw,
     faucet,
     isPending,
     isSuccess,
     error,
-    mockUsdcBalance: formattedMockUsdcBalance,
+    usdcBalance: formattedUsdcBalance,
     sharesBalance: formattedSharesBalance,
     totalAssets: formattedTotalAssets,
+    bufferAssets: formattedBufferAssets,
+    sharePrice: formattedSharePrice,
+    deploymentTimestamp,
     isSepoliaSupported,
+    usdcAddress,
     addresses: addrs,
   }
 }

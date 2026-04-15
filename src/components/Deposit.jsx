@@ -83,7 +83,12 @@ export default function Deposit({ averageApy }) {
 
   // ── Handlers ───────────────────────────────────────────────────────────────
   const handleMax = () => {
-    if (isConnected && parseFloat(usdcBalance) > 0) setAmount(usdcBalance)
+    if (!isConnected) return
+    if (mode === 'withdraw') {
+      if (parseFloat(sharesBalance) > 0) setAmount(sharesBalance)
+    } else {
+      if (parseFloat(usdcBalance) > 0) setAmount(usdcBalance)
+    }
   }
 
   const handleDeposit = async () => {
@@ -266,7 +271,7 @@ export default function Deposit({ averageApy }) {
                 <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2">
                   <button
                     onClick={handleMax}
-                    disabled={!isConnected || parseFloat(usdcBalance) <= 0}
+                    disabled={!isConnected || (mode === 'withdraw' ? parseFloat(sharesBalance) <= 0 : parseFloat(usdcBalance) <= 0)}
                     className="text-xs font-bold text-[#28B092] hover:text-[#2ABFAB] disabled:text-navy/30 transition-colors"
                   >
                     {t('deposit.maxBtn')}
@@ -276,7 +281,12 @@ export default function Deposit({ averageApy }) {
               </div>
               {isConnected && (
                 <p className="text-xs text-navy/40 mt-2">
-                  Disponible : <span className="font-medium">{usdcBalanceFormatted} USDC</span>
+                  Disponible :{' '}
+                  <span className="font-medium">
+                    {mode === 'withdraw'
+                      ? `${sharesBalance} glUSD-P`
+                      : `${usdcBalanceFormatted} USDC`}
+                  </span>
                 </p>
               )}
             </div>
