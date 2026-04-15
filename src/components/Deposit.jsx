@@ -48,15 +48,21 @@ export default function Deposit({ averageApy }) {
     isSepoliaSupported,
   } = useVault()
 
+  const [isTxLoading, setIsTxLoading] = useState(false)
+
   const handleFaucet = async () => {
+    setIsTxLoading(true)
     try {
       setTxStep('Mint de 1 000 USDC de test...')
       await faucet()
       setTxStep('1 000 USDC reçus !')
       setTimeout(() => setTxStep(''), 3000)
     } catch (e) {
-      setTxStep('Erreur — ce token testnet ne supporte pas le mint direct.')
-      setTimeout(() => setTxStep(''), 4000)
+      const msg = e?.shortMessage || e?.message || String(e)
+      setTxStep(`Erreur faucet : ${msg}`)
+      setTimeout(() => setTxStep(''), 8000)
+    } finally {
+      setIsTxLoading(false)
     }
   }
 
@@ -124,6 +130,7 @@ export default function Deposit({ averageApy }) {
       alert('Connecte-toi au réseau Sepolia pour utiliser la démo on-chain.')
       return
     }
+    setIsTxLoading(true)
     try {
       setTxStep('Étape 1/2 — Autorisation USDC...')
       await deposit(numAmount, (msg) => setTxStep(msg))
@@ -135,6 +142,8 @@ export default function Deposit({ averageApy }) {
       const msg = e?.shortMessage || e?.message || String(e)
       setTxStep(`Erreur : ${msg}`)
       setTimeout(() => setTxStep(''), 8000)
+    } finally {
+      setIsTxLoading(false)
     }
   }
 
@@ -143,6 +152,7 @@ export default function Deposit({ averageApy }) {
       alert('Connecte-toi au réseau Sepolia pour utiliser la démo on-chain.')
       return
     }
+    setIsTxLoading(true)
     try {
       setTxStep('Retrait en cours...')
       await withdraw(numAmount)
@@ -154,6 +164,8 @@ export default function Deposit({ averageApy }) {
       const msg = e?.shortMessage || e?.message || String(e)
       setTxStep(`Erreur : ${msg}`)
       setTimeout(() => setTxStep(''), 8000)
+    } finally {
+      setIsTxLoading(false)
     }
   }
 
@@ -229,7 +241,7 @@ export default function Deposit({ averageApy }) {
                   <span className="text-xs font-semibold text-amber-800">Réseau Sepolia (test)</span>
                   <button
                     onClick={handleFaucet}
-                    disabled={isPending}
+                    disabled={isTxLoading || isPending}
                     className="text-xs font-bold text-amber-700 bg-amber-100 hover:bg-amber-200 px-3 py-1 rounded-full transition-colors disabled:opacity-50"
                   >
                     + 1 000 USDC de test
@@ -383,14 +395,14 @@ export default function Deposit({ averageApy }) {
             {isConnected ? (
               <button
                 onClick={mode === 'deposit' ? handleDeposit : handleWithdraw}
-                disabled={numAmount <= 0 || isPending}
+                disabled={numAmount <= 0 || isTxLoading || isPending}
                 className={`disabled:opacity-40 disabled:cursor-not-allowed ${
                   mode === 'withdraw'
                     ? 'bg-navy hover:bg-navy/90 text-white font-semibold px-6 py-3 rounded-xl transition-all duration-200 shadow-sm hover:shadow-md active:scale-95'
                     : 'btn-primary'
                 }`}
               >
-                {isPending
+                {isTxLoading || isPending
                   ? 'Transaction en cours...'
                   : mode === 'withdraw'
                   ? `Retirer ${numAmount > 0 ? `${numAmount.toLocaleString()} glUSD-P` : ''}`
