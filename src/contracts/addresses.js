@@ -1,50 +1,60 @@
 /**
  * addresses.js — Adresses des contrats déployés par réseau
  *
- * IMPORTANT : Ce fichier doit être mis à jour après chaque déploiement.
- * Les adresses ci-dessous sont des placeholders — remplacer après déploiement.
+ * ⚠️  CONTRAT ACTIF : VaultPrudentGlUSDP (Didier — repo DDA209/Crypto-Lantern)
+ *      ABI mis à jour avril 2026 pour correspondre au contrat de Didier.
  *
- * Comment obtenir ces adresses :
- *  1. Lancer le script de déploiement Foundry :
- *     forge script script/Deploy.s.sol --rpc-url $SEPOLIA_RPC_URL --broadcast
- *  2. Copier les adresses affichées dans le terminal
- *  3. Les coller ici (section "sepolia")
+ * Vault Sepolia (Didier) :
+ *   - À CONFIRMER avec Didier : adresse dans son .env NEXT_PUBLIC_VAULT_PRUDENT_GLUSDP_ADDRESS_SEPOLIA
+ *   - Candidat probable (déployé par 0x97b3b9... bloc ~10602725) :
+ *     0xfb4ec1eb2e5ffab8196b4db00fb1d24cafad9e94
+ *   - Déployé avec USDC Aave testnet Sepolia : 0x94a9D9AC8a22534E3FaCa9F4e7F2E2cf85d5E4C8
+ *
+ * MockAdapter Sepolia (Didier) :
+ *   - 0x39914a706FF75B603A584e75Bd8DA6fC68330352 (confirmé, bloc 10660921)
  *
  * Chain IDs :
  *  - Ethereum mainnet : 1
  *  - Sepolia testnet  : 11155111
- *  - Polygon PoS      : 137
  */
 
 export const CONTRACT_ADDRESSES = {
-  // ── Sepolia testnet (déploiement académique) ─────────────────────────────
+  // ── Sepolia testnet ───────────────────────────────────────────────────────
   11155111: {
-    mockUSDC:             "0xD68d95B5a5624468490087106eCB497f64925398", // MockUSDC — déployé mars 2026
-    vaultPrudent:         "0x47e6837c93d0aec479f00CA21c4890ECB498AE02", // glUSD-P — déployé mars 2026
+    // USDC Aave testnet Sepolia (utilisé par le vault de Didier)
+    // Faucet : https://app.aave.com/faucet/ → sélectionner "USDC" sur Sepolia
+    usdc:               "0x94a9D9AC8a22534E3FaCa9F4e7F2E2cf85d5E4C8",
+
+    // VaultPrudentGlUSDP — déployé par Didier (0x97b3b9...), vérifié Etherscan, testé avril 2026
+    vaultPrudent:       "0xab539bCfbCAf4d7e1A1eb3a79Dbaa6eb6E2aA37F",
+
+    // Adapter MockAdapter (déployé, confirmé)
+    mockAdapter:        "0x39914a706FF75B603A584e75Bd8DA6fC68330352",
+
     // Futurs vaults (v2)
-    vaultBalanced:        null,
-    vaultDynamic:         null,
-    vaultRewardsHunter:   null,
+    vaultBalanced:      null,
+    vaultDynamic:       null,
+    vaultRewardsHunter: null,
   },
 
-  // ── Ethereum mainnet (production future — pas encore déployé) ────────────
+  // ── Ethereum mainnet (production future) ──────────────────────────────────
   1: {
-    mockUSDC:             null, // N/A — on utilise le vrai USDC sur mainnet
-    vaultPrudent:         null,
-    vaultBalanced:        null,
-    vaultDynamic:         null,
-    vaultRewardsHunter:   null,
+    usdc:               "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48", // USDC Circle mainnet
+    vaultPrudent:       null,
+    vaultBalanced:      null,
+    vaultDynamic:       null,
+    vaultRewardsHunter: null,
   },
 }
 
 /**
  * Adresse USDC selon la chaîne active.
- * Sur Sepolia : utiliser MockUSDC (notre token de test)
- * Sur mainnet : utiliser le vrai USDC de Circle
+ * Sur Sepolia : USDC Aave testnet (0x94a9...)
+ * Sur mainnet : USDC Circle (0xA0b8...)
  */
 export const USDC_ADDRESSES = {
-  1:        "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48", // USDC mainnet
-  11155111: "0xD68d95B5a5624468490087106eCB497f64925398", // MockUSDC Sepolia
+  1:        "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48", // USDC mainnet Circle
+  11155111: "0x94a9D9AC8a22534E3FaCa9F4e7F2E2cf85d5E4C8", // USDC Aave testnet Sepolia
   137:      "0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359", // USDC Polygon
 }
 
@@ -58,11 +68,9 @@ export function getAddresses(chainId) {
 }
 
 /**
- * Helper : retourne l'adresse USDC à utiliser (réel ou mock selon la chaîne)
+ * Helper : retourne l'adresse USDC à utiliser selon la chaîne
  * @param {number} chainId
- * @param {string|null} mockUSDCAddress — adresse du MockUSDC déployé (pour Sepolia)
  */
-export function getUSDCAddress(chainId, mockUSDCAddress = null) {
-  if (chainId === 11155111 && mockUSDCAddress) return mockUSDCAddress
+export function getUSDCAddress(chainId) {
   return USDC_ADDRESSES[chainId] ?? null
 }
