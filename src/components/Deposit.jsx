@@ -70,6 +70,27 @@ export default function Deposit({ averageApy }) {
   const [amount, setAmount] = useState('')
   const [txStep, setTxStep] = useState('') // message d'étape pendant la tx
 
+  // ── Historique des transactions (localStorage) ────────────────────────────
+  const [txHistory, setTxHistory] = useState(() => {
+    try { return JSON.parse(localStorage.getItem('lantern_tx_history') || '[]') }
+    catch { return [] }
+  })
+
+  const addTx = (type, amount) => {
+    const tx = { type, amount, ts: Date.now() }
+    const next = [tx, ...txHistory].slice(0, 15)
+    setTxHistory(next)
+    localStorage.setItem('lantern_tx_history', JSON.stringify(next))
+  }
+
+  const relativeTime = (ts) => {
+    const diff = Math.floor((Date.now() - ts) / 1000)
+    if (diff < 60) return 'à l\'instant'
+    if (diff < 3600) return `il y a ${Math.floor(diff / 60)} min`
+    if (diff < 86400) return `il y a ${Math.floor(diff / 3600)}h`
+    return `il y a ${Math.floor(diff / 86400)}j`
+  }
+
   // ── Helper formatage ──────────────────────────────────────────────────────
   const fmt = (val) => {
     const n = parseFloat(val)
@@ -103,6 +124,7 @@ export default function Deposit({ averageApy }) {
     try {
       setTxStep('Étape 1/2 — Autorisation USDC...')
       await deposit(numAmount)
+      addTx('deposit', numAmount)
       setTxStep(`Dépôt réussi ! Tu as reçu ${glUsdcReceived.toFixed(2)} glUSD-P`)
       setAmount('')
       setTimeout(() => setTxStep(''), 5000)
@@ -121,6 +143,7 @@ export default function Deposit({ averageApy }) {
     try {
       setTxStep('Retrait en cours...')
       await withdraw(numAmount)
+      addTx('withdraw', numAmount)
       setTxStep(`Retrait réussi ! ${numAmount.toFixed(2)} USDC reçus`)
       setAmount('')
       setTimeout(() => setTxStep(''), 5000)
@@ -433,6 +456,39 @@ export default function Deposit({ averageApy }) {
             </div>
           </div>
         </div>
+
+        {/* ── Historique des transactions ── */}
+        {isConnected && txHistory.length > 0 && (
+          <div className="max-w-4xl mx-auto mt-8">
+            <div className="bg-bg rounded-3xl p-5">
+              <h3 className="text-xs font-semibold text-navy/40 uppercase tracking-wider mb-4">
+                Historique
+              </h3>
+              <div className="flex flex-col gap-2">
+                {txHistory.map((tx, i) => (
+                  <div key={i} className="flex items-center justify-between py-2 border-b border-lgrey last:border-0">
+                    <div className="flex items-center gap-3">
+                      <span className={`w-7 h-7 rounded-full flex items-center justify-center text-xs flex-shrink-0 ${
+                        tx.type === 'deposit' ? 'bg-[#28B092]/10 text-[#28B092]' : 'bg-navy/10 text-navy'
+                      }`}>
+                        {tx.type === 'deposit' ? '↓' : '↑'}
+                      </span>
+                      <div>
+                        <div className="text-sm font-semibold text-navy">
+                          {tx.type === 'deposit' ? 'Dépôt' : 'Retrait'}
+                        </div>
+                        <div className="text-xs text-navy/40">{relativeTime(tx.ts)}</div>
+                      </div>
+                    </div>
+                    <span className={`font-bold text-sm ${tx.type === 'deposit' ? 'text-[#28B092]' : 'text-navy'}`}>
+                      {tx.type === 'deposit' ? '+' : '-'}{fmt(tx.amount)} {tx.type === 'deposit' ? 'USDC' : 'glUSD-P'}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </section>
   )
