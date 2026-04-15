@@ -70,16 +70,20 @@ export default function Deposit({ averageApy }) {
   const [amount, setAmount] = useState('')
   const [txStep, setTxStep] = useState('') // message d'étape pendant la tx
 
+  // ── Helper formatage ──────────────────────────────────────────────────────
+  const fmt = (val) => {
+    const n = parseFloat(val)
+    if (isNaN(n)) return '—'
+    return n.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+  }
+
   // ── Calculs ────────────────────────────────────────────────────────────────
   const numAmount = parseFloat(amount) || 0
   const glUsdcReceived = numAmount
   const estimatedYield = numAmount * ((averageApy ?? 0) / 100)
 
   // Solde affiché : USDC Aave testnet sur Sepolia, sinon '—'
-  const usdcBalNum = parseFloat(usdcBalance)
-  const usdcBalanceFormatted = isSepolia && isSepoliaSupported && !isNaN(usdcBalNum)
-    ? usdcBalNum.toLocaleString('fr-FR', { maximumFractionDigits: 2 })
-    : '—'
+  const usdcBalanceFormatted = isSepolia && isSepoliaSupported ? fmt(usdcBalance) : '—'
 
   // ── Handlers ───────────────────────────────────────────────────────────────
   const handleMax = () => {
@@ -154,7 +158,7 @@ export default function Deposit({ averageApy }) {
             <div className="text-xs text-navy/40">
               {mode === 'withdraw' ? 'Solde glUSD-P' : t('deposit.balance')} :{' '}
               <span className="font-medium text-navy/60">
-                {mode === 'withdraw' ? `${sharesBalance} glUSD-P` : `${usdcBalanceFormatted} USDC`}
+                {mode === 'withdraw' ? `${fmt(sharesBalance)} glUSD-P` : `${usdcBalanceFormatted} USDC`}
               </span>
             </div>
           )}
@@ -204,7 +208,7 @@ export default function Deposit({ averageApy }) {
                   </button>
                 </div>
                 <div className="text-xs text-amber-700">
-                  Solde USDC : <span className="font-bold">{usdcBalance} USDC</span>
+                  Solde USDC : <span className="font-bold">{fmt(usdcBalance)} USDC</span>
                 </div>
               </div>
             )}
@@ -284,7 +288,7 @@ export default function Deposit({ averageApy }) {
                   Disponible :{' '}
                   <span className="font-medium">
                     {mode === 'withdraw'
-                      ? `${sharesBalance} glUSD-P`
+                      ? `${fmt(sharesBalance)} glUSD-P`
                       : `${usdcBalanceFormatted} USDC`}
                   </span>
                 </p>
