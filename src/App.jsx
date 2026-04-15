@@ -27,6 +27,7 @@ import Strategy from './components/Strategy'
 import Simulator from './components/Simulator'
 import Dashboard from './components/Dashboard'
 import Deposit from './components/Deposit'
+import VaultDashboard from './components/VaultDashboard'
 import Footer from './components/Footer'
 import Governance from './components/Governance'
 import Whitepaper from './components/Whitepaper'
@@ -118,26 +119,58 @@ function AppContent() {
     : profileConfig.theme === 'dark' ? 'dark'
     : `theme-${profileConfig.theme}` // → 'theme-christmas'
 
-  // ── app.cryptoluciole.com : page dépôt uniquement ────────────────────────
+  // ── app.cryptoluciole.com : dépôt + tableau de bord ─────────────────────
+  const [appPage, setAppPage] = useState('deposit') // 'deposit' | 'dashboard'
+
   if (IS_APP) {
     return (
-      <div className="theme-transition min-h-screen">
+      <div className="theme-transition min-h-screen bg-white">
+        {/* Header */}
         <header className="sticky top-0 z-50 bg-white border-b border-lgrey shadow-sm">
-          <div className="max-w-6xl mx-auto px-4 h-14 flex items-center">
+          <div className="max-w-6xl mx-auto px-4 h-14 flex items-center gap-4">
+            {/* Retour */}
             <a
               href="https://cryptoluciole.com"
-              className="flex items-center gap-2 text-sm text-navy/60 hover:text-[#28B092] transition-colors"
+              className="flex items-center gap-1.5 text-sm text-navy/50 hover:text-[#28B092] transition-colors flex-shrink-0"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
               </svg>
-              cryptoluciole.com
+              <span className="hidden sm:inline">cryptoluciole.com</span>
             </a>
-            <span className="mx-auto font-bold text-[#28B092]">DeFi Lantern — Dépôt</span>
+
+            {/* Onglets navigation */}
+            <nav className="flex gap-1 bg-bg rounded-xl p-1 mx-auto">
+              <button
+                onClick={() => setAppPage('deposit')}
+                className={`px-4 py-1.5 rounded-lg text-sm font-semibold transition-all ${
+                  appPage === 'deposit'
+                    ? 'bg-white text-navy shadow-sm'
+                    : 'text-navy/50 hover:text-navy'
+                }`}
+              >
+                Déposer
+              </button>
+              <button
+                onClick={() => setAppPage('dashboard')}
+                className={`px-4 py-1.5 rounded-lg text-sm font-semibold transition-all ${
+                  appPage === 'dashboard'
+                    ? 'bg-white text-navy shadow-sm'
+                    : 'text-navy/50 hover:text-navy'
+                }`}
+              >
+                Tableau de bord
+              </button>
+            </nav>
+
+            {/* Logo droit */}
+            <span className="text-sm font-bold text-[#28B092] flex-shrink-0 hidden sm:block">DeFi Lantern</span>
           </div>
         </header>
+
         <main>
-          <Deposit averageApy={profileAverageApy} />
+          {appPage === 'deposit'   && <Deposit averageApy={profileAverageApy} />}
+          {appPage === 'dashboard' && <VaultDashboard />}
         </main>
       </div>
     )
