@@ -280,7 +280,7 @@ export default function Deposit({ averageApy }) {
                   >
                     {t('deposit.maxBtn')}
                   </button>
-                  <span className="text-sm font-semibold text-navy/60">{asset}</span>
+                  <span className="text-sm font-semibold text-navy/60">{mode === 'withdraw' ? 'glUSD-P' : asset}</span>
                 </div>
               </div>
               {isConnected && (
@@ -313,7 +313,7 @@ export default function Deposit({ averageApy }) {
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-navy/60">Rendement / an (est.)</span>
                   <span className="font-bold text-green-600">
-                    +{estimatedYield.toFixed(2)} {asset}
+                    +{estimatedYield.toFixed(2)} {mode === 'withdraw' ? 'glUSD-P' : asset}
                   </span>
                 </div>
                 <div className="flex justify-between items-center pt-2 border-t border-lgrey">
@@ -346,7 +346,7 @@ export default function Deposit({ averageApy }) {
                 {isPending
                   ? 'Transaction en cours...'
                   : mode === 'withdraw'
-                  ? `Retirer ${numAmount > 0 ? `${numAmount.toLocaleString()} USDC` : ''}`
+                  ? `Retirer ${numAmount > 0 ? `${numAmount.toLocaleString()} glUSD-P` : ''}`
                   : `${t('deposit.depositBtn')} ${numAmount > 0 ? `${numAmount.toLocaleString()} ${asset}` : ''}`
                 }
               </button>
