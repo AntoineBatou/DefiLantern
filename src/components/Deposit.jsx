@@ -107,8 +107,9 @@ export default function Deposit({ averageApy }) {
       setAmount('')
       setTimeout(() => setTxStep(''), 5000)
     } catch (e) {
-      setTxStep('Transaction annulée ou échouée.')
-      setTimeout(() => setTxStep(''), 3000)
+      const msg = e?.shortMessage || e?.message || String(e)
+      setTxStep(`Erreur : ${msg}`)
+      setTimeout(() => setTxStep(''), 8000)
     }
   }
 
@@ -124,8 +125,9 @@ export default function Deposit({ averageApy }) {
       setAmount('')
       setTimeout(() => setTxStep(''), 5000)
     } catch (e) {
-      setTxStep('Transaction annulée ou échouée.')
-      setTimeout(() => setTxStep(''), 3000)
+      const msg = e?.shortMessage || e?.message || String(e)
+      setTxStep(`Erreur : ${msg}`)
+      setTimeout(() => setTxStep(''), 8000)
     }
   }
 
@@ -327,7 +329,11 @@ export default function Deposit({ averageApy }) {
 
             {/* Feedback transaction */}
             {txStep && (
-              <div className="text-center text-sm font-medium text-[#28B092] bg-[#28B092]/10 rounded-2xl py-3 px-4">
+              <div className={`text-center text-sm font-medium rounded-2xl py-3 px-4 break-words ${
+                txStep.startsWith('Erreur')
+                  ? 'text-red-700 bg-red-50 border border-red-200'
+                  : 'text-[#28B092] bg-[#28B092]/10'
+              }`}>
                 {txStep}
               </div>
             )}
