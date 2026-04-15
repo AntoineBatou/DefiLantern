@@ -63,6 +63,9 @@ export default function Deposit({ averageApy }) {
   // Mode : dépôt ou retrait
   const [mode, setMode] = useState('deposit')
 
+  // Historique déroulable
+  const [historyOpen, setHistoryOpen] = useState(false)
+
   // Actif sélectionné (USDC uniquement pour l'instant)
   const [asset] = useState('USDC')
 
@@ -459,12 +462,27 @@ export default function Deposit({ averageApy }) {
 
         {/* ── Historique des transactions ── */}
         {isConnected && txHistory.length > 0 && (
-          <div className="max-w-4xl mx-auto mt-8">
-            <div className="bg-bg rounded-3xl p-5">
-              <h3 className="text-xs font-semibold text-navy/40 uppercase tracking-wider mb-4">
-                Historique
-              </h3>
-              <div className="flex flex-col gap-2">
+          <div className="max-w-4xl mx-auto mt-6">
+            <button
+              onClick={() => setHistoryOpen((v) => !v)}
+              className="w-full flex items-center justify-between px-5 py-3.5 bg-bg hover:bg-lgrey rounded-2xl transition-colors group"
+            >
+              <span className="text-xs font-semibold text-navy/50 uppercase tracking-wider group-hover:text-navy/70 transition-colors">
+                Historique des transactions
+                <span className="ml-2 bg-navy/10 text-navy/50 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                  {txHistory.length}
+                </span>
+              </span>
+              <svg
+                className={`w-4 h-4 text-navy/30 transition-transform duration-200 ${historyOpen ? 'rotate-180' : ''}`}
+                viewBox="0 0 20 20" fill="currentColor"
+              >
+                <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+              </svg>
+            </button>
+
+            {historyOpen && (
+              <div className="bg-bg rounded-b-3xl px-5 pb-5 -mt-2 pt-4 flex flex-col gap-2">
                 {txHistory.map((tx, i) => (
                   <div key={i} className="flex items-center justify-between py-2 border-b border-lgrey last:border-0">
                     <div className="flex items-center gap-3">
@@ -486,7 +504,7 @@ export default function Deposit({ averageApy }) {
                   </div>
                 ))}
               </div>
-            </div>
+            )}
           </div>
         )}
       </div>
