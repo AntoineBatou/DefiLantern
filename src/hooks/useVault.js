@@ -13,7 +13,7 @@
 //   2. withdraw(amount, receiver, owner) sur le vault → récupère USDC
 
 import { useEffect } from 'react'
-import { useWriteContract, useReadContract, useBlockNumber, useAccount, useChainId } from 'wagmi'
+import { useWriteContract, useReadContract, useBlockNumber, useAccount, useChainId, usePublicClient } from 'wagmi'
 import { parseUnits, formatUnits } from 'viem'
 import { CONTRACT_ADDRESSES, USDC_ADDRESSES } from '../contracts/addresses'
 import VaultABI from '../contracts/DeFiLanternVaultPrudent.json'
@@ -70,11 +70,21 @@ const AAVE_FAUCET_ADDRESS = '0xC959483DBa39aa9E78757139af0e9a2EDEb3f42D'
 export function useVault() {
   const { address } = useAccount()
   const chainId = useChainId()
+  const publicClient = usePublicClient()
   const addrs = CONTRACT_ADDRESSES[chainId]
   const usdcAddress = USDC_ADDRESSES[chainId]
 
   // ── Écriture on-chain ────────────────────────────────────────────────────
   const { writeContractAsync, isPending, isSuccess, error } = useWriteContract()
+
+  // ── Attend la confirmation on-chain et lève une erreur si revert ─────────
+  const waitForTx = async (hash) => {
+    const receipt = await publicClient.waitForTransactionReceipt({ hash })
+    if (receipt.status === 'reverted') {
+      throw new Error('Transaction échouée on-chain (revert)')
+    }
+    return receipt
+  }
 
   // ── Numéro de bloc courant — se met à jour à chaque nouveau bloc ─────────
   const { data: blockNumber } = useBlockNumber({ watch: true })
@@ -151,35 +161,39 @@ export function useVault() {
   // ── Action : faucet — 1 000 USDC via Aave Faucet (non-permissioned) ──────
   const faucet = async () => {
     const amountRaw = parseUnits('1000', 6) // 1 000 USDC
-    await writeContractAsync({
+    const hash = await writeContractAsync({
       address: AAVE_FAUCET_ADDRESS,
       abi: AAVE_FAUCET_ABI,
       functionName: 'mint',
       args: [usdcAddress, address, amountRaw],
     })
+    await waitForTx(hash)
     refetchBalance()
   }
 
   // ── Action : dépôt (approve USDC + deposit) ─────────────────────────────
-  const deposit = async (amountUsdc) => {
+  const deposit = async (amountUsdc, onStep) => {
     // USDC a 6 décimales — 100 USDC = 100_000_000 en unités brutes
     const amountRaw = parseUnits(String(amountUsdc), 6)
 
     // Étape 1 : approuver le vault sur le contrat USDC
-    await writeContractAsync({
+    const approveHash = await writeContractAsync({
       address: usdcAddress,
       abi: ERC20_ABI,
       functionName: 'approve',
       args: [addrs.vaultPrudent, amountRaw],
     })
+    await waitForTx(approveHash)
 
     // Étape 2 : déposer → reçoit des shares glUSD-P
-    await writeContractAsync({
+    onStep?.('Étape 2/2 — Dépôt en cours...')
+    const depositHash = await writeContractAsync({
       address: addrs.vaultPrudent,
       abi: VaultABI.abi,
       functionName: 'deposit',
       args: [amountRaw, address],
     })
+    await waitForTx(depositHash)
 
     refetchBalance()
     refetchShares()
@@ -191,12 +205,13 @@ export function useVault() {
   const withdraw = async (amountUsdc) => {
     const amountRaw = parseUnits(String(amountUsdc), 6)
 
-    await writeContractAsync({
+    const hash = await writeContractAsync({
       address: addrs.vaultPrudent,
       abi: VaultABI.abi,
       functionName: 'withdraw',
       args: [amountRaw, address, address],
     })
+    await waitForTx(hash)
 
     refetchBalance()
     refetchShares()

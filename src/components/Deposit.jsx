@@ -123,7 +123,7 @@ export default function Deposit({ averageApy }) {
     }
     try {
       setTxStep('Étape 1/2 — Autorisation USDC...')
-      await deposit(numAmount)
+      await deposit(numAmount, (msg) => setTxStep(msg))
       addTx('deposit', numAmount)
       setTxStep(`Dépôt réussi ! Tu as reçu ${glUsdcReceived.toFixed(2)} glUSD-P`)
       setAmount('')
