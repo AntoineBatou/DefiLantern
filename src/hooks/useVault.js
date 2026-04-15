@@ -18,7 +18,7 @@ import { parseUnits, formatUnits } from 'viem'
 import { CONTRACT_ADDRESSES, USDC_ADDRESSES } from '../contracts/addresses'
 import VaultABI from '../contracts/DeFiLanternVaultPrudent.json'
 
-// ABI minimal ERC-20 — inclut mint() pour le faucet testnet (Aave TestnetERC20)
+// ABI minimal ERC-20
 const ERC20_ABI = [
   {
     name: 'approve',
@@ -47,17 +47,25 @@ const ERC20_ABI = [
     ],
     outputs: [{ name: '', type: 'uint256' }],
   },
+]
+
+// ABI du contrat Faucet Aave Sepolia (non-permissioned)
+const AAVE_FAUCET_ABI = [
   {
     name: 'mint',
     type: 'function',
     stateMutability: 'nonpayable',
     inputs: [
-      { name: 'to', type: 'address' },
+      { name: 'token',  type: 'address' },
+      { name: 'to',     type: 'address' },
       { name: 'amount', type: 'uint256' },
     ],
-    outputs: [],
+    outputs: [{ name: '', type: 'uint256' }],
   },
 ]
+
+// Contrat Faucet Aave v3 Sepolia — mint(token, to, amount), non-permissioned
+const AAVE_FAUCET_ADDRESS = '0xC959483DBa39aa9E78757139af0e9a2EDEb3f42D'
 
 export function useVault() {
   const { address } = useAccount()
@@ -140,14 +148,14 @@ export function useVault() {
     query: { enabled: !!addrs?.vaultPrudent },
   })
 
-  // ── Action : faucet — mint 1 000 USDC de test ───────────────────────────
+  // ── Action : faucet — 1 000 USDC via Aave Faucet (non-permissioned) ──────
   const faucet = async () => {
     const amountRaw = parseUnits('1000', 6) // 1 000 USDC
     await writeContractAsync({
-      address: usdcAddress,
-      abi: ERC20_ABI,
+      address: AAVE_FAUCET_ADDRESS,
+      abi: AAVE_FAUCET_ABI,
       functionName: 'mint',
-      args: [address, amountRaw],
+      args: [usdcAddress, address, amountRaw],
     })
     refetchBalance()
   }
