@@ -377,6 +377,7 @@ export default function Deposit({ averageApy }) {
                     </span>
                   </div>
                 </div>
+              )
             )}
 
             {/* Feedback transaction */}
