@@ -13,7 +13,7 @@
 //   2. withdraw(amount, receiver, owner) sur le vault → récupère USDC
 
 import { useEffect } from 'react'
-import { useWriteContract, useReadContract, useAccount, useChainId } from 'wagmi'
+import { useWriteContract, useReadContract, useBlockNumber, useAccount, useChainId } from 'wagmi'
 import { parseUnits, formatUnits } from 'viem'
 import { CONTRACT_ADDRESSES, USDC_ADDRESSES } from '../contracts/addresses'
 import VaultABI from '../contracts/DeFiLanternVaultPrudent.json'
@@ -68,6 +68,9 @@ export function useVault() {
   // ── Écriture on-chain ────────────────────────────────────────────────────
   const { writeContractAsync, isPending, isSuccess, error } = useWriteContract()
 
+  // ── Numéro de bloc courant — se met à jour à chaque nouveau bloc ─────────
+  const { data: blockNumber } = useBlockNumber({ watch: true })
+
   // ── Lecture : solde USDC du wallet ──────────────────────────────────────
   const { data: usdcBalance, refetch: refetchBalance } = useReadContract({
     address: usdcAddress,
@@ -76,7 +79,6 @@ export function useVault() {
     args: [address],
     query: {
       enabled: !!address && !!usdcAddress,
-      refetchInterval: 4000,
       staleTime: 0,
       refetchOnMount: true,
     },
@@ -90,19 +92,18 @@ export function useVault() {
     args: [address],
     query: {
       enabled: !!address && !!addrs?.vaultPrudent,
-      refetchInterval: 4000,
       staleTime: 0,
       refetchOnMount: true,
     },
   })
 
-  // ── Refetch immédiat à la connexion du wallet ────────────────────────────
+  // ── Refetch à chaque nouveau bloc ET à la connexion du wallet ────────────
   useEffect(() => {
     if (address) {
       refetchBalance()
       refetchShares()
     }
-  }, [address])
+  }, [blockNumber, address])
 
   // ── Lecture : totalAssets du vault ──────────────────────────────────────
   const { data: totalAssets } = useReadContract({
