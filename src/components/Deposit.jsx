@@ -337,7 +337,7 @@ export default function Deposit({ averageApy }) {
 
             {/* Résumé */}
             {numAmount > 0 && (
-              {mode === 'withdraw' ? (
+              mode === 'withdraw' ? (
                 /* ── Résumé retrait ── */
                 <div className="bg-white rounded-2xl border border-lgrey p-4 flex flex-col gap-3">
                   <div className="flex justify-between items-center">
@@ -377,7 +377,6 @@ export default function Deposit({ averageApy }) {
                     </span>
                   </div>
                 </div>
-              )}
             )}
 
             {/* Feedback transaction */}
