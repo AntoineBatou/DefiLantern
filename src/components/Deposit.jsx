@@ -24,16 +24,6 @@ function UsdcIcon() {
   )
 }
 
-function EurcIcon() {
-  return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="flex-shrink-0">
-      <circle cx="12" cy="12" r="12" fill="#2563EB" />
-      <text x="12" y="16.5" textAnchor="middle" fill="white" fontSize="12" fontWeight="bold">€</text>
-    </svg>
-  )
-}
-
-
 // ── Composant principal ────────────────────────────────────────────────────────
 export default function Deposit({ averageApy }) {
   const { t } = useLang()
@@ -48,16 +38,33 @@ export default function Deposit({ averageApy }) {
   // ── Hook vault : lecture + écriture on-chain ─────────────────────────────
   const {
     deposit,
+    withdraw,
     faucet,
     isPending,
     error: vaultError,
-    mockUsdcBalance,
+    usdcBalance,
     sharesBalance,
+    sharePrice,
     isSepoliaSupported,
   } = useVault()
 
-  // Actif sélectionné : 'USDC' ou 'EURC'
-  const [asset, setAsset] = useState('USDC')
+  const handleFaucet = async () => {
+    try {
+      setTxStep('Mint de 1 000 USDC de test...')
+      await faucet()
+      setTxStep('1 000 USDC reçus !')
+      setTimeout(() => setTxStep(''), 3000)
+    } catch (e) {
+      setTxStep('Erreur — ce token testnet ne supporte pas le mint direct.')
+      setTimeout(() => setTxStep(''), 4000)
+    }
+  }
+
+  // Mode : dépôt ou retrait
+  const [mode, setMode] = useState('deposit')
+
+  // Actif sélectionné (USDC uniquement pour l'instant)
+  const [asset] = useState('USDC')
 
   // Montant saisi par l'utilisateur
   const [amount, setAmount] = useState('')
@@ -68,26 +75,14 @@ export default function Deposit({ averageApy }) {
   const glUsdcReceived = numAmount
   const estimatedYield = numAmount * ((averageApy ?? 0) / 100)
 
-  // Solde affiché : MockUSDC sur Sepolia, sinon '—'
+  // Solde affiché : USDC Aave testnet sur Sepolia, sinon '—'
   const usdcBalanceFormatted = isSepolia && isSepoliaSupported
-    ? parseFloat(mockUsdcBalance).toLocaleString('fr-FR', { maximumFractionDigits: 2 })
+    ? parseFloat(usdcBalance).toLocaleString('fr-FR', { maximumFractionDigits: 2 })
     : '—'
 
   // ── Handlers ───────────────────────────────────────────────────────────────
   const handleMax = () => {
-    if (isSepolia && mockUsdcBalance) setAmount(mockUsdcBalance)
-  }
-
-  const handleFaucet = async () => {
-    try {
-      setTxStep('Demande de 1 000 USDC de test...')
-      await faucet()
-      setTxStep('1 000 USDC reçus !')
-      setTimeout(() => setTxStep(''), 3000)
-    } catch (e) {
-      setTxStep('Erreur faucet (cooldown 24h ?)')
-      setTimeout(() => setTxStep(''), 3000)
-    }
+    if (isSepolia && usdcBalance) setAmount(usdcBalance)
   }
 
   const handleDeposit = async () => {
@@ -99,6 +94,23 @@ export default function Deposit({ averageApy }) {
       setTxStep('Étape 1/2 — Autorisation USDC...')
       await deposit(numAmount)
       setTxStep(`Dépôt réussi ! Tu as reçu ${glUsdcReceived.toFixed(2)} glUSD-P`)
+      setAmount('')
+      setTimeout(() => setTxStep(''), 5000)
+    } catch (e) {
+      setTxStep('Transaction annulée ou échouée.')
+      setTimeout(() => setTxStep(''), 3000)
+    }
+  }
+
+  const handleWithdraw = async () => {
+    if (!isSepolia || !isSepoliaSupported) {
+      alert('Connecte-toi au réseau Sepolia pour utiliser la démo on-chain.')
+      return
+    }
+    try {
+      setTxStep('Retrait en cours...')
+      await withdraw(numAmount)
+      setTxStep(`Retrait réussi ! ${numAmount.toFixed(2)} USDC reçus`)
       setAmount('')
       setTimeout(() => setTxStep(''), 5000)
     } catch (e) {
@@ -128,8 +140,32 @@ export default function Deposit({ averageApy }) {
         {/* ── Layout : formulaire + explications ── */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start max-w-4xl mx-auto">
 
-          {/* ── Formulaire de dépôt ── */}
+          {/* ── Formulaire de dépôt / retrait ── */}
           <div className="bg-bg rounded-3xl p-6 sm:p-8 flex flex-col gap-6">
+
+            {/* Toggle Déposer / Retirer */}
+            <div className="flex rounded-2xl border-2 border-lgrey overflow-hidden">
+              <button
+                onClick={() => { setMode('deposit'); setAmount('') }}
+                className={`flex-1 py-2.5 text-sm font-semibold transition-colors ${
+                  mode === 'deposit'
+                    ? 'bg-[#28B092] text-white'
+                    : 'bg-white text-navy/50 hover:text-navy'
+                }`}
+              >
+                Déposer
+              </button>
+              <button
+                onClick={() => { setMode('withdraw'); setAmount('') }}
+                className={`flex-1 py-2.5 text-sm font-semibold transition-colors ${
+                  mode === 'withdraw'
+                    ? 'bg-navy text-white'
+                    : 'bg-white text-navy/50 hover:text-navy'
+                }`}
+              >
+                Retirer
+              </button>
+            </div>
 
             {/* Wallet — ConnectButton RainbowKit */}
             <div className="flex items-center justify-between flex-wrap gap-2">
@@ -140,15 +176,15 @@ export default function Deposit({ averageApy }) {
               />
               {isConnected && (
                 <div className="text-xs text-navy/40">
-                  {t('deposit.balance')} :{' '}
+                  {mode === 'withdraw' ? 'Solde glUSD-P' : t('deposit.balance')} :{' '}
                   <span className="font-medium text-navy/60">
-                    {usdcBalanceFormatted} USDC
+                    {mode === 'withdraw' ? `${sharesBalance} glUSD-P` : `${usdcBalanceFormatted} USDC`}
                   </span>
                 </div>
               )}
             </div>
 
-            {/* Faucet Sepolia + solde shares */}
+                    {/* Bandeau testnet Sepolia */}
             {isConnected && isSepolia && isSepoliaSupported && (
               <div className="bg-amber-50 border border-amber-200 rounded-2xl p-3 flex flex-col gap-2">
                 <div className="flex items-center justify-between">
@@ -161,48 +197,11 @@ export default function Deposit({ averageApy }) {
                     + 1 000 USDC de test
                   </button>
                 </div>
-                {parseFloat(sharesBalance) > 0 && (
-                  <div className="text-xs text-amber-700">
-                    Ton solde glUSD-P : <span className="font-bold">{sharesBalance}</span>
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* Toggle USDC / EURC */}
-            <div>
-              <label className="text-xs font-semibold text-navy/50 uppercase tracking-wider mb-2 block">
-                {t('deposit.assetLabel')}
-              </label>
-              <div className="flex gap-2">
-                {/* USDC — actif */}
-                <button
-                  onClick={() => { setAsset('USDC'); setAmount('') }}
-                  className={`flex items-center gap-2 flex-1 justify-center px-4 py-3 rounded-2xl border-2 transition-all font-medium text-sm ${
-                    asset === 'USDC'
-                      ? 'border-[#28B092] bg-white text-navy shadow-sm'
-                      : 'border-lgrey bg-white/50 text-navy/50 hover:border-[#28B092]/50'
-                  }`}
-                >
-                  <UsdcIcon />
-                  USDC
-                </button>
-
-                {/* EURC — coming soon */}
-                <div className="relative flex-1">
-                  <button
-                    disabled
-                    className="w-full flex items-center gap-2 justify-center px-4 py-3 rounded-2xl border-2 border-dashed border-lgrey bg-gray-50 text-navy/30 font-medium text-sm cursor-not-allowed"
-                  >
-                    <EurcIcon />
-                    EURC
-                  </button>
-                  <span className="absolute -top-2 -right-1 bg-navy/80 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
-                    Bientôt
-                  </span>
+                <div className="text-xs text-amber-700">
+                  Solde USDC : <span className="font-bold">{usdcBalance} USDC</span>
                 </div>
               </div>
-            </div>
+            )}
 
             {/* Sélecteur de profil */}
             <div>
@@ -213,27 +212,37 @@ export default function Deposit({ averageApy }) {
                 {Object.values(PROFILES).map((p) => {
                   const colors = PROFILE_PILL_COLORS[p.id]
                   const isActive = profile === p.id
+                  const isPrudent = p.id === 'prudent'
                   return (
-                    <button
-                      key={p.id}
-                      onClick={() => setProfile(p.id)}
-                      className={`flex items-center gap-2 px-3 py-2.5 rounded-2xl border-2 transition-all text-left ${
-                        isActive
-                          ? 'border-transparent text-white shadow-sm'
-                          : 'border-lgrey bg-white/50 text-navy/70 hover:border-navy/20'
-                      }`}
-                      style={isActive ? { backgroundColor: colors.dot } : {}}
-                    >
-                      <span className="text-base flex-shrink-0">{p.icon}</span>
-                      <div className="min-w-0">
-                        <div className="text-xs font-semibold leading-tight truncate">
-                          {p.shareToken}
+                    <div key={p.id} className="relative">
+                      <button
+                        onClick={() => isPrudent && setProfile(p.id)}
+                        disabled={!isPrudent}
+                        className={`w-full flex items-center gap-2 px-3 py-2.5 rounded-2xl border-2 transition-all text-left ${
+                          !isPrudent
+                            ? 'border-lgrey bg-gray-50 text-navy/30 cursor-not-allowed'
+                            : isActive
+                            ? 'border-transparent text-white shadow-sm'
+                            : 'border-lgrey bg-white/50 text-navy/70 hover:border-navy/20'
+                        }`}
+                        style={isPrudent && isActive ? { backgroundColor: colors.dot } : {}}
+                      >
+                        <span className={`text-base flex-shrink-0 ${!isPrudent ? 'grayscale opacity-40' : ''}`}>{p.icon}</span>
+                        <div className="min-w-0">
+                          <div className="text-xs font-semibold leading-tight truncate">
+                            {p.shareToken}
+                          </div>
+                          <div className={`text-[10px] leading-tight ${isPrudent && isActive ? 'text-white/70' : 'text-navy/40'}`}>
+                            {p.apyRange}
+                          </div>
                         </div>
-                        <div className={`text-[10px] leading-tight ${isActive ? 'text-white/70' : 'text-navy/40'}`}>
-                          {p.apyRange}
-                        </div>
-                      </div>
-                    </button>
+                      </button>
+                      {!isPrudent && (
+                        <span className="absolute -top-2 -right-1 bg-navy/60 text-white text-[9px] font-bold px-2 py-0.5 rounded-full pointer-events-none">
+                          Bientôt
+                        </span>
+                      )}
+                    </div>
                   )
                 })}
               </div>
@@ -256,7 +265,7 @@ export default function Deposit({ averageApy }) {
                 <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2">
                   <button
                     onClick={handleMax}
-                    disabled={!isConnected || !mockUsdcBalance}
+                    disabled={!isConnected || !usdcBalance}
                     className="text-xs font-bold text-[#28B092] hover:text-[#2ABFAB] disabled:text-navy/30 transition-colors"
                   >
                     {t('deposit.maxBtn')}
@@ -303,15 +312,21 @@ export default function Deposit({ averageApy }) {
               </div>
             )}
 
-            {/* Bouton dépôt */}
+            {/* Bouton action */}
             {isConnected ? (
               <button
-                onClick={handleDeposit}
+                onClick={mode === 'deposit' ? handleDeposit : handleWithdraw}
                 disabled={numAmount <= 0 || isPending}
-                className="btn-primary disabled:opacity-40 disabled:cursor-not-allowed"
+                className={`disabled:opacity-40 disabled:cursor-not-allowed ${
+                  mode === 'withdraw'
+                    ? 'bg-navy hover:bg-navy/90 text-white font-semibold px-6 py-3 rounded-xl transition-all duration-200 shadow-sm hover:shadow-md active:scale-95'
+                    : 'btn-primary'
+                }`}
               >
                 {isPending
                   ? 'Transaction en cours...'
+                  : mode === 'withdraw'
+                  ? `Retirer ${numAmount > 0 ? `${numAmount.toLocaleString()} USDC` : ''}`
                   : `${t('deposit.depositBtn')} ${numAmount > 0 ? `${numAmount.toLocaleString()} ${asset}` : ''}`
                 }
               </button>
@@ -373,18 +388,7 @@ export default function Deposit({ averageApy }) {
                   </div>
                   <span className="ml-auto badge bg-green-100 text-green-700">Supporté</span>
                 </div>
-                <div className="flex items-center gap-3 p-3 bg-white rounded-2xl border border-lgrey">
-                  <EurcIcon />
-                  <div>
-                    <div className="font-semibold text-navy text-sm">EURC</div>
-                    <div className="text-xs text-navy/50">Euro Coin — Circle</div>
-                  </div>
-                  <span className="ml-auto badge bg-green-100 text-green-700">Supporté</span>
-                </div>
               </div>
-              <p className="text-xs text-navy/40 mt-3">
-                EURC est converti en USDC via un swap intégré avant allocation. Les rendements sont reversés dans l'actif déposé.
-              </p>
             </div>
           </div>
         </div>
