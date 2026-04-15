@@ -82,7 +82,7 @@ export default function Deposit({ averageApy }) {
 
   // ── Handlers ───────────────────────────────────────────────────────────────
   const handleMax = () => {
-    if (isSepolia && usdcBalance) setAmount(usdcBalance)
+    if (isConnected && parseFloat(usdcBalance) > 0) setAmount(usdcBalance)
   }
 
   const handleDeposit = async () => {
@@ -265,7 +265,7 @@ export default function Deposit({ averageApy }) {
                 <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2">
                   <button
                     onClick={handleMax}
-                    disabled={!isConnected || !usdcBalance}
+                    disabled={!isConnected || parseFloat(usdcBalance) <= 0}
                     className="text-xs font-bold text-[#28B092] hover:text-[#2ABFAB] disabled:text-navy/30 transition-colors"
                   >
                     {t('deposit.maxBtn')}
@@ -273,6 +273,11 @@ export default function Deposit({ averageApy }) {
                   <span className="text-sm font-semibold text-navy/60">{asset}</span>
                 </div>
               </div>
+              {isConnected && (
+                <p className="text-xs text-navy/40 mt-2">
+                  Disponible : <span className="font-medium">{usdcBalanceFormatted} USDC</span>
+                </p>
+              )}
             </div>
 
             {/* Résumé */}
