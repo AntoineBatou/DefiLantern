@@ -79,6 +79,7 @@ export function useVault() {
     args: [address],
     query: {
       enabled: !!address && !!usdcAddress,
+      refetchInterval: 3000,
       staleTime: 0,
       refetchOnMount: true,
     },
@@ -92,6 +93,7 @@ export function useVault() {
     args: [address],
     query: {
       enabled: !!address && !!addrs?.vaultPrudent,
+      refetchInterval: 3000,
       staleTime: 0,
       refetchOnMount: true,
     },
