@@ -299,32 +299,47 @@ export default function Deposit({ averageApy }) {
 
             {/* Résumé */}
             {numAmount > 0 && (
-              <div className="bg-white rounded-2xl border border-lgrey p-4 flex flex-col gap-3">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-navy/60">{t('deposit.receiveLabel')}</span>
-                  <span className="font-bold text-navy">
-                    {glUsdcReceived.toLocaleString()} {shareToken}
-                  </span>
+              {mode === 'withdraw' ? (
+                /* ── Résumé retrait ── */
+                <div className="bg-white rounded-2xl border border-lgrey p-4 flex flex-col gap-3">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-navy/60">Vous récupérez</span>
+                    <span className="font-bold text-navy">{numAmount.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USDC</span>
+                  </div>
+                  <div className="flex justify-between items-center pt-2 border-t border-lgrey">
+                    <span className="text-sm text-navy/60">Parts brûlées (est.)</span>
+                    <span className="font-bold text-navy/60">≈ {(numAmount / parseFloat(sharePrice || 1)).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} glUSD-P</span>
+                  </div>
                 </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-navy/60">{t('deposit.apyEstLabel')}</span>
-                  <span className={`font-bold ${apyColor}`}>
-                    {averageApy !== null ? `${averageApy.toFixed(2)}%` : '—'}
-                  </span>
+              ) : (
+                /* ── Résumé dépôt ── */
+                <div className="bg-white rounded-2xl border border-lgrey p-4 flex flex-col gap-3">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-navy/60">{t('deposit.receiveLabel')}</span>
+                    <span className="font-bold text-navy">
+                      {glUsdcReceived.toLocaleString()} {shareToken}
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-navy/60">{t('deposit.apyEstLabel')}</span>
+                    <span className={`font-bold ${apyColor}`}>
+                      {averageApy !== null ? `${averageApy.toFixed(2)}%` : '—'}
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-navy/60">Rendement / an (est.)</span>
+                    <span className="font-bold text-green-600">
+                      +{estimatedYield.toFixed(2)} {asset}
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center pt-2 border-t border-lgrey">
+                    <span className="text-sm text-navy/60">Répartition</span>
+                    <span className="text-xs font-medium text-navy/60 bg-navy/5 rounded-full px-3 py-1">
+                      {t('deposit.protocolCount')} × 10%
+                    </span>
+                  </div>
                 </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-navy/60">Rendement / an (est.)</span>
-                  <span className="font-bold text-green-600">
-                    +{estimatedYield.toFixed(2)} {mode === 'withdraw' ? 'glUSD-P' : asset}
-                  </span>
-                </div>
-                <div className="flex justify-between items-center pt-2 border-t border-lgrey">
-                  <span className="text-sm text-navy/60">Répartition</span>
-                  <span className="text-xs font-medium text-navy/60 bg-navy/5 rounded-full px-3 py-1">
-                    {t('deposit.protocolCount')} × 10%
-                  </span>
-                </div>
-              </div>
+              )}
             )}
 
             {/* Feedback transaction */}
