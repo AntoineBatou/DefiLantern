@@ -219,18 +219,19 @@ export default function Deposit({ averageApy }) {
               </button>
             </div>
 
-                    {/* Bandeau testnet Sepolia */}
+            {/* Bandeau testnet Sepolia */}
             {isConnected && isSepolia && isSepoliaSupported && (
               <div className="bg-amber-50 border border-amber-200 rounded-2xl p-3 flex flex-col gap-2">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-semibold text-amber-800">Réseau Sepolia (test)</span>
-                  <button
-                    onClick={handleFaucet}
-                    disabled={isPending}
-                    className="text-xs font-bold text-amber-700 bg-amber-100 hover:bg-amber-200 px-3 py-1 rounded-full transition-colors disabled:opacity-50"
+                  <a
+                    href="https://app.aave.com/faucet/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs font-bold text-amber-700 bg-amber-100 hover:bg-amber-200 px-3 py-1 rounded-full transition-colors"
                   >
-                    + 1 000 USDC de test
-                  </button>
+                    Faucet USDC →
+                  </a>
                 </div>
                 <div className="text-xs text-amber-700">
                   Solde USDC : <span className="font-bold">{fmt(usdcBalance)} USDC</span>
