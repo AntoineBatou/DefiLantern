@@ -76,8 +76,9 @@ export default function Deposit({ averageApy }) {
   const estimatedYield = numAmount * ((averageApy ?? 0) / 100)
 
   // Solde affiché : USDC Aave testnet sur Sepolia, sinon '—'
-  const usdcBalanceFormatted = isSepolia && isSepoliaSupported
-    ? parseFloat(usdcBalance).toLocaleString('fr-FR', { maximumFractionDigits: 2 })
+  const usdcBalNum = parseFloat(usdcBalance)
+  const usdcBalanceFormatted = isSepolia && isSepoliaSupported && !isNaN(usdcBalNum)
+    ? usdcBalNum.toLocaleString('fr-FR', { maximumFractionDigits: 2 })
     : '—'
 
   // ── Handlers ───────────────────────────────────────────────────────────────
@@ -137,6 +138,23 @@ export default function Deposit({ averageApy }) {
           <div className="mt-4 mx-auto w-16 h-1 rounded-full bg-[#28B092]" aria-hidden="true" />
         </div>
 
+        {/* ── Wallet — au-dessus de la box, pleine largeur ── */}
+        <div className="max-w-4xl mx-auto mb-4 flex items-center justify-between flex-wrap gap-2">
+          <ConnectButton
+            showBalance={false}
+            chainStatus="icon"
+            accountStatus="address"
+          />
+          {isConnected && (
+            <div className="text-xs text-navy/40">
+              {mode === 'withdraw' ? 'Solde glUSD-P' : t('deposit.balance')} :{' '}
+              <span className="font-medium text-navy/60">
+                {mode === 'withdraw' ? `${sharesBalance} glUSD-P` : `${usdcBalanceFormatted} USDC`}
+              </span>
+            </div>
+          )}
+        </div>
+
         {/* ── Layout : formulaire + explications ── */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start max-w-4xl mx-auto">
 
@@ -165,23 +183,6 @@ export default function Deposit({ averageApy }) {
               >
                 Retirer
               </button>
-            </div>
-
-            {/* Wallet — ConnectButton RainbowKit */}
-            <div className="flex items-center justify-between flex-wrap gap-2">
-              <ConnectButton
-                showBalance={false}
-                chainStatus="icon"
-                accountStatus="address"
-              />
-              {isConnected && (
-                <div className="text-xs text-navy/40">
-                  {mode === 'withdraw' ? 'Solde glUSD-P' : t('deposit.balance')} :{' '}
-                  <span className="font-medium text-navy/60">
-                    {mode === 'withdraw' ? `${sharesBalance} glUSD-P` : `${usdcBalanceFormatted} USDC`}
-                  </span>
-                </div>
-              )}
             </div>
 
                     {/* Bandeau testnet Sepolia */}
